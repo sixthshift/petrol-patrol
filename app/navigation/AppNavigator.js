@@ -1,10 +1,13 @@
 import { createMaterialTopTabNavigator } from 'react-navigation'
-import MainScreen from '../screens/MainScreen'
+
+import FavouritesScreen from '../screens/FavouritesScreen';
+import TrendsScreen from '../screens/TrendsScreen'
 import Styles from '../styles/Styles'
 
 export default createMaterialTopTabNavigator(
     {
-        Main: MainScreen,
+        Trends: { screen: TrendsScreen },
+        Favourites: { screen: FavouritesScreen }
     },
     {
         tabBarOptions: {

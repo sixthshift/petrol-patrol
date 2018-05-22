@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Colours from '../constants/Colours'
 
-export default class MainScreen extends React.Component {
+export default class TrendsScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
