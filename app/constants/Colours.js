@@ -10,5 +10,6 @@ const colourText = '#FFFFFF'
 
 export default {
     primaryColour: colourPrimary,
-    backgroundColour: colourBackground
+    backgroundColour: colourBackground,
+    accentColour: colourAccent,
 };
