@@ -1,22 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Colours from '../constants/Colours'
+import { Text, View } from 'react-native';
+
+import Styles from '../styles/Styles'
 
 export default class TrendsScreen extends React.Component {
     render() {
         return (
-            <View style={styles.container}>
-                <Text>Open up App.js to start working on your app!</Text>
+            <View style={Styles.container}>
+                <Text>Trends Screen</Text>
             </View>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Colours.backgroundColor,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
