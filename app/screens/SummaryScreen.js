@@ -3,11 +3,11 @@ import { Text, View } from 'react-native';
 
 import Styles from '../styles/Styles'
 
-export default class TrendsScreen extends React.Component {
+export default class SummaryScreen extends React.Component {
     render() {
         return (
             <View style={Styles.container}>
-                <Text>Trends Screen</Text>
+                <Text>Summary Screen</Text>
             </View>
         );
     }

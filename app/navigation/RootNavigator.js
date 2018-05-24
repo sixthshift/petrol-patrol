@@ -1,13 +1,13 @@
 import React from 'React'
 import { View } from 'react-native'
-import AppNavigator from './AppNavigator'
+import TabNavigator from './TabNavigator'
 import Styles from '../styles/Styles'
 
-export default class RootNavigation extends React.Component {
+export default class RootNavigator extends React.Component {
     render() {
         return (
             <View style={Styles.rootContainerStyle}>
-                <AppNavigator />
+                <TabNavigator />
             </View >
         )
     }
