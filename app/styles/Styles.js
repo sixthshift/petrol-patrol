@@ -1,10 +1,11 @@
-import { StatusBar, StyleSheet } from 'react-native'
-import Colours from '../constants/Colours'
+import { Constants } from 'expo'
+import { StyleSheet } from 'react-native';
+import Colours from '../constants/Colours';
 
 export default StyleSheet.create({
     rootContainerStyle: {
         flex: 1,
-        marginTop: StatusBar.currentHeight
+        marginTop: Constants.StatusBarHeight
     },
     container: {
         flex: 1,
@@ -18,4 +19,4 @@ export default StyleSheet.create({
     tabBarIndicatorStyle: {
         backgroundColor: Colours.accentColour
     }
-})
+});
