@@ -1,44 +1,54 @@
+import PropTypes from 'prop-types';
+import React from 'React';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
-import { createStackNavigator } from 'react-navigation';
+import { MaterialIcons } from '@expo/vector-icons';
 
-import FavouritesScreen from '../screens/FavouritesScreen';
-import MainScreen from '../screens/MainScreen';
-import SummaryScreen from '../screens/SummaryScreen';
-import Styles from '../styles/Styles';
+import MainNavigator from './MainNavigator';
+import SummaryNavigator from './SummaryNavigator';
+import FavouritesNavigator from './FavouritesNavigator';
+import Colours from '../constants/Colours';
 
-const summaryStack = createStackNavigator({
-    Summary: { screen: SummaryScreen }
-});
-
-summaryStack.navigationOptions = {
-    tabBarLabel: 'Summary',
+const summaryIcon = ({ tintColor }) => {
+    return <MaterialIcons name={'info'} size={25} color={tintColor} />;
+};
+summaryIcon.propTypes = {
+    tintColor: PropTypes.string.isRequired
+}
+SummaryNavigator.navigationOptions = {
+    title: 'Favourites',
+    tabBarIcon: summaryIcon
 };
 
-const mainStack = createStackNavigator({
-    Main: { screen: MainScreen }
-});
-
-mainStack.navigationOptions = {
-    tabBarLabel: 'Main',
+const mainIcon = ({ tintColor }) => {
+    return <MaterialIcons name={'home'} size={25} color={tintColor} />;
+};
+mainIcon.propTypes = {
+    tintColor: PropTypes.string.isRequired
+}
+MainNavigator.navigationOptions = {
+    title: 'Main',
+    tabBarIcon: mainIcon
 };
 
-const favouritesStack = createStackNavigator({
-    Favourites: { screen: FavouritesScreen }
-});
-
-favouritesStack.navigationOptions = {
-    tabBarLabel: 'Favourites',
+const favouritesIcon = ({ tintColor }) => {
+    return <MaterialIcons name={'favorite'} size={25} color={tintColor} />;
 };
-
-
+favouritesIcon.propTypes = {
+    tintColor: PropTypes.string.isRequired
+}
+FavouritesNavigator.navigationOptions = {
+    title: 'Favourites',
+    tabBarIcon: favouritesIcon
+};
 
 export default createMaterialBottomTabNavigator(
     {
-        summaryStack,
-        mainStack,
-        favouritesStack,
+        SummaryNavigator,
+        MainNavigator,
+        FavouritesNavigator,
     },
     {
-        initialRouteName: 'mainStack'
+        activeTintColor: Colours.primaryColour,
+        initialRouteName: 'MainNavigator',
     }
 );
