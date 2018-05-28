@@ -13,10 +13,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    tabBarStyle: {
-        backgroundColor: Colours.primaryColour
-    },
-    tabBarIndicatorStyle: {
-        backgroundColor: Colours.accentColour
+    button: {
+        backgroundColor: Colours.backgroundColour,
     }
 });

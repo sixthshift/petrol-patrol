@@ -1,13 +1,24 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { FAB } from 'react-native-paper';
+import { MaterialIcons } from '@expo/vector-icons';
 
-import Styles from '../styles/Styles'
+import Colours from '../constants/Colours';
+import Strings from '../constants/Strings';
+import Styles from '../styles/Styles';
+
+const buttonIcon = <MaterialIcons name={'map'} size={25} color={Colours.primaryColour} />;
 
 export default class MainScreen extends React.Component {
     render() {
         return (
             <View style={Styles.container}>
-                <Text>Main Screen</Text>
+                <FAB
+                    label={Strings.button}
+                    color={Colours.primaryColour}
+                    style={Styles.button}
+                    icon={buttonIcon}
+                />
             </View>
         );
     }
