@@ -15,7 +15,7 @@ summaryIcon.propTypes = {
     tintColor: PropTypes.string.isRequired
 }
 SummaryNavigator.navigationOptions = {
-    title: 'Favourites',
+    title: 'Summary',
     tabBarIcon: summaryIcon
 };
 
