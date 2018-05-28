@@ -7,7 +7,7 @@ import Colours from '../constants/Colours';
 import Strings from '../constants/Strings';
 import Styles from '../styles/Styles';
 
-const buttonIcon = <MaterialIcons name={'map'} size={25} color={Colours.primaryColour} />;
+const buttonIcon = <MaterialIcons name={'map'} size={25} color={Colours.primary} />;
 
 export default class MainScreen extends React.Component {
     render() {
@@ -15,7 +15,7 @@ export default class MainScreen extends React.Component {
             <View style={Styles.container}>
                 <FAB
                     label={Strings.button}
-                    color={Colours.primaryColour}
+                    color={Colours.primary}
                     style={Styles.button}
                     icon={buttonIcon}
                 />

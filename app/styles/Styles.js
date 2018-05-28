@@ -9,11 +9,11 @@ export default StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: Colours.backgroundColor,
+        backgroundColor: Colours.background,
         alignItems: 'center',
         justifyContent: 'center',
     },
     button: {
-        backgroundColor: Colours.backgroundColour,
+        backgroundColor: Colours.background,
     }
 });

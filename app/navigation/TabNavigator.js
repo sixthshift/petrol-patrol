@@ -48,7 +48,7 @@ export default createMaterialBottomTabNavigator(
         FavouritesNavigator,
     },
     {
-        activeTintColor: Colours.primaryColour,
+        activeTintColor: Colours.primary,
         initialRouteName: 'MainNavigator',
     }
 );
