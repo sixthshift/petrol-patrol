@@ -18,6 +18,7 @@ export default class MainScreen extends React.Component {
                     color={Colours.primary}
                     style={Styles.button}
                     icon={buttonIcon}
+                    onPress={() => { this.props.navigation.navigate('Map') }}
                 />
             </View>
         );

@@ -15,5 +15,8 @@ export default StyleSheet.create({
     },
     button: {
         backgroundColor: Colours.background,
-    }
+    },
+    map: {
+        flex: 1.
+    },
 });
