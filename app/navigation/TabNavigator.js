@@ -3,10 +3,11 @@ import React from 'React';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { MaterialIcons } from '@expo/vector-icons';
 
+import Colours from '../constants/Colours';
+
 import MainNavigator from './MainNavigator';
 import SummaryNavigator from './SummaryNavigator';
 import FavouritesNavigator from './FavouritesNavigator';
-import Colours from '../constants/Colours';
 
 const summaryIcon = ({ tintColor }) => {
     return <MaterialIcons name={'info'} size={25} color={tintColor} />;
@@ -15,8 +16,8 @@ summaryIcon.propTypes = {
     tintColor: PropTypes.string.isRequired
 }
 SummaryNavigator.navigationOptions = {
+    tabBarIcon: summaryIcon,
     title: 'Summary',
-    tabBarIcon: summaryIcon
 };
 
 const mainIcon = ({ tintColor }) => {
@@ -26,8 +27,8 @@ mainIcon.propTypes = {
     tintColor: PropTypes.string.isRequired
 }
 MainNavigator.navigationOptions = {
+    tabBarIcon: mainIcon,
     title: 'Main',
-    tabBarIcon: mainIcon
 };
 
 const favouritesIcon = ({ tintColor }) => {
@@ -38,7 +39,7 @@ favouritesIcon.propTypes = {
 }
 FavouritesNavigator.navigationOptions = {
     title: 'Favourites',
-    tabBarIcon: favouritesIcon
+    tabBarIcon: favouritesIcon,
 };
 
 export default createMaterialBottomTabNavigator(
