@@ -3,16 +3,23 @@ import { createStackNavigator } from 'react-navigation';
 
 import Header from '../components/Header';
 
+import BrandsScreen from '../screens/BrandsScreen';
+import FuelScreen from '../screens/FuelScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 
 SummaryScreen.navigationOptions = {
-    header: <Header />,
+    headerRight: <Header />,
     tabBarLabel: 'Summary',
 };
 
 const SummaryNavigator = createStackNavigator(
     {
-        Summary: { screen: SummaryScreen }
+        Brands: { screen: BrandsScreen },
+        Fuel: { screen: FuelScreen },
+        Summary: { screen: SummaryScreen },
+    },
+    {
+        initialRouteName: 'Summary'
     }
 );
 

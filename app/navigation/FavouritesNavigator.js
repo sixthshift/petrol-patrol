@@ -3,16 +3,23 @@ import { createStackNavigator } from 'react-navigation';
 
 import Header from '../components/Header';
 
+import BrandsScreen from '../screens/BrandsScreen';
 import FavouritesScreen from '../screens/FavouritesScreen';
+import FuelScreen from '../screens/FuelScreen';
 
 FavouritesScreen.navigationOptions = {
-    header: <Header />,
+    headerRight: <Header />,
     tabBarLabel: 'Favourites',
 };
 
 const FavouritesNavigator = createStackNavigator(
     {
-        Favourites: { screen: FavouritesScreen }
+        Brands: { screen: BrandsScreen },
+        Favourites: { screen: FavouritesScreen },
+        Fuel: { screen: FuelScreen },
+    },
+    {
+        initialRouteName: 'Favourites'
     }
 );
 
