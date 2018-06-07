@@ -8,6 +8,7 @@
     "globals": {
         "__DEV__": true
     },
+    "parser": "babel-eslint",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -17,15 +18,5 @@
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended"
-    ],
-    "rules": {
-        "react/prop-types": [
-            "error",
-            {
-                "ignore": [
-                    "navigation"
-                ]
-            }
-        ]
-    }
+    ]
 }
