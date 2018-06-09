@@ -1,3 +1,4 @@
 export default {
-    button: "Find Cheapest Fuel Nearby"
+    button: "Find Cheapest Fuel Nearby",
+    noLocationPermissions: "Location permissions not granted",
 }
