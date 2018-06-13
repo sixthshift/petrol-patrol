@@ -20,6 +20,18 @@ export default StyleSheet.create({
         flex: 1,
         flexDirection: 'row'
     },
+    list: {
+        flex: 1,
+        backgroundColor: Colours.background,
+        paddingVertical: 8,
+    },
+    listItem: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+    },
     map: {
         flex: 1.
     },

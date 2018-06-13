@@ -14,7 +14,7 @@ export default {
     background: white,
     accent: lynch,
     divider: silver,
-    Text: white,
+    text: white,
     primaryText: mineShaft,
     secondaryText: boulder,
 };

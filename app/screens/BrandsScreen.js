@@ -1,11 +1,17 @@
 import React from 'react';
-import { View } from 'react-native';
+
+import List from '../components/List';
+import ListItem from '../components/ListItem';
 
 export default class BrandsScreen extends React.Component {
     render() {
         return (
-            <View >
-            </ View>
+            <List>
+                <ListItem text={'7-Eleven'} />
+                <ListItem text={'BP'} />
+                <ListItem text={'Caltex'} />
+                <ListItem text={'Shell'} />
+            </List>
         );
     }
 }
