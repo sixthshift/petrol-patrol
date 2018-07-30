@@ -1,0 +1,8 @@
+{
+    "table": {
+        "brands": "brandstest",
+        "fueltypes": "fueltypestest",
+        "stations": "stationstest",
+        "prices": "pricestest"
+    }
+}
