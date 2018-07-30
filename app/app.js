@@ -1,10 +1,14 @@
 import React from 'react';
-import RootNavigator from './navigation/RootNavigator'
+import { Text, View } from 'react-native';
+
+import Styles from './styles/Styles';
 
 export default class App extends React.Component {
     render() {
         return (
-            <RootNavigator />
+            <View style={Styles.root}>
+                <Text>Hello World!</Text>
+            </View>
         );
     }
 }
