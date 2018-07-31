@@ -2,8 +2,8 @@ import { assign } from 'lodash';
 import { Location, MapView, Permissions } from 'expo';
 import React from 'react';
 
-import Strings from '../constants/Strings';
-import Styles from '../styles/Styles';
+import Strings from '../constants/strings';
+import Styles from '../styles/styles';
 
 export default class Map extends React.Component {
 

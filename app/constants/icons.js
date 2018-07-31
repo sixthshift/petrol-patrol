@@ -2,7 +2,7 @@ import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Colours from './Colours';
+import Colours from './colours';
 
 const defaultSize = 25;
 const defaultColor = Colours.primary;
