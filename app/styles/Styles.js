@@ -6,4 +6,7 @@ export default StyleSheet.create({
         flex: 1,
         marginTop: Constants.statusBarHeight
     },
+    map: {
+        flex: 1,
+    }
 });
