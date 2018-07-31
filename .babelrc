@@ -5,13 +5,7 @@
   "env": {
     "development": {
       "plugins": [
-        "transform-react-jsx-source",
-        "react-native-paper/babel"
-      ]
-    },
-    "production": {
-      "plugins": [
-        "react-native-paper/babel"
+        "transform-react-jsx-source"
       ]
     }
   }
