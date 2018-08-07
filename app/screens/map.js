@@ -8,8 +8,8 @@ import Styles from '../styles/styles';
 
 export default class Map extends React.Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             viewport: {
                 latitude: -33.8688,
@@ -19,6 +19,20 @@ export default class Map extends React.Component {
             }
         };
     }
+
+    static navigationOptions({ navigation }) {
+        return {
+            header: (
+                <Header
+                    navigation={navigation}
+                    showBack={false}
+                    showBrands={true}
+                    showFueltypes={true}
+                    showSearch={true}
+                />
+            )
+        };
+    };
 
     componentDidMount() {
         this._getLocationAsync();
@@ -47,7 +61,6 @@ export default class Map extends React.Component {
     render() {
         return (
             <View style={Styles.container}>
-                <Header />
                 <MapView
                     loadingEnabled={true}
                     onRegionChangeComplete={this.updateViewport}
@@ -62,5 +75,4 @@ export default class Map extends React.Component {
             </View>
         )
     }
-
 }

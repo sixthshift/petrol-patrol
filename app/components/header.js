@@ -1,13 +1,73 @@
-import { Font, AppLoading } from "expo";
-import { Button, Header, Input, Icon, Item, Left, Right, Spinner, Text, Title } from 'native-base';
+import { Font } from "expo";
+import { Button, Header, Input, Icon, Item, Left, Right } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
 
-export default class SearchHeader extends React.Component {
+const BackButton = (props) => {
+    if (props.showBack) {
+        return (
+            <Button transparent onPress={() => { props.navigation.goBack() }}>
+                <Icon name='arrow-back' />
+            </Button>
+        );
+    } else {
+        return null;
+    }
+}
+
+const BrandsButton = (props) => {
+    if (props.showBrands) {
+        return (
+            <Button transparent onPress={() => { props.navigation.navigate('brand') }}>
+                <Icon type='MaterialIcons' name='local-gas-station' />
+            </Button>
+        );
+    } else {
+        return null;
+    }
+}
+
+const FueltypesButton = (props) => {
+    if (props.showFueltypes) {
+        return (
+            <Button transparent onPress={() => { props.navigation.navigate('fueltype') }}>
+                <Icon type='Entypo' name='drop' />
+            </Button>
+        );
+    } else {
+        return null;
+    }
+}
+
+const SearchBar = (props) => {
+    if (props.showSearch) {
+        return (
+            <Header searchBar rounded>
+                <Item>
+                    <Icon name='search' />
+                    <Input placeholder='Search' />
+                </Item>
+            </Header>
+        );
+    } else {
+        return null;
+    }
+}
+
+class SearchHeader extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = { ready: false };
+    }
+
+    static defaultProps() {
+        return {
+            showBack: true,
+            showBrands: false,
+            showFueltypes: false,
+            showSearch: false,
+        };
     }
 
     async componentWillMount() {
@@ -23,22 +83,18 @@ export default class SearchHeader extends React.Component {
         return (
             <View>
                 <Header>
+                    <Left>
+                        <BackButton {...this.props} />
+                    </Left>
                     <Right>
-                        <Button transparent>
-                            <Icon type="MaterialIcons" name="local-gas-station" />
-                        </Button>
-                        <Button transparent>
-                            <Icon type="Entypo" name="drop" />
-                        </Button>
+                        <BrandsButton {...this.props} />
+                        <FueltypesButton {...this.props} />
                     </Right>
                 </Header>
-                <Header searchBar rounded>
-                    <Item>
-                        <Icon name="search" />
-                        <Input placeholder="Search" />
-                    </Item>
-                </Header>
+                <SearchBar {...this.props} />
             </View>
         );
     }
 }
+
+export default SearchHeader;
