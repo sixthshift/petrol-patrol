@@ -1,16 +1,19 @@
 import firebase from 'firebase';
-import Geofire from 'geofire';
-import { has, sortBy } from 'lodash';
+import { has, sortBy, values } from 'lodash';
 
 import constants from './constants';
 
 export default class FireDB {
 
     constructor(credentials) {
-        if (validCredentials(credentials)) {
+        if (FireDB.validCredentials(credentials)) {
             firebase.initializeApp(credentials);
+            this.auth = firebase.auth();
+            if (!this.auth.currentUser) {
+                this.auth.signInAnonymously();
+            }
             this.database = firebase.database();
-            this.geofire = new Geofire(this.database.ref(constants.table.stations));
+            // this.geofire = new Geofire(this.database.ref(constants.table.stations));
         } else {
             throw new TypeError('Invalid credentials');
         }
@@ -38,7 +41,7 @@ export default class FireDB {
     async fetchBrands() {
         const snapshot = await this.database.ref(constants.table.brands).once('value');
         const brands = snapshot.val();
-        return sortBy(brands, 'order');
+        return values(sortBy(brands, 'order'));
     }
 
     /**
@@ -46,10 +49,10 @@ export default class FireDB {
      * 
      * @returns {[object]} The list of fueltypes
      */
-    async fetchFuelTypes() {
+    async fetchFueltypes() {
         const snapshot = await this.database.ref(constants.table.fueltypes).once('value');
         const fueltypes = snapshot.val();
-        return sortBy(fueltypes, 'order');
+        return values(sortBy(fueltypes, 'order'));
     }
 
     /**
@@ -74,10 +77,10 @@ export default class FireDB {
      */
     async fetchStationsByProximity(latitude, longitude, radius) {
         const snapshot = [];
-        const geoQuery = this.geofire.query({
-            center: [latitude, longitude],
-            radius: radius,
-        });
+        // const geoQuery = this.geofire.query({
+        //     center: [latitude, longitude],
+        //     radius: radius,
+        // });
 
         // Register callback for each key within the geoQuery
         // Each callback result collects into the resultset
