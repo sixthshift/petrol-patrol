@@ -1,4 +1,4 @@
-import { UI_INITIALISE } from "../actions/ui";
+import { UI_INITIALISE, SET_FUELTYPE } from "../actions/ui";
 
 const initialState = {
     brands: [],
@@ -17,7 +17,9 @@ function setBrands(state, action) {
 function setFueltype(state, action) {
     switch (action.type) {
         case UI_INITIALISE:
-            return action.payload.fueltype;
+            return action.payload.fueltype.code;
+        case SET_FUELTYPE:
+            return action.payload;
         default:
             return state;
     }
