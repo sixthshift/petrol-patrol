@@ -1,7 +1,7 @@
 import { createStackNavigator } from 'react-navigation';
 
-import MapScreen from '../screens/map';
-import FueltypeScreen from '../screens/fueltype';
+import MapScreen from '../components/map/map';
+import FueltypeScreen from '../components/fueltype/fueltype';
 
 export default createStackNavigator(
     {

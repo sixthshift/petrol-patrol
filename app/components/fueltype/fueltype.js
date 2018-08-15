@@ -3,9 +3,9 @@ import { Content, List } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import FueltypeListItem from '../components/fueltypeListItem';
-import Header from '../components/header';
-import styles from '../styles/styles';
+import ListItem from './listItem';
+import Header from '../header';
+import styles from '../../styles/styles';
 
 class Fueltype extends React.Component {
     static navigationOptions({ navigation }) {
@@ -29,7 +29,7 @@ class Fueltype extends React.Component {
         return (
             <Content style={styles.container}>
                 <List>
-                    {activeList.map((listItem) => (<FueltypeListItem key={listItem.code} listItem={listItem} />))}
+                    {activeList.map((listItem) => (<ListItem key={listItem.code} listItem={listItem} />))}
                 </List>
             </Content>
         );

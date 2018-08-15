@@ -2,9 +2,9 @@ import { Location, MapView, Permissions } from 'expo';
 import React from 'react';
 import { View } from 'react-native';
 
-import Header from '../components/header';
-import Strings from '../constants/strings';
-import Styles from '../styles/styles';
+import Header from '../header';
+import Strings from '../../constants/strings';
+import Styles from '../../styles/styles';
 
 export default class Map extends React.Component {
 
