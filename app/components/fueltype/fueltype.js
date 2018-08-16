@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import ListItem from './listItem';
 import Header from '../header';
-import styles from '../../styles/styles';
+import Styles from '../../styles/styles';
 
 class Fueltype extends React.Component {
     static navigationOptions({ navigation }) {
@@ -27,7 +27,7 @@ class Fueltype extends React.Component {
     render() {
         const activeList = this.props.list.filter(Fueltype.isActive);
         return (
-            <Content style={styles.container}>
+            <Content style={Styles.container}>
                 <List>
                     {activeList.map((listItem) => (<ListItem key={listItem.code} listItem={listItem} />))}
                 </List>
