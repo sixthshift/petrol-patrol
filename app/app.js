@@ -3,21 +3,16 @@ import { Container } from 'native-base';
 import React from 'react';
 import { Provider as StoreProvider } from 'react-redux';
 
-import { initialiseDB } from './actions/db';
-import { initialiseUI } from './actions/ui';;
+import { fetchBrands, fetchFueltypes } from './actions';
 import StackNavigator from './navigation/stack';
-import Store from './store/index';
+import Store from './store';
 import Styles from './styles/styles';
 
 class App extends React.Component {
 
     componentDidMount() {
-        Store.dispatch(initialiseDB());
-        const ui = {
-            brands: Store.getState().db.brands,
-            fueltype: first(Store.getState().db.fueltypes)
-        };
-        Store.dispatch(initialiseUI(ui));
+        Store.dispatch(fetchBrands());
+        Store.dispatch(fetchFueltypes());
     }
 
     render() {

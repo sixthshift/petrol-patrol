@@ -2,13 +2,13 @@ import { Body, ListItem, Text } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { setFueltype } from '../../actions/ui';
+import { selectFueltype } from '../../actions/ui';
 
 class FueltypeListItem extends React.Component {
     render() {
         const selected = this.props.listItem.code == this.props.selectedItem;
         const onPress = () => {
-            this.props.setFueltype(this.props.listItem.code);
+            this.props.selectFueltype(this.props.listItem.code);
         };
         return (
             <ListItem
@@ -32,8 +32,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setFueltype: (fueltype) => {
-            dispatch(setFueltype(fueltype));
+        selectFueltype: (fueltype) => {
+            dispatch(selectFueltype(fueltype));
         }
     };
 };

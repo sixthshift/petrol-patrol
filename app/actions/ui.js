@@ -1,16 +1,7 @@
-export const SET_FUELTYPE = 'SET_FUELTYPE';
-export const UI_INITIALISE = 'UI_INITIALISE';
+import { createAction } from 'redux-actions';
 
-export function initialiseUI(initialPayload) {
-    return {
-        type: UI_INITIALISE,
-        payload: initialPayload
-    };
-}
+export const FUELTYPE_SELECT = 'FUELTYPE_SELECT';
+export const selectFueltype = createAction(FUELTYPE_SELECT);
 
-export function setFueltype(fueltype) {
-    return {
-        type: SET_FUELTYPE,
-        payload: fueltype
-    };
-};
+export const BRANDS_SELECT = 'BRANDS_SELECT';
+export const selectBrands = createAction(BRANDS_SELECT);
