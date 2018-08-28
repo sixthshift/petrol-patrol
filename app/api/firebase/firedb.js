@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 import { has, sortBy, values } from 'lodash';
 
-import constants from './constants';
+import { table } from './constants';
 
 export default class FireDB {
 
@@ -39,20 +39,31 @@ export default class FireDB {
      * @returns {[object]} The list of brands
      */
     async fetchBrands() {
-        const snapshot = await this.database.ref(constants.table.brands).once('value');
+        const snapshot = await this.database.ref('brandstest').once('value');
         const brands = snapshot.val();
         return values(sortBy(brands, 'order'));
     }
 
     /**
-     * Fetches the list of fueltypes store in the Firebase Database
+     * Fetches the list of fueltypes stored in the Firebase Database
      * 
      * @returns {[object]} The list of fueltypes
      */
     async fetchFueltypes() {
-        const snapshot = await this.database.ref(constants.table.fueltypes).once('value');
+        const snapshot = await this.database.ref('fueltypestest').once('value');
         const fueltypes = snapshot.val();
         return values(sortBy(fueltypes, 'order'));
+    }
+
+    /**
+     * Fetches the list of hashes for the collections in the Firebase Database
+     * 
+     * @returns {[object]} The list of hash values associated with collections in the Firebase Database
+     */
+    async fetchHash() {
+        const snapshot = await this.database.ref('hash').once('value');
+        const hash = snapshot.val();
+        return hash;
     }
 
     /**
@@ -62,7 +73,7 @@ export default class FireDB {
      * @returns {object} The station object
      */
     async fetchStation(id) {
-        const snapshot = await this.database.ref(constants.table.stations).ref(id).once('value');
+        const snapshot = await this.database.ref('stationstest').ref(id).once('value');
         const station = snapshot.val();
         return station;
     }
@@ -102,7 +113,7 @@ export default class FireDB {
      * @returns {[object]} A list of prices associated with the given station
      */
     async fetchPricesForStation(id) {
-        const snapshot = await this.database.ref(constants.table.prices).orderByChild('id').equalTo(id);
+        const snapshot = await this.database.ref('pricestest').orderByChild('id').equalTo(id);
         const prices = snapshot.val();
         return prices;
     }

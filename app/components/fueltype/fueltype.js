@@ -37,7 +37,6 @@ class Fueltype extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         list: state.db.fueltypes
     };

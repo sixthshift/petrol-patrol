@@ -8,6 +8,7 @@
     "expo": "^28.0.0",
     "firebase": "^5.2.0",
     "native-base": "^2.7.2",
+    "object-hash": "^1.3.0",
     "react": "16.3.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-28.0.0.tar.gz",
     "react-navigation": "^2.0.1",
@@ -19,7 +20,7 @@
   },
   "scripts": {
     "react-devtool": "react-devtools",
-    "redux-devtool": "remotedev"
+    "remotedev": "remotedev --hostname=localhost --port=8000"
   },
   "devDependencies": {
     "react-devtools": "^3.2.3",
