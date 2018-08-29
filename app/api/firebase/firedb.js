@@ -1,8 +1,6 @@
 import firebase from 'firebase';
 import { has, sortBy, values } from 'lodash';
 
-import { table } from './constants';
-
 export default class FireDB {
 
     constructor(credentials) {

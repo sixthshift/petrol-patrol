@@ -1,10 +1,7 @@
 import hash from 'object-hash'
 import { createAction } from 'redux-actions';
 
-import FireDB from '../api/firebase/firedb';
-import FirebaseCredentials from '../api/firebase/credentials';
-
-const firedb = new FireDB(FirebaseCredentials);
+import firedb from '../api/firebase';
 
 export const BRANDS_FETCH = 'BRANDS_FETCH';
 export const fetchBrandsAction = createAction(BRANDS_FETCH);
@@ -37,29 +34,6 @@ export function fetchFueltypes() {
             })
             .catch((error) => {
                 dispatch(fetchFueltypesAction(error, { success: false }))
-            });
-    };
-}
-
-export function synchronise(brands, fueltypes) {
-    return (dispatch) => {
-        dispatch(synchroniseAction());
-        firedb.fetchHash()
-            .then((response) => {
-                const brandsHash = hash(brands, { unorderedArrays: true });
-                const fetchedBrandsHash = response.brands.hash;
-                if (brandsHash != fetchedBrandsHash) {
-                    dispatch(fetchBrands());
-                }
-                const fetchedFueltypeshash = response.fueltypes.hash;
-                const fueltypesHash = hash(fueltypes, { unorderedArrays: true });
-                if (fueltypesHash != fetchedFueltypeshash) {
-                    dispatch(fetchFueltypes());
-                }
-                dispatch(synchroniseAction(null, { success: true }));
-            })
-            .catch((error) => {
-                dispatch(synchroniseAction(error, { success: false }))
             });
     };
 }
