@@ -6,6 +6,6 @@ import fueltypeReducer from './fueltypes';
 export default combineReducers(
     {
         brands: brandsReducer,
-        fueltypes: fueltypeReducer,
+        fueltype: fueltypeReducer,
     }
 );
