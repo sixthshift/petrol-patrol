@@ -1,4 +1,4 @@
-import { first } from 'lodash';
+import { first, map } from 'lodash';
 import { createAction } from 'redux-actions';
 
 import firedb from '../api/firebase';
@@ -10,19 +10,16 @@ export const fetchBrandsAction = createAction(BRANDS_FETCH);
 export const FUELTYPES_FETCH = 'FUELTYPES_FETCH';
 export const fetchFueltypesAction = createAction(FUELTYPES_FETCH);
 
-export const SYNCHRONISE = 'SYNCHRONISE';
-export const synchroniseAction = createAction(SYNCHRONISE);
-
 export function fetchBrands() {
     return (dispatch) => {
         dispatch(fetchBrandsAction());
         firedb.fetchBrands()
             .then((response) => {
                 dispatch(fetchBrandsAction(response, { success: true }));
-                dispatch(selectBrandsAction(response));
+                dispatch(selectBrandsAction(map(response, 'name')));
             })
             .catch((error) => {
-                dispatch(fetchBrandsAction(error, { success: false }))
+                dispatch(fetchBrandsAction(error, { success: false }));
             });
     };
 }
@@ -33,10 +30,10 @@ export function fetchFueltypes() {
         firedb.fetchFueltypes()
             .then((response) => {
                 dispatch(fetchFueltypesAction(response, { success: true }));
-                dispatch(selectFueltypeAction(first(response).code));
+                dispatch(selectFueltypeAction(first(map(response, 'code'))));
             })
             .catch((error) => {
-                dispatch(fetchFueltypesAction(error, { success: false }))
+                dispatch(fetchFueltypesAction(error, { success: false }));
             });
     };
 }

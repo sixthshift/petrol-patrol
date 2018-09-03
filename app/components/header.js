@@ -18,7 +18,7 @@ const BackButton = (props) => {
 const BrandsButton = (props) => {
     if (props.showBrands) {
         return (
-            <Button transparent onPress={() => { props.navigation.navigate('brand') }}>
+            <Button transparent onPress={() => { props.navigation.navigate('brands') }}>
                 <Icon type='MaterialIcons' name='local-gas-station' />
             </Button>
         );
@@ -30,7 +30,7 @@ const BrandsButton = (props) => {
 const FueltypesButton = (props) => {
     if (props.showFueltypes) {
         return (
-            <Button transparent onPress={() => { props.navigation.navigate('fueltype') }}>
+            <Button transparent onPress={() => { props.navigation.navigate('fueltypes') }}>
                 <Icon type='Entypo' name='drop' />
             </Button>
         );
