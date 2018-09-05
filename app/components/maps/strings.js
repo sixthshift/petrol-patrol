@@ -1,0 +1,1 @@
+export const noLocationPermissions = "Location permissions not granted";

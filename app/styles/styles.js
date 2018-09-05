@@ -11,8 +11,5 @@ export default StyleSheet.create({
         backgroundColor: Colours.primary,
         flex: 1,
         paddingTop: Constants.statusBarHeight,
-    },
-    map: {
-        flex: 1,
     }
 });
