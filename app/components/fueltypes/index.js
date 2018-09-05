@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Header from '../header';
 import Item from './item';
 import styles from '../../styles/styles';
-import { isActive } from '../util';
+import { isActive } from '../utils';
 
 class List extends React.Component {
     static navigationOptions({ navigation }) {
