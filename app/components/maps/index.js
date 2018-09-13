@@ -3,6 +3,7 @@ import React from 'react';
 
 import { defaultRegion } from './constants';
 import Header from '../header';
+import Marker from './marker';
 import { noLocationPermissions } from './strings';
 import styles from './styles';
 
@@ -65,7 +66,14 @@ export default class Map extends React.Component {
                 showsMyLocationButton={true}
                 showsUserLocation={true}
                 style={styles.map}
-            />
+            >
+                <Marker
+                    coordinate={{ latitude: this.state.region.latitude, longitude: this.state.region.longitude }}
+                    title={'Marker!'}
+                    colour={'#FF0000'}
+                    text={'139.9'}
+                />
+            </MapView>
         )
     }
 }
