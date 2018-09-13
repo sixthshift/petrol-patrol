@@ -1,4 +1,6 @@
+import { table } from './constants';
 import firebase from 'firebase';
+import Geofire, { distance } from 'geofire';
 import { has, sortBy, values } from 'lodash';
 
 export default class FireDB {
@@ -11,7 +13,7 @@ export default class FireDB {
                 this.auth.signInAnonymously();
             }
             this.database = firebase.database();
-            // this.geofire = new Geofire(this.database.ref(constants.table.stations));
+            this.geofire = new Geofire(this.database.ref(table.stations));
         } else {
             throw new TypeError('Invalid credentials');
         }
@@ -74,6 +76,41 @@ export default class FireDB {
         const snapshot = await this.database.ref('stationstest').ref(id).once('value');
         const station = snapshot.val();
         return station;
+    }
+
+    /**
+     * Creates a geoquery object initialised with the given region
+     * 
+     * @param {object} region The current location 
+     * @returns {object} The GeoQuery object
+     */
+    createGeoQuery(region) {
+        const latitude = region.latitude;
+        const longitude = region.longitude;
+        const radius = distance(
+            [latitude, longitude],
+            [latitude + region.latitudeDelta, longitude + region.longitudeDelta]
+        );
+        const geoQuery = this.geofire.query({
+            center: [latitude, longitude],
+            radius: radius
+        });
+        return geoQuery;
+    }
+
+    updateGeoQuery(geoQuery, region) {
+        const latitude = region.latitude;
+        const longitude = region.longitude;
+        if (region.latitudeDelta !== undefined && region.longitudeDelta !== undefined) {
+            const radius = distance(
+                [latitude, longitude],
+                [latitude + region.latitudeDelta, longitude + region.longitudeDelta]
+            );
+            geoQuery.updateCriteria({
+                center: [latitude, longitude],
+                radius: radius
+            });
+        }
     }
 
     /**
