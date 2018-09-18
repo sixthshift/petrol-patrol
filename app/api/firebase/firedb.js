@@ -2,6 +2,7 @@ import { table } from './constants';
 import firebase from 'firebase';
 import Geofire, { distance } from 'geofire';
 import { has, sortBy, values } from 'lodash';
+import hash from 'object-hash';
 
 export default class FireDB {
 
@@ -39,7 +40,7 @@ export default class FireDB {
      * @returns {[object]} The list of brands
      */
     async fetchBrands() {
-        const snapshot = await this.database.ref('brandstest').once('value');
+        const snapshot = await this.database.ref(table.brands).once('value');
         const brands = snapshot.val();
         return values(sortBy(brands, 'order'));
     }
@@ -50,7 +51,7 @@ export default class FireDB {
      * @returns {[object]} The list of fueltypes
      */
     async fetchFueltypes() {
-        const snapshot = await this.database.ref('fueltypestest').once('value');
+        const snapshot = await this.database.ref(table.fueltypes).once('value');
         const fueltypes = snapshot.val();
         return values(sortBy(fueltypes, 'order'));
     }
@@ -61,7 +62,7 @@ export default class FireDB {
      * @returns {[object]} The list of hash values associated with collections in the Firebase Database
      */
     async fetchHash() {
-        const snapshot = await this.database.ref('hash').once('value');
+        const snapshot = await this.database.ref(table.hash).once('value');
         const hash = snapshot.val();
         return hash;
     }
@@ -73,7 +74,8 @@ export default class FireDB {
      * @returns {object} The station object
      */
     async fetchStation(id) {
-        const snapshot = await this.database.ref('stationstest').ref(id).once('value');
+        const path = table.stations + '/' + id;
+        const snapshot = await this.database.ref(path).once('value');
         const station = snapshot.val();
         return station;
     }
@@ -98,6 +100,12 @@ export default class FireDB {
         return geoQuery;
     }
 
+    /**
+     * Updates a geoquery with the new region
+     * 
+     * @param {object} geoQuery The geoquery to be updated
+     * @param {object} region The region to update the geoquery to
+     */
     updateGeoQuery(geoQuery, region) {
         const latitude = region.latitude;
         const longitude = region.longitude;
@@ -114,43 +122,21 @@ export default class FireDB {
     }
 
     /**
-     * Fetches a list of stations within proximity to the given latitude, longitude and radius
-     * 
-     * @param {number} latitude The latitude of the query point
-     * @param {number} longitude The longitude of the query point
-     * @param {number} radius The radius in km of the query point
-     * @returns {[object]} A list of all of the stations that satisfy the geo-query
-     */
-    async fetchStationsByProximity(latitude, longitude, radius) {
-        const snapshot = [];
-        // const geoQuery = this.geofire.query({
-        //     center: [latitude, longitude],
-        //     radius: radius,
-        // });
-
-        // Register callback for each key within the geoQuery
-        // Each callback result collects into the resultset
-        geoQuery.on('key_entered', (key, location, distance) => {
-            snapshot.push(key);
-        });
-
-        // The ready callback will fire once all of the key_entered callbacks have executed
-        return await geoQuery.on('ready').then(() => {
-            geoQuery.cancel();
-            return snapshot;
-        });
-    }
-
-    /**
      * Fetches a list of the current prices for a given station
      * 
      * @param {number} id The id of the station
      * @returns {[object]} A list of prices associated with the given station
      */
-    async fetchPricesForStation(id) {
-        const snapshot = await this.database.ref('pricestest').orderByChild('id').equalTo(id);
-        const prices = snapshot.val();
-        return prices;
+    async fetchPricesByFueltypeAndStation(id, selectedFueltype) {
+        const key = {
+            id: id,
+            fueltype: selectedFueltype,
+        };
+        const hashID = hash(key, { unorderedArrays: true });
+        const path = table.prices + '/' + hashID;
+        const snapshot = this.database.ref(path).once('value');
+        const price = snapshot.val();
+        return price;
     }
 
     /**
@@ -163,5 +149,4 @@ export default class FireDB {
     async fetchPriceHistoryForStation(id, fueltype) {
 
     }
-
 }
