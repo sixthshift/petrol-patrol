@@ -1,5 +1,6 @@
 import { Location, MapView, Permissions } from 'expo';
 import React from 'react';
+import { connect } from 'react-redux';
 
 import { defaultRegion } from './constants';
 import firedb from '../../api/firebase';
@@ -8,7 +9,7 @@ import Marker from './marker';
 import { noLocationPermissions } from './strings';
 import styles from './styles';
 
-export default class Map extends React.Component {
+class Map extends React.Component {
 
     constructor(props) {
         super(props);
@@ -89,3 +90,12 @@ export default class Map extends React.Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        selectedBrands: state.ui.brands,
+        selectedFueltypes: state.ui.fueltype,
+    };
+};
+
+export default connect(mapStateToProps)(Map);
