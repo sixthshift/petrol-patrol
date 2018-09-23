@@ -35,6 +35,26 @@ export default class FireDB {
     }
 
     /**
+     * Creates a geoquery object initialised with the given region
+     * 
+     * @param {object} region The current location 
+     * @returns {object} The GeoQuery object
+     */
+    createGeoQuery(region) {
+        const latitude = region.latitude;
+        const longitude = region.longitude;
+        const radius = distance(
+            [latitude, longitude],
+            [latitude + region.latitudeDelta, longitude + region.longitudeDelta]
+        );
+        const geoQuery = this.geofire.query({
+            center: [latitude, longitude],
+            radius: radius
+        });
+        return geoQuery;
+    }
+
+    /**
      * Fetches the list of brands stored in the Firebase Database
      * 
      * @returns {[object]} The list of brands
@@ -68,60 +88,6 @@ export default class FireDB {
     }
 
     /**
-     * Fetches a station object by its id from the Firebase Database
-     * 
-     * @param {number} id The id of the station
-     * @returns {object} The station object
-     */
-    async fetchStation(id) {
-        const path = table.stations + '/' + id;
-        const snapshot = await this.database.ref(path).once('value');
-        const station = snapshot.val();
-        return station;
-    }
-
-    /**
-     * Creates a geoquery object initialised with the given region
-     * 
-     * @param {object} region The current location 
-     * @returns {object} The GeoQuery object
-     */
-    createGeoQuery(region) {
-        const latitude = region.latitude;
-        const longitude = region.longitude;
-        const radius = distance(
-            [latitude, longitude],
-            [latitude + region.latitudeDelta, longitude + region.longitudeDelta]
-        );
-        const geoQuery = this.geofire.query({
-            center: [latitude, longitude],
-            radius: radius
-        });
-        return geoQuery;
-    }
-
-    /**
-     * Updates a geoquery with the new region
-     * 
-     * @param {object} geoQuery The geoquery to be updated
-     * @param {object} region The region to update the geoquery to
-     */
-    updateGeoQuery(geoQuery, region) {
-        const latitude = region.latitude;
-        const longitude = region.longitude;
-        if (region.latitudeDelta !== undefined && region.longitudeDelta !== undefined) {
-            const radius = distance(
-                [latitude, longitude],
-                [latitude + region.latitudeDelta, longitude + region.longitudeDelta]
-            );
-            geoQuery.updateCriteria({
-                center: [latitude, longitude],
-                radius: radius
-            });
-        }
-    }
-
-    /**
      * Fetches a list of the current prices for a given station
      * 
      * @param {number} id The id of the station
@@ -148,5 +114,50 @@ export default class FireDB {
      */
     async fetchPriceHistoryForStation(id, fueltype) {
 
+    }
+
+    /**
+     * Fetches a station object by its id from the Firebase Database
+     * 
+     * @param {number} id The id of the station
+     * @returns {object} The station object
+     */
+    async fetchStation(id) {
+        const path = table.stations + '/' + id;
+        const snapshot = await this.database.ref(path).once('value');
+        const station = snapshot.val();
+        return station;
+    }
+
+    /**
+     * Fetches the list of stations stored in the Firebase Database
+     * 
+     * @returns {[object]} The list of stations
+     */
+    async fetchStations() {
+        const snapshot = await this.database.ref(table.stations).once('value');
+        const stations = snapshot.val();
+        return values(sortBy(stations, 'id'));
+    }
+
+    /**
+     * Updates a geoquery with the new region
+     * 
+     * @param {object} geoQuery The geoquery to be updated
+     * @param {object} region The region to update the geoquery to
+     */
+    updateGeoQuery(geoQuery, region) {
+        const latitude = region.latitude;
+        const longitude = region.longitude;
+        if (region.latitudeDelta !== undefined && region.longitudeDelta !== undefined) {
+            const radius = distance(
+                [latitude, longitude],
+                [latitude + region.latitudeDelta, longitude + region.longitudeDelta]
+            );
+            geoQuery.updateCriteria({
+                center: [latitude, longitude],
+                radius: radius
+            });
+        }
     }
 }

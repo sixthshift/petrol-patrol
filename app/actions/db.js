@@ -10,6 +10,9 @@ export const fetchBrandsAction = createAction(BRANDS_FETCH);
 export const FUELTYPES_FETCH = 'FUELTYPES_FETCH';
 export const fetchFueltypesAction = createAction(FUELTYPES_FETCH);
 
+export const STATIONS_FETCH = 'STATIONS_FETCH';
+export const fetchStationsAction = createAction(STATIONS_FETCH);
+
 export function fetchBrands() {
     return (dispatch) => {
         dispatch(fetchBrandsAction());
@@ -36,4 +39,17 @@ export function fetchFueltypes() {
                 dispatch(fetchFueltypesAction(error, { success: false }));
             });
     };
+}
+
+export function fetchStations() {
+    return (dispatch) => {
+        dispatch(fetchStationsAction());
+        firedb.fetchStations()
+            .then((response) => {
+                dispatch(fetchStationsAction(response, { success: true }));
+            })
+            .catch((error) => {
+                dispatch(fetchStationsAction(error, { success: false }));
+            });
+    }
 }
