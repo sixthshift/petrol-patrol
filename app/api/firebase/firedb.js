@@ -135,7 +135,7 @@ export default class FireDB {
      * @returns {[object]} The list of stations
      */
     async fetchStations() {
-        const snapshot = await this.database.ref(table.stations).once('value');
+        const snapshot = await this.database.ref(table.stations).orderByChild('active').equalTo(true).once('value');
         const stations = snapshot.val();
         return values(sortBy(stations, 'id'));
     }
