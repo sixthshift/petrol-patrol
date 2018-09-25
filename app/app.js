@@ -4,7 +4,7 @@ import { Provider as StoreProvider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 
 import StackNavigator from './navigation/stack';
-import { store, persistor } from './store';
+import store, { persistor } from './store';
 import Styles from './styles/styles';
 
 class App extends React.Component {
