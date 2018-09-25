@@ -1,9 +1,19 @@
-const initialState = {
-    latitude: "",
-    longitude: "",
-    radius: "",
-};
+import { has } from 'lodash';
+import { handleAction } from 'redux-actions';
 
-export default (state = initialState, action) => {
-    return state;
-};
+import { LOCATION_SET } from '../actions';
+import defaultRegion from '../components/maps/defaultRegion';
+
+const defaultState = defaultRegion;
+
+export default handleAction(
+    LOCATION_SET,
+    (state, action) => {
+        if (has(action, 'payload')) {
+            return action.payload;
+        } else {
+            return state;
+        }
+    },
+    defaultState
+);

@@ -2,7 +2,7 @@ import { Body, ListItem, Text } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { selectFueltypeAction } from '../../actions/ui';
+import { selectFueltypeAction } from '../../actions';
 
 class Item extends React.Component {
     render() {

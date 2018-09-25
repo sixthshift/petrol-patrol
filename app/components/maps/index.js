@@ -2,8 +2,8 @@ import { Location, MapView, Permissions } from 'expo';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { defaultRegion } from './constants';
-import firedb from '../../api/firebase';
+import { setLocationAction } from '../../actions';
+import defaultRegion from './defaultRegion';
 import Header from '../header';
 import Marker from './marker';
 import { noLocationPermissions } from './strings';
@@ -14,22 +14,12 @@ class Map extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            region: defaultRegion,
-            stations: [],
+            region: props.location,
         };
-        this.geoQuery = firedb.createGeoQuery(this.state.region);
     }
 
     componentDidMount() {
         this._getLocationAsync();
-        this.geoQuery.on('key_entered', (key, location, distance) => {
-            console.log(key + ' ' + location + ' ' + distance);
-        });
-        firedb.updateGeoQuery(this.geoQuery, this.state.region);
-    }
-
-    componentWillUnmount() {
-        this.geoQuery.cancel();
     }
 
     _getLocationAsync = async () => {
@@ -50,7 +40,7 @@ class Map extends React.Component {
 
     _onRegionChange = (region) => {
         this.setState({ ...this.state, region });
-        firedb.updateGeoQuery(this.geoQuery, region);
+        this.props.setLocation(region);
     };
 
     static navigationOptions({ navigation }) {
@@ -80,12 +70,12 @@ class Map extends React.Component {
                 showsUserLocation={true}
                 style={styles.map}
             >
-                <Marker
-                    coordinate={{ latitude: this.state.region.latitude, longitude: this.state.region.longitude }}
-                    title={'Marker!'}
-                    colour={'#FF0000'}
-                    text={'139.9'}
-                />
+                {this.props.stations.map((station) => (
+                    <Marker
+                        key={station.id}
+                        station={station}
+                    />
+                ))}
             </MapView>
         )
     }
@@ -93,9 +83,17 @@ class Map extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        selectedBrands: state.ui.brands,
-        selectedFueltypes: state.ui.fueltype,
+        stations: state.db.stations,
+        location: state.location,
     };
 };
 
-export default connect(mapStateToProps)(Map);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setLocation: (location) => {
+            dispatch(setLocationAction(location))
+        }
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Map);

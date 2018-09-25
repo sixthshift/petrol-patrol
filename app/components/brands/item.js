@@ -2,7 +2,7 @@ import { includes } from 'lodash';
 import { Body, ListItem, Text, CheckBox } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
-import { selectBrandsAction } from '../../actions/ui';
+import { selectBrandsAction } from '../../actions';
 
 class Item extends React.Component {
     render() {
