@@ -3,20 +3,53 @@ import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 
+import firedb from '../../api/firebase';
+
+const markerHeight = 36;
+const markerWidth = 48
+
 class Marker extends React.Component {
 
     constructor(props) {
         super(props);
         this.markerProps = {
             coordinate: {
-                latitude: this.props.station.l[0],
-                longitude: this.props.station.l[1],
+                latitude: props.station.location.latitude,
+                longitude: props.station.location.longitude,
             }
-        }
+        };
         this.state = {
             colour: 'grey',
-            text: 'N/A'
+            price: 'N/A',
         };
+    }
+
+    componentDidMount() {
+        this.update();
+    }
+
+    componentDidUpdate() {
+        this.update();
+    }
+
+    update() {
+        if (this.withinRegion()) {
+            firedb.fetchPricesByFueltypeAndStation(this.props.station.id, this.props.selectedFueltype)
+                .then((response) => {
+                    const newState = {
+                        price: response,
+                    };
+                    this.setState(newState);
+                });
+        }
+    }
+
+    withinRegion() {
+        const withinLatitude = this.props.station.latitude < this.props.location.latitude - this.props.location.latitudeDelta
+            && this.props.station.latitude > this.props.location.latitude + this.props.location.latitudeDelta;
+        const withinLongitude = this.props.station.longitude < this.props.location.longitude - this.props.location.longitudeDelta
+            && this.props.station.longitude > this.props.location.longitude + this.props.location.longitudeDelta;
+        return withinLatitude && withinLongitude;
     }
 
     render() {
@@ -31,8 +64,7 @@ class Marker extends React.Component {
                         fill="white"
                         stroke={this.state.colour}
                         strokeWidth="2"
-                    >
-                    </Svg.Path>
+                    />
                     <Svg.Text
                         fill="black"
                         fontSize="10"
@@ -40,7 +72,7 @@ class Marker extends React.Component {
                         x="24"
                         y="18"
                         textAnchor="middle"
-                    >{this.state.text}</Svg.Text>
+                    >{this.state.price}</Svg.Text>
                 </Svg>
             </MapView.Marker>
         );
@@ -51,6 +83,7 @@ const mapStateToProps = (state) => {
     return {
         selectedBrands: state.ui.brands,
         selectedFueltype: state.ui.fueltype,
+        location: state.location
     };
 };
 

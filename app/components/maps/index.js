@@ -1,11 +1,12 @@
-import { Location, MapView, Permissions } from 'expo';
+import { Location, Permissions } from 'expo';
 import React from 'react';
+import ClusteredMapView from 'react-native-maps-super-cluster';
 import { connect } from 'react-redux';
 
 import { setLocationAction } from '../../actions';
-import defaultRegion from './defaultRegion';
 import Header from '../header';
 import Marker from './marker';
+import Cluster from './cluster';
 import { noLocationPermissions } from './strings';
 import styles from './styles';
 
@@ -59,25 +60,36 @@ class Map extends React.Component {
 
     render() {
         return (
-            <MapView
+            <ClusteredMapView
+                data={this.props.stations}
                 loadingEnabled={true}
                 onRegionChangeComplete={this._onRegionChange}
                 pitchEnabled={false}
                 region={this.state.region}
+                renderMarker={this.renderMarker}
+                renderCluster={this.renderCluster}
                 showsBuildings={false}
                 showsTraffic={true}
                 showsMyLocationButton={true}
                 showsUserLocation={true}
                 style={styles.map}
             >
-                {this.props.stations.map((station) => (
-                    <Marker
-                        key={station.id}
-                        station={station}
-                    />
-                ))}
-            </MapView>
-        )
+            </ClusteredMapView>
+        );
+    }
+
+    renderCluster(cluster, onPress) {
+        return <Cluster
+            cluster={cluster}
+            onPress={onPress}
+        />;
+    }
+
+    renderMarker(station) {
+        return <Marker
+            key={station.id}
+            station={station}
+        />;
     }
 }
 
