@@ -1,9 +1,10 @@
 import { Location, Permissions } from 'expo';
+import { isEqual, omit } from 'lodash';
 import React from 'react';
 import ClusteredMapView from 'react-native-maps-super-cluster';
 import { connect } from 'react-redux';
 
-import { setLocationAction } from '../../actions';
+import { setRegionAction } from '../../actions';
 import Header from '../header';
 import Marker from './marker';
 import Cluster from './cluster';
@@ -15,12 +16,16 @@ class Map extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            region: props.location,
+            region: props.region,
         };
     }
 
     componentDidMount() {
         this._getLocationAsync();
+    }
+
+    _moveToRegion(region) {
+        this.map.mapview.animateToRegion(region);
     }
 
     _getLocationAsync = async () => {
@@ -33,15 +38,14 @@ class Map extends React.Component {
                 latitudeDelta: this.state.region.latitudeDelta,
                 longitudeDelta: this.state.region.longitudeDelta,
             };
-            this._onRegionChange(region);
+            this._moveToRegion(region);
         } else {
             ToastAndroid.show(noLocationPermissions, ToastAndroid.LONG);
         }
     };
 
     _onRegionChange = (region) => {
-        this.setState({ ...this.state, region });
-        this.props.setLocation(region);
+        this.props.setRegion(region);
     };
 
     static navigationOptions({ navigation }) {
@@ -58,14 +62,17 @@ class Map extends React.Component {
         };
     };
 
+
     render() {
+        console.log('render');
         return (
             <ClusteredMapView
                 data={this.props.stations}
                 loadingEnabled={true}
                 onRegionChangeComplete={this._onRegionChange}
                 pitchEnabled={false}
-                region={this.state.region}
+                initialRegion={this.props.region}
+                ref={map => this.map = map}
                 renderMarker={this.renderMarker}
                 renderCluster={this.renderCluster}
                 showsBuildings={false}
@@ -91,19 +98,25 @@ class Map extends React.Component {
             station={station}
         />;
     }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        const before = omit(this.props, 'region');
+        const after = omit(nextProps, 'region');
+        return !isEqual(before, after);
+    }
 }
 
 const mapStateToProps = (state) => {
     return {
         stations: state.db.stations,
-        location: state.location,
+        region: state.region,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setLocation: (location) => {
-            dispatch(setLocationAction(location))
+        setRegion: (region) => {
+            dispatch(setRegionAction(region))
         }
     };
 }

@@ -9,8 +9,7 @@ import reducer from '../reducers';
 const persistConfig = {
     key: 'root',
     storage: storage,
-    blacklist: ['location'],
-    debug: true,
+    blacklist: ['region'],
 };
 
 const rootReducer = persistReducer(persistConfig, reducer);

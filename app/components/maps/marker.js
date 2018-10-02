@@ -45,10 +45,10 @@ class Marker extends React.Component {
     }
 
     withinRegion() {
-        const withinLatitude = this.props.station.latitude < this.props.location.latitude - this.props.location.latitudeDelta
-            && this.props.station.latitude > this.props.location.latitude + this.props.location.latitudeDelta;
-        const withinLongitude = this.props.station.longitude < this.props.location.longitude - this.props.location.longitudeDelta
-            && this.props.station.longitude > this.props.location.longitude + this.props.location.longitudeDelta;
+        const withinLatitude = this.props.station.latitude < this.props.region.latitude - this.props.region.latitudeDelta
+            && this.props.station.latitude > this.props.region.latitude + this.props.region.latitudeDelta;
+        const withinLongitude = this.props.station.longitude < this.props.region.longitude - this.props.region.longitudeDelta
+            && this.props.station.longitude > this.props.region.longitude + this.props.region.longitudeDelta;
         return withinLatitude && withinLongitude;
     }
 
@@ -56,8 +56,8 @@ class Marker extends React.Component {
         return (
             <MapView.Marker {...this.markerProps}>
                 <Svg
-                    height="36"
-                    width="48"
+                    height={markerHeight}
+                    width={markerWidth}
                 >
                     <Svg.Path
                         d="M4,4 L44,4 L44,24 C28,24 28,24 24,32 C20,24 20,24 4,24 z"
@@ -69,8 +69,8 @@ class Marker extends React.Component {
                         fill="black"
                         fontSize="10"
                         fontWeight="bold"
-                        x="24"
-                        y="18"
+                        x={markerWidth / 2}
+                        y={markerHeight / 2}
                         textAnchor="middle"
                     >{this.state.price}</Svg.Text>
                 </Svg>
@@ -83,7 +83,7 @@ const mapStateToProps = (state) => {
     return {
         selectedBrands: state.ui.brands,
         selectedFueltype: state.ui.fueltype,
-        location: state.location
+        region: state.region
     };
 };
 

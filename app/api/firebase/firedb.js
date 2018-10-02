@@ -37,7 +37,7 @@ export default class FireDB {
     /**
      * Creates a geoquery object initialised with the given region
      * 
-     * @param {object} region The current location 
+     * @param {object} region The current region 
      * @returns {object} The GeoQuery object
      */
     createGeoQuery(region) {
