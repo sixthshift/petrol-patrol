@@ -100,7 +100,7 @@ export default class FireDB {
         };
         const hashID = hash(key, { unorderedArrays: true });
         const path = table.prices + '/' + hashID;
-        const snapshot = this.database.ref(path).once('value');
+        const snapshot = await this.database.ref(path).once('value');
         const price = snapshot.val();
         return price;
     }

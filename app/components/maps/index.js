@@ -64,7 +64,6 @@ class Map extends React.Component {
 
 
     render() {
-        console.log('render');
         return (
             <ClusteredMapView
                 data={this.props.stations}
