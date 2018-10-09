@@ -2,7 +2,7 @@ import { table } from './constants';
 import firebase from 'firebase';
 import Geofire, { distance } from 'geofire';
 import { has, sortBy, values } from 'lodash';
-import hash from 'object-hash';
+import { hash } from '../../utils';
 
 export default class FireDB {
 
@@ -93,12 +93,12 @@ export default class FireDB {
      * @param {number} id The id of the station
      * @returns {[object]} A list of prices associated with the given station
      */
-    async fetchPricesByFueltypeAndStation(id, selectedFueltype) {
+    async fetchPrice(id, selectedFueltype) {
         const key = {
             id: id,
             fueltype: selectedFueltype,
         };
-        const hashID = hash(key, { unorderedArrays: true });
+        const hashID = hash(key);
         const path = table.prices + '/' + hashID;
         const snapshot = await this.database.ref(path).once('value');
         const price = snapshot.val();

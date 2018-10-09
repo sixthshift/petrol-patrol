@@ -1,9 +1,11 @@
 import { MapView, Svg } from 'expo';
-import _, { inRange } from 'lodash';
+import _, { inRange, isNull } from 'lodash';
+import { Spinner } from 'native-base';
+import { hash } from '../../utils';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import firedb from '../../api/firebase';
+import { fetchPrice } from '../../actions/db';
 
 const markerHeight = 36;
 const markerWidth = 48
@@ -12,7 +14,6 @@ class Marker extends React.Component {
 
     constructor(props) {
         super(props);
-        this.isMounted = false;
         this.markerProps = {
             coordinate: {
                 latitude: props.station.location.latitude,
@@ -21,13 +22,10 @@ class Marker extends React.Component {
         };
         this.state = {
             colour: 'grey',
-            data: null,
-            visible: false,
         };
     }
 
     componentDidMount() {
-        this.isMounted = true;
         this._update();
     }
 
@@ -35,22 +33,13 @@ class Marker extends React.Component {
         this._update();
     }
 
-    componentWillUnmount() {
-        this.isMounted = false;
+    shouldComponentUpdate(nextProps, nextState) {
+        return (this.props !== nextProps || this.state !== nextState);
     }
 
     _update() {
-        if (!this.state.visible && this.withinRegion()) {
-            firedb.fetchPricesByFueltypeAndStation(this.props.station.id, this.props.selectedFueltype)
-                .then((price) => {
-                    if (this.isMounted) {
-                        const newState = {
-                            data: price,
-                            visible: true,
-                        };
-                        this.setState(newState);
-                    }
-                });
+        if (_(this.props.price).isNull() && this.withinRegion()) {
+            this.props.fetchPrice(this.props.station, this.props.selectedFueltype);
         }
     }
 
@@ -69,42 +58,52 @@ class Marker extends React.Component {
     }
 
     render() {
-        if (this.state.visible) {
-            return (
-                <MapView.Marker {...this.markerProps}>
-                    <Svg
-                        height={markerHeight}
-                        width={markerWidth}
-                    >
-                        <Svg.Path
-                            d="M4,4 L44,4 L44,24 C28,24 28,24 24,32 C20,24 20,24 4,24 z"
-                            fill="white"
-                            stroke={this.state.colour}
-                            strokeWidth="2"
-                        />
-                        <Svg.Text
-                            fill="black"
-                            fontSize="10"
-                            fontWeight="bold"
-                            x={markerWidth / 2}
-                            y={markerHeight / 2}
-                            textAnchor="middle"
-                        >{this.state.data.price}</Svg.Text>
-                    </Svg>
-                </MapView.Marker>
-            );
-        } else {
-            return (null);
-        }
+        return (
+            <MapView.Marker {...this.markerProps}>
+                <Svg
+                    height={markerHeight}
+                    width={markerWidth}
+                >
+                    <Svg.Path
+                        d="M4,4 L44,4 L44,24 C28,24 28,24 24,32 C20,24 20,24 4,24 z"
+                        fill="white"
+                        stroke={this.state.colour}
+                        strokeWidth="2"
+                    />
+                    <Svg.Text
+                        fill="black"
+                        fontSize="10"
+                        fontWeight="bold"
+                        x={markerWidth / 2}
+                        y={markerHeight / 2}
+                        textAnchor="middle"
+                    >{this.props.price == null ? 'N/A' : this.props.price.price}</Svg.Text>
+                </Svg>
+            </MapView.Marker>
+        );
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
+    const key = {
+        id: ownProps.station.id,
+        fueltype: state.ui.fueltype,
+    };
+    const hashID = hash(key);
     return {
+        price: state.db.prices[hashID] ? state.db.prices[hashID] : null,
+        region: state.region,
         selectedBrands: state.ui.brands,
         selectedFueltype: state.ui.fueltype,
-        region: state.region
     };
 };
 
-export default connect(mapStateToProps)(Marker);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchPrice: (stationID, fueltype) => {
+            dispatch(fetchPrice(stationID, fueltype))
+        }
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Marker);

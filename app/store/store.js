@@ -9,15 +9,20 @@ import reducer from '../reducers';
 const persistConfig = {
     key: 'root',
     storage: storage,
-    blacklist: ['region'],
+    blacklist: ['prices', 'region'],
 };
 
 const rootReducer = persistReducer(persistConfig, reducer);
 
+const middleware = [
+    thunk
+];
+
+if (__DEV__) {
+    middleware.push(logger);
+}
+
 export default store = createStore(
     rootReducer,
-    applyMiddleware(
-        thunk,
-        logger
-    )
+    applyMiddleware(...middleware)
 );

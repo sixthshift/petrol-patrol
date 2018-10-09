@@ -1,13 +1,13 @@
 import { Location, Permissions } from 'expo';
-import { isEqual, omit } from 'lodash';
+import { isEqual, omit, slice } from 'lodash';
 import React from 'react';
 import ClusteredMapView from 'react-native-maps-super-cluster';
 import { connect } from 'react-redux';
 
 import { setRegionAction } from '../../actions';
+import Cluster from './cluster';
 import Header from '../header';
 import Marker from './marker';
-import Cluster from './cluster';
 import { noLocationPermissions } from './strings';
 import styles from './styles';
 
@@ -62,7 +62,6 @@ class Map extends React.Component {
         };
     };
 
-
     render() {
         return (
             <ClusteredMapView
@@ -107,6 +106,7 @@ class Map extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+        // stations: slice(state.db.stations, 0, 1),
         stations: state.db.stations,
         region: state.region,
     };

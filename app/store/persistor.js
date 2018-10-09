@@ -3,7 +3,7 @@ import { persistStore } from 'redux-persist';
 import { fetchBrands, fetchFueltypes, fetchStations } from '../actions';
 import firedb from '../api/firebase';
 import store from './store';
-import { hash } from './utils';
+import { hash } from '../utils';
 
 const sync = () => {
     const brands = store.getState().db.brands;
