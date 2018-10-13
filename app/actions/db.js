@@ -16,6 +16,9 @@ export const fetchPriceAction = createAction(PRICE_FETCH);
 export const STATIONS_FETCH = 'STATIONS_FETCH';
 export const fetchStationsAction = createAction(STATIONS_FETCH);
 
+export const STATISTICS_FETCH = 'STATISTICS_FETCH';
+export const fetchStatisticsAction = createAction(STATISTICS_FETCH);
+
 export function fetchBrands() {
     return (dispatch) => {
         firedb.fetchBrands()
@@ -66,4 +69,16 @@ export function fetchStations() {
                 dispatch(fetchStationsAction(error, { success: false }));
             });
     }
+}
+
+export function fetchStatistics(n = 1) {
+    return (dispatch) => {
+        firedb.fetchStatistics(n)
+            .then((response) => {
+                dispatch(fetchStatisticsAction(response, { success: true }));
+            })
+            .catch((error) => {
+                dispatch(fetchStatisticsAction(error, { success: false }));
+            });
+    };
 }

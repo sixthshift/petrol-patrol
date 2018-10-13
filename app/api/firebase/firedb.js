@@ -141,6 +141,17 @@ export default class FireDB {
     }
 
     /**
+     * Fetches the n most recent statistics values stored in the Firebase Database
+     * 
+     * @param {*} n The number of most recent data points to query
+     */
+    async fetchStatistics(n = 1) {
+        const snapshot = await this.database.ref(table.statistics).limitToLast(n).once('value');
+        const statistics = snapshot.val();
+        return values(sortBy(statistics, 'timestamp'));
+    }
+
+    /**
      * Updates a geoquery with the new region
      * 
      * @param {object} geoQuery The geoquery to be updated

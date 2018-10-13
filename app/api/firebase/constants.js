@@ -4,4 +4,5 @@ export const table = {
     hash: 'hash',
     prices: 'pricestest',
     stations: 'stationstest',
+    statistics: 'statistics',
 };

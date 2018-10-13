@@ -3,7 +3,7 @@ const schoolbusYellow = '#FFD000';
 const sushi = '#8BC440';
 
 export default {
-    low: crimson,
+    low: sushi,
     mid: schoolbusYellow,
-    high: sushi,
+    high: crimson,
 };
