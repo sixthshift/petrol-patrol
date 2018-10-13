@@ -1,6 +1,7 @@
 import { MapView, Svg } from 'expo';
 import _, { get, inRange, last } from 'lodash';
 import React from 'react';
+import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { fetchPrice } from '../../actions/db';
@@ -18,7 +19,8 @@ class Marker extends React.Component {
             coordinate: {
                 latitude: props.station.location.latitude,
                 longitude: props.station.location.longitude,
-            }
+            },
+            onPress: this.onPress.bind(this),
         };
     }
 
@@ -28,6 +30,10 @@ class Marker extends React.Component {
 
     componentDidUpdate() {
         this._update();
+    }
+
+    onPress() {
+        this.props.navigation.navigate('details', { station: this.props.station });
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -67,29 +73,33 @@ class Marker extends React.Component {
     }
 
     render() {
-        return (
-            <MapView.Marker {...this.markerProps}>
-                <Svg
-                    height={markerHeight}
-                    width={markerWidth}
-                >
-                    <Svg.Path
-                        d="M4,4 L44,4 L44,24 C28,24 28,24 24,32 C20,24 20,24 4,24 z"
-                        fill="white"
-                        stroke={this._colour()}
-                        strokeWidth="2"
-                    />
-                    <Svg.Text
-                        fill="black"
-                        fontSize="10"
-                        fontWeight="bold"
-                        x={markerWidth / 2}
-                        y={markerHeight / 2}
-                        textAnchor="middle"
-                    >{this.props.price == null ? 'N/A' : this.props.price.price}</Svg.Text>
-                </Svg>
-            </MapView.Marker>
-        );
+        if (_(this.props.selectedBrands).includes(this.props.station.brand)) {
+            return (
+                <MapView.Marker {...this.markerProps}>
+                    <Svg
+                        height={markerHeight}
+                        width={markerWidth}
+                    >
+                        <Svg.Path
+                            d="M4,4 L44,4 L44,24 C28,24 28,24 24,32 C20,24 20,24 4,24 z"
+                            fill="white"
+                            stroke={this._colour()}
+                            strokeWidth="2"
+                        />
+                        <Svg.Text
+                            fill="black"
+                            fontSize="10"
+                            fontWeight="bold"
+                            x={markerWidth / 2}
+                            y={markerHeight / 2}
+                            textAnchor="middle"
+                        >{this.props.price == null ? 'N/A' : this.props.price.price}</Svg.Text>
+                    </Svg>
+                </MapView.Marker>
+            );
+        } else {
+            return (null);
+        }
     }
 }
 
@@ -119,4 +129,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Marker);
+export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(Marker));
