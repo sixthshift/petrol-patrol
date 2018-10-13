@@ -9,7 +9,7 @@ import reducer from '../reducers';
 const persistConfig = {
     key: 'root',
     storage: storage,
-    blacklist: ['prices', 'region'],
+    blacklist: ['prices', 'region', 'statistics'],
 };
 
 const rootReducer = persistReducer(persistConfig, reducer);

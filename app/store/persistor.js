@@ -1,6 +1,6 @@
 import { persistStore } from 'redux-persist';
 
-import { fetchBrands, fetchFueltypes, fetchStations } from '../actions';
+import { fetchBrands, fetchFueltypes, fetchStations, fetchStatistics } from '../actions';
 import firedb from '../api/firebase';
 import store from './store';
 import { hash } from '../utils';
@@ -27,6 +27,7 @@ const sync = () => {
                 store.dispatch(fetchStations());
             }
         });
+    store.dispatch(fetchStatistics());
 };
 
 export default persistStore(store, null, sync);

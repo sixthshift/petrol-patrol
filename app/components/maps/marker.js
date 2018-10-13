@@ -1,11 +1,11 @@
 import { MapView, Svg } from 'expo';
-import _, { inRange, isNull } from 'lodash';
-import { Spinner } from 'native-base';
-import { hash } from '../../utils';
+import _, { get, inRange, last } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 
 import { fetchPrice } from '../../actions/db';
+import gradiate from './gradient';
+import { hash } from '../../utils';
 
 const markerHeight = 36;
 const markerWidth = 48
@@ -20,9 +20,6 @@ class Marker extends React.Component {
                 longitude: props.station.location.longitude,
             }
         };
-        this.state = {
-            colour: 'grey',
-        };
     }
 
     componentDidMount() {
@@ -35,6 +32,18 @@ class Marker extends React.Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         return (this.props !== nextProps || this.state !== nextState);
+    }
+
+    _colour() {
+        if (_(this.props.price).isNull() || _(this.props.statistics).isNull()) {
+            return 'grey';
+        } else {
+            const stdev = this.props.statistics.stdev;
+            const mean = this.props.statistics.mean;
+            const lowerBound = mean - stdev * 2;
+            const upperBound = mean + stdev * 2;
+            return gradiate(lowerBound, upperBound, this.props.price.price);
+        }
     }
 
     _update() {
@@ -67,7 +76,7 @@ class Marker extends React.Component {
                     <Svg.Path
                         d="M4,4 L44,4 L44,24 C28,24 28,24 24,32 C20,24 20,24 4,24 z"
                         fill="white"
-                        stroke={this.state.colour}
+                        stroke={this._colour()}
                         strokeWidth="2"
                     />
                     <Svg.Text
@@ -90,11 +99,15 @@ const mapStateToProps = (state, ownProps) => {
         fueltype: state.ui.fueltype,
     };
     const hashID = hash(key);
+    const price = get(state.db.prices, hashID, null);
+    const statistics = get(last(state.db.statistics), state.ui.fueltype, null);
+
     return {
-        price: state.db.prices[hashID] ? state.db.prices[hashID] : null,
+        price: price,
         region: state.region,
         selectedBrands: state.ui.brands,
         selectedFueltype: state.ui.fueltype,
+        statistics: statistics,
     };
 };
 
@@ -104,6 +117,6 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(fetchPrice(stationID, fueltype))
         }
     };
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Marker);

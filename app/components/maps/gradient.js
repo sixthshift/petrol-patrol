@@ -1,6 +1,6 @@
-import { chain, join, mean, startsWith, tail } from 'lodash';
+import _, { clamp, mean, round } from 'lodash';
 
-import colours from '../colours';
+import colours from './colours';
 
 /**
  * Converts a hex colour value to its RGB components
@@ -10,7 +10,7 @@ import colours from '../colours';
  */
 const hex2rgb = (hex) => {
     if (hex.startsWith('#')) {
-        hex = chain(hex).tail().join('');
+        hex = _(hex).tail().join('');
     }
     return {
         r: '0x' + hex[0] + hex[1] | 0,
@@ -40,25 +40,26 @@ const rgb2Hex = (r, g, b) => {
  * @returns {string} The colour gradiated by the gradiable within the range
  */
 export default function gradiate(min, max, gradiable) {
-    if (gradiable < min || gradiable > max) {
-        throw new RangeError('gradiable must be between the min/max range');
-    }
-
+    gradiable = clamp(gradiable, min, max);
     const lowRGB = hex2rgb(colours.low);
     const midRGB = hex2rgb(colours.mid);
     const highRGB = hex2rgb(colours.high);
 
     const mid = mean([min, max]);
+    let r, g, b;
     if (gradiable < mid) {
-        const ratio = (price - min) / mid;
-        const r = lowRGB.r * ratio + midRGB.r * (1 - ratio);
-        const g = lowRGB.g * ratio + midRGB.g * (1 - ratio);
-        const b = lowRGB.b * ratio + midRGB.b * (1 - ratio);
+        const ratio = (gradiable - min) / (mid - min);
+        r = lowRGB.r * (1 - ratio) + midRGB.r * ratio;
+        g = lowRGB.g * (1 - ratio) + midRGB.g * ratio;
+        b = lowRGB.b * (1 - ratio) + midRGB.b * ratio;
     } else {
-        const ratio = (price - mid) / max;
-        const r = midRGB.r * (1 - ratio) + highRGB.r * ratio;
-        const g = midRGB.g * (1 - ratio) + highRGB.g * ratio;
-        const b = midRGB.b * (1 - ratio) + highRGB.b * ratio;
+        const ratio = (gradiable - mid) / (max - mid);
+        r = midRGB.r * (1 - ratio) + highRGB.r * ratio;
+        g = midRGB.g * (1 - ratio) + highRGB.g * ratio;
+        b = midRGB.b * (1 - ratio) + highRGB.b * ratio;
     }
+    r = round(r);
+    g = round(g);
+    b = round(b);
     return rgb2Hex(r, g, b);
 }
