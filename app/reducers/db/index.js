@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'
+import storage from 'redux-persist/lib/storage';
 
 import brandsReducer from './brands';
 import fueltypesReducer from './fueltypes';

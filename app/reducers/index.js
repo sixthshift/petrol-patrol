@@ -1,15 +1,15 @@
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'
+import storage from 'redux-persist/lib/storage';
 
 import dbReducer from './db';
 import regionReducer from './region';
 import uiReducer from './ui';
 
 const persistConfig = {
-    key: 'db',
+    key: 'root',
     storage: storage,
-    blacklist: ['prices', 'statistics'],
+    blacklist: ['region'],
 };
 
 const reducer = combineReducers({
