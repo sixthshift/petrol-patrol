@@ -33,7 +33,7 @@ class Marker extends React.Component {
     }
 
     onPress() {
-        this.props.navigation.navigate('details', { station: this.props.station });
+        this.props.navigation.navigate('details', { id: this.props.station.id });
     }
 
     shouldComponentUpdate(nextProps, nextState) {

@@ -106,7 +106,6 @@ class Map extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        // stations: slice(state.db.stations, 0, 1),
         stations: state.db.stations,
         region: state.region,
     };
