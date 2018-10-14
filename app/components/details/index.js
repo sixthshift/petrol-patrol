@@ -26,8 +26,7 @@ class Details extends React.Component {
 
     render() {
         const region = {
-            latitude: this.props.station.location.latitude,
-            longitude: this.props.station.location.longitude,
+            ...this.props.station.location,
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
         };
@@ -39,6 +38,9 @@ class Details extends React.Component {
                     initialRegion={region}
                     style={styles.map}
                 >
+                    <MapView.Marker
+                        coordinate={this.props.station.location}
+                    />
                 </MapView>
                 <PriceList station={this.props.station} style={styles.list} />
             </View>
