@@ -2,8 +2,11 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
     bar: {
+        backgroundColor: 'grey',
         flex: 1,
-        width: 10,
+    },
+    item: {
+        backgroundColor: '#FFF',
     },
     left: {
         flex: 1,
