@@ -1,5 +1,6 @@
 import _, { get } from 'lodash';
-import { Body, ListItem, Text } from 'native-base';
+import moment from 'moment';
+import { Body, Left, ListItem, Right, Text, H1 } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -18,12 +19,21 @@ class PriceListItem extends React.Component {
         if (_(this.props.price).isNull()) {
             return (null);
         } else {
+            const timeDifference = moment.unix(this.props.price.time).fromNow();
             return (
                 <ListItem>
-                    <Body>
-                        <Text>{this.props.item.code}</Text>
-                        <Text>{this.props.price.price}</Text>
-                    </Body>
+                    <Left>
+                        <Body>
+                            <H1>{this.props.price.price}</H1>
+                            <Text note>Last updated {timeDifference}</Text>
+                        </Body>
+                    </Left>
+                    <Right>
+                        <Body>
+                            <H1>{this.props.item.code}</H1>
+                            <Text note>{this.props.item.name}</Text>
+                        </Body>
+                    </Right>
                 </ListItem>
             );
         }

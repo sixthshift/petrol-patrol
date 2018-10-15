@@ -1,13 +1,15 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-    details: {
+    bar: {
         flex: 1,
+        width: 10,
     },
-    list: {
-        flex: 3,
-    },
-    map: {
+    left: {
         flex: 1,
+        flexDirection: 'row',
+    },
+    right: {
+        flex: 2,
     },
 });

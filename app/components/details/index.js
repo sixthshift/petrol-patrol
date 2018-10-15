@@ -1,5 +1,6 @@
 import { MapView } from 'expo';
 import _ from 'lodash';
+import { Content } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
@@ -36,13 +37,19 @@ class Details extends React.Component {
             >
                 <MapView
                     initialRegion={region}
+                    showsMyLocationButton={true}
+                    showsUserLocation
                     style={styles.map}
                 >
                     <MapView.Marker
                         coordinate={this.props.station.location}
                     />
                 </MapView>
-                <PriceList station={this.props.station} style={styles.list} />
+                <View style={styles.list}>
+                    <Content>
+                        <PriceList station={this.props.station} style={styles.list} />
+                    </Content>
+                </View>
             </View>
         );
     }

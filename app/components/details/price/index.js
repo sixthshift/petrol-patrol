@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import Item from './item';
 import { isActive } from '../../utils';
-import styles from '../styles';
+import styles from './styles';
 
 class PriceList extends React.Component {
 
