@@ -5,7 +5,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 
-import Header from '../header';
+import Header from './header';
 import styles from './styles';
 import PriceList from './price';
 
@@ -16,10 +16,6 @@ class Details extends React.Component {
             header: (
                 <Header
                     navigation={navigation}
-                    showBack={true}
-                    showBrands={false}
-                    showFueltypes={false}
-                    showSearch={false}
                 />
             )
         };
