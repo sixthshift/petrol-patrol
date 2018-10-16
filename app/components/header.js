@@ -1,5 +1,5 @@
 import { Font } from "expo";
-import { Button, Header, Input, Icon, Item, Left, Right } from 'native-base';
+import { Button, Header as NBHeader, Input, Icon, Item, Left, Right } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
 
@@ -42,19 +42,19 @@ const FueltypesButton = (props) => {
 const SearchBar = (props) => {
     if (props.showSearch) {
         return (
-            <Header searchBar rounded>
+            <NBHeader searchBar rounded>
                 <Item>
                     <Icon name='search' />
                     <Input placeholder='Search' />
                 </Item>
-            </Header>
+            </NBHeader>
         );
     } else {
         return null;
     }
 }
 
-class SearchHeader extends React.Component {
+class Header extends React.Component {
 
     constructor(props) {
         super(props);
@@ -82,7 +82,7 @@ class SearchHeader extends React.Component {
     render() {
         return (
             <View>
-                <Header>
+                <NBHeader>
                     <Left>
                         <BackButton {...this.props} />
                     </Left>
@@ -90,11 +90,11 @@ class SearchHeader extends React.Component {
                         <BrandsButton {...this.props} />
                         <FueltypesButton {...this.props} />
                     </Right>
-                </Header>
+                </NBHeader>
                 <SearchBar {...this.props} />
             </View>
         );
     }
 }
 
-export default SearchHeader;
+export default Header;

@@ -6,7 +6,6 @@ import { selectBrandsAction } from '../../actions';
 
 class Item extends React.Component {
     render() {
-        const checked = includes(this.props.checked, this.props.item.name);
         const onPress = () => {
             this.props.select(this.props.item.name);
         };
@@ -18,7 +17,7 @@ class Item extends React.Component {
                     <Text>{this.props.item.name}</Text>
                 </Body>
                 <CheckBox
-                    checked={checked}
+                    checked={this.props.checked}
                     onPress={onPress}
                 />
             </ListItem>
@@ -26,9 +25,9 @@ class Item extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     return {
-        checked: state.ui.brands
+        checked: includes(state.ui.brands, ownProps.item.name)
     };
 };
 
