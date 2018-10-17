@@ -1,8 +1,7 @@
 import { MapView } from 'expo';
 import _ from 'lodash';
-import { Content } from 'native-base';
+import { Body, Card, Content, CardItem, Left, Text } from 'native-base';
 import React from 'react';
-import { View } from 'react-native';
 import { connect } from 'react-redux';
 
 import Header from './header';
@@ -28,25 +27,35 @@ class Details extends React.Component {
             longitudeDelta: 0.01,
         };
         return (
-            <View
-                style={styles.details}
-            >
-                <MapView
-                    initialRegion={region}
-                    showsMyLocationButton={true}
-                    showsUserLocation
-                    style={styles.map}
-                >
-                    <MapView.Marker
-                        coordinate={this.props.station.location}
-                    />
-                </MapView>
-                <View style={styles.list}>
-                    <Content>
-                        <PriceList station={this.props.station} style={styles.list} />
-                    </Content>
-                </View>
-            </View>
+            <Content contentContainerStyle={styles.details}>
+                <Card style={[styles.card, styles.info]} transparent={true}>
+                    <CardItem>
+                        <Left>
+                            <Body>
+                                <Text>{this.props.station.name}</Text>
+                                <Text note>{this.props.station.street}</Text>
+                                <Text note>{this.props.station.suburb}</Text>
+                                <Text note>{this.props.station.state + ' ' + this.props.station.postcode}</Text>
+                            </Body>
+                        </Left>
+                    </CardItem>
+                </Card>
+                <Card style={[styles.card, styles.map]}>
+                    <MapView
+                        initialRegion={region}
+                        showsMyLocationButton={true}
+                        showsUserLocation
+                        style={styles.map}
+                    >
+                        <MapView.Marker
+                            coordinate={this.props.station.location}
+                        />
+                    </MapView>
+                </Card>
+                <Card style={[styles.card, styles.list]}>
+                    <PriceList station={this.props.station} style={styles.list} />
+                </Card>
+            </Content>
         );
     }
 }
