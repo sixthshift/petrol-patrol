@@ -13,13 +13,6 @@ import styles from './styles';
 
 class Map extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            region: props.region,
-        };
-    }
-
     componentDidMount() {
         this._getLocationAsync();
     }
@@ -35,8 +28,8 @@ class Map extends React.Component {
             const region = {
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
-                latitudeDelta: this.state.region.latitudeDelta,
-                longitudeDelta: this.state.region.longitudeDelta,
+                latitudeDelta: this.props.region.latitudeDelta,
+                longitudeDelta: this.props.region.longitudeDelta,
             };
             this._moveToRegion(region);
         } else {

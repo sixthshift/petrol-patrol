@@ -9,7 +9,6 @@ import uiReducer from './ui';
 const persistConfig = {
     key: 'root',
     storage: storage,
-    blacklist: ['region'],
 };
 
 const reducer = combineReducers({
