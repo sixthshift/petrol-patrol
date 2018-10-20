@@ -1,5 +1,6 @@
 import { Location, Permissions } from 'expo';
 import { isEqual, omit, slice } from 'lodash';
+import { Container, Content } from 'native-base';
 import React from 'react';
 import ClusteredMapView from 'react-native-maps-super-cluster';
 import { connect } from 'react-redux';
@@ -41,38 +42,33 @@ class Map extends React.Component {
         this.props.setRegion(region);
     };
 
-    static navigationOptions({ navigation }) {
-        return {
-            header: (
-                <Header
-                    navigation={navigation}
+    render() {
+        return (
+            <Container>
+                 <Header
                     showBack={false}
                     showBrands={true}
                     showFueltypes={true}
                     showSearch={true}
                 />
-            )
-        };
-    };
-
-    render() {
-        return (
-            <ClusteredMapView
-                data={this.props.stations}
-                loadingEnabled={true}
-                onRegionChangeComplete={this._onRegionChange}
-                pitchEnabled={false}
-                initialRegion={this.props.region}
-                ref={map => this.map = map}
-                renderMarker={this.renderMarker}
-                renderCluster={this.renderCluster}
-                showsBuildings={false}
-                showsTraffic={true}
-                showsMyLocationButton={true}
-                showsUserLocation={true}
-                style={styles.map}
-            >
-            </ClusteredMapView>
+                <Content>
+                    <ClusteredMapView
+                        data={this.props.stations}
+                        loadingEnabled={true}
+                        onRegionChangeComplete={this._onRegionChange}
+                        pitchEnabled={false}
+                        initialRegion={this.props.region}
+                        ref={map => this.map = map}
+                        renderMarker={this.renderMarker}
+                        renderCluster={this.renderCluster}
+                        showsBuildings={false}
+                        showsTraffic={true}
+                        showsMyLocationButton={true}
+                        showsUserLocation={true}
+                        style={styles.map}
+                    />
+                    </Content>
+            </Container>
         );
     }
 

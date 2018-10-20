@@ -1,5 +1,5 @@
 import { filter, has, map } from 'lodash';
-import { Content, List as NBList } from 'native-base';
+import { Container, Content, List as NBList } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -9,17 +9,6 @@ import styles from '../../styles/styles';
 import { isActive } from '../utils';
 
 class List extends React.Component {
-    static navigationOptions({ navigation }) {
-        return {
-            header: (
-                <Header
-                    navigation={navigation}
-                    showBack={true}
-                    showSearch={false}
-                />
-            )
-        };
-    }
 
     render() {
         const activeList = filter(this.props.list, isActive);
@@ -27,11 +16,17 @@ class List extends React.Component {
             <Item key={item.name} item={item} />
         );
         return (
-            <Content style={styles.container}>
-                <NBList>
-                    {map(activeList, renderItem)}
-                </NBList>
-            </Content>
+            <Container>
+                <Header
+                    showBack={true}
+                    showSearch={false}
+                />
+                <Content style={styles.container}>
+                    <NBList>
+                        {map(activeList, renderItem)}
+                    </NBList>
+                </Content>
+            </Container>
         );
     }
 }

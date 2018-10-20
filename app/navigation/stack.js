@@ -21,6 +21,7 @@ export default createStackNavigator(
         },
     },
     {
-        initialRouteName: 'maps'
+        initialRouteName: 'maps',
+        headerMode: 'none',
     }
 );

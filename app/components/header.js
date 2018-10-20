@@ -2,6 +2,7 @@ import { Font } from "expo";
 import { Button, Header as NBHeader, Input, Icon, Item, Left, Right } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
+import { withNavigation } from 'react-navigation';
 
 const BackButton = (props) => {
     if (props.showBack) {
@@ -97,4 +98,4 @@ class Header extends React.Component {
     }
 }
 
-export default Header;
+export default withNavigation(Header);
