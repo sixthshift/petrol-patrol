@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 
 import { setRegionAction } from '../../actions';
 import Cluster from './cluster';
+import Footer from '../footer';
 import Header from '../header';
 import Marker from './marker';
 import { noLocationPermissions } from './strings';
@@ -67,7 +68,8 @@ class Map extends React.Component {
                         showsUserLocation={true}
                         style={styles.map}
                     />
-                    </Content>
+                </Content>
+                <Footer/>
             </Container>
         );
     }
