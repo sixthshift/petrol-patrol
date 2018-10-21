@@ -98,7 +98,7 @@ class Map extends React.Component {
 const mapStateToProps = (state) => {
     return {
         stations: state.db.stations,
-        region: state.region,
+        region: state.ui.region,
     };
 };
 

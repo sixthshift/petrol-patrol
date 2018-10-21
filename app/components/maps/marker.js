@@ -114,7 +114,7 @@ const mapStateToProps = (state, ownProps) => {
 
     return {
         price: price,
-        region: state.region,
+        region: state.ui.region,
         selectedBrands: state.ui.brands,
         selectedFueltype: state.ui.fueltype,
         statistics: statistics,

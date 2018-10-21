@@ -1,8 +1,8 @@
 import { has } from 'lodash';
 import { handleAction } from 'redux-actions';
 
-import { REGION_SET } from '../actions';
-import defaultRegion from '../components/maps/defaultRegion';
+import { REGION_SET } from '../../actions';
+import defaultRegion from '../../components/maps/defaultRegion';
 
 const defaultState = defaultRegion;
 
