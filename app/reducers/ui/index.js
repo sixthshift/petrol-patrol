@@ -1,11 +1,18 @@
 import { combineReducers } from 'redux';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
 import brandsReducer from './brands';
 import favouritesReducer from './favourites';
 import fueltypeReducer from './fueltypes';
 import regionReducer from './region';
 
-export default combineReducers(
+const persistConfig = {
+    key: 'ui',
+    storage: storage,
+};
+
+const reducer = combineReducers(
     {
         brands: brandsReducer,
         favourites: favouritesReducer,
@@ -13,3 +20,5 @@ export default combineReducers(
         region: regionReducer,
     }
 );
+
+export default persistReducer(persistConfig, reducer);
