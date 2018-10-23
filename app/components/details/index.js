@@ -5,6 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Header from './header';
+import { getStation } from '../../selectors';
 import styles from './styles';
 import PriceList from './price';
 
@@ -18,7 +19,7 @@ class Details extends React.Component {
         };
         return (
             <Container>
-                <Header/>
+                <Header />
                 <Content contentContainerStyle={styles.details}>
                     <Card style={[styles.card, styles.info]} transparent={true}>
                         <CardItem>
@@ -38,10 +39,10 @@ class Details extends React.Component {
                             showsMyLocationButton={true}
                             showsUserLocation
                             style={styles.map}
-                            >
+                        >
                             <MapView.Marker
                                 coordinate={this.props.station.location}
-                                />
+                            />
                         </MapView>
                     </Card>
                     <Card style={[styles.card, styles.list]}>
@@ -54,10 +55,9 @@ class Details extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const stationID = ownProps.navigation.state.params['id'];
-    const station = _(state.db.stations).find({ id: stationID });
+    const props = { id: ownProps.navigation.state.params['id'] };
     return {
-        station: station
+        station: getStation(state, props)
     };
 };
 

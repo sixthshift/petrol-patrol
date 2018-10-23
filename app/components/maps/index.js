@@ -10,6 +10,7 @@ import Cluster from './cluster';
 import Footer from '../footer';
 import Header from '../header';
 import Marker from './marker';
+import { getStations, getRegion } from '../../selectors';
 import { noLocationPermissions } from './strings';
 import styles from './styles';
 
@@ -46,7 +47,7 @@ class Map extends React.Component {
     render() {
         return (
             <Container>
-                 <Header
+                <Header
                     showBack={false}
                     showBrands={true}
                     showFueltypes={true}
@@ -69,7 +70,7 @@ class Map extends React.Component {
                         style={styles.map}
                     />
                 </Content>
-                <Footer/>
+                <Footer />
             </Container>
         );
     }
@@ -97,8 +98,8 @@ class Map extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        stations: state.db.stations,
-        region: state.ui.region,
+        stations: getStations(state),
+        region: getRegion(state),
     };
 };
 

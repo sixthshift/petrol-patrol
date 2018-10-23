@@ -1,8 +1,8 @@
-import { includes } from 'lodash';
 import { Body, ListItem, Text, CheckBox } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
 import { selectBrandsAction } from '../../actions';
+import { isBrandSelected } from '../../selectors/ui';
 
 class Item extends React.Component {
     render() {
@@ -27,7 +27,7 @@ class Item extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        checked: includes(state.ui.brands, ownProps.item.name)
+        checked: isBrandSelected(state, ownProps)
     };
 };
 

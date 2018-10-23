@@ -105,6 +105,12 @@ export default class FireDB {
         return price;
     }
 
+    async fetchPrices() {
+        const snapshot = await this.database.ref(table.prices).once('value');
+        const stations = snapshot.val();
+        return values(stations);
+    }
+
     /**
      * Fetches a list of historical prices for a given station and fueltype
      * 

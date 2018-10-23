@@ -3,17 +3,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { selectFueltypeAction } from '../../actions';
+import { isFueltypeSelected } from '../../selectors';
 
 class Item extends React.Component {
     render() {
-        const selected = this.props.item.code == this.props.selected;
         const onPress = () => {
             this.props.select(this.props.item.code);
         };
         return (
             <ListItem
                 onPress={onPress}
-                selected={selected}
+                selected={this.props.selected}
             >
                 <Body>
                     <Text>{this.props.item.code}</Text>
@@ -24,16 +24,16 @@ class Item extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     return {
-        selected: state.ui.fueltype
+        selected: isFueltypeSelected(state, ownProps)
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         select: (fueltype) => {
-            dispatch(selectFueltypeAction(fueltype));
+            dispatch(selectFueltypeAction(fueltype))
         }
     };
 };

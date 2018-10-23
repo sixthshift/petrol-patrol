@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import Header from '../header';
 import Item from './item';
+import { getFueltypes } from '../../selectors';
 import styles from '../../styles/styles';
 import { isActive } from '../utils';
 
@@ -29,7 +30,7 @@ class List extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        list: state.db.fueltypes
+        list: getFueltypes(state)
     };
 };
 

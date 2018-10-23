@@ -1,4 +1,4 @@
-import _, { get, last } from 'lodash';
+import _ from 'lodash';
 import moment from 'moment';
 import { Body, Left, ListItem, Right, Text, H1 } from 'native-base';
 import React from 'react';
@@ -8,16 +8,17 @@ import { connect } from 'react-redux';
 import { fetchPrice } from '../../../actions/db';
 import gradiate from '../../maps/gradient';
 import styles from './styles';
-import { hash } from '../../../utils';
+import { getPrice, getMostRecentStatistics } from '../../../selectors';
 
 class PriceListItem extends React.Component {
 
     _colour() {
-        if (_(this.props.price).isNull() || _(this.props.statistics).isNull()) {
+        const statisticsForSelectedFuelType = _(this.props.statistics).get(this.props.item.code, null);
+        if (_(this.props.price).isNull() || _(statisticsForSelectedFuelType).isNull()) {
             return 'grey';
         } else {
-            const stdev = this.props.statistics.stdev;
-            const mean = this.props.statistics.mean;
+            const stdev = statisticsForSelectedFuelType.stdev;
+            const mean = statisticsForSelectedFuelType.mean;
             const lowerBound = mean - stdev * 2;
             const upperBound = mean + stdev * 2;
             return gradiate(lowerBound, upperBound, this.props.price.price);
@@ -58,16 +59,10 @@ class PriceListItem extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const key = {
-        id: ownProps.station.id,
-        fueltype: ownProps.item.code,
-    };
-    const hashID = hash(key);
-    const price = get(state.db.prices, hashID, null);
-    const statistics = get(last(state.db.statistics), state.ui.fueltype, null);
+    const props = { fueltype: ownProps.item.code, ...ownProps };
     return {
-        price: price,
-        statistics: statistics,
+        price: getPrice(state, props),
+        statistics: getMostRecentStatistics(state),
     };
 };
 

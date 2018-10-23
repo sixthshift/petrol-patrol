@@ -1,12 +1,12 @@
 import { MapView, Svg } from 'expo';
-import _, { get, inRange, last } from 'lodash';
+import _, { inRange } from 'lodash';
 import React from 'react';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { fetchPrice } from '../../actions/db';
 import gradiate from './gradient';
-import { hash } from '../../utils';
+import { getRegion, getSelectedBrands, getSelectedFueltype, getPrice, getMostRecentStatistics } from '../../selectors';
 
 const markerHeight = 36;
 const markerWidth = 48
@@ -41,11 +41,12 @@ class Marker extends React.Component {
     }
 
     _colour() {
-        if (_(this.props.price).isNull() || _(this.props.statistics).isNull()) {
+        const statisticsForSelectedFuelType = _(this.props.statistics).get(this.props.selectedFueltype, null);
+        if (_(this.props.price).isNull() || _(statisticsForSelectedFuelType).isNull()) {
             return 'grey';
         } else {
-            const stdev = this.props.statistics.stdev;
-            const mean = this.props.statistics.mean;
+            const stdev = statisticsForSelectedFuelType.stdev;
+            const mean = statisticsForSelectedFuelType.mean;
             const lowerBound = mean - stdev * 2;
             const upperBound = mean + stdev * 2;
             return gradiate(lowerBound, upperBound, this.props.price.price);
@@ -104,20 +105,13 @@ class Marker extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const key = {
-        id: ownProps.station.id,
-        fueltype: state.ui.fueltype,
-    };
-    const hashID = hash(key);
-    const price = get(state.db.prices, hashID, null);
-    const statistics = get(last(state.db.statistics), state.ui.fueltype, null);
-
+    const props = { fueltype: getSelectedFueltype(state), ...ownProps };
     return {
-        price: price,
-        region: state.ui.region,
-        selectedBrands: state.ui.brands,
-        selectedFueltype: state.ui.fueltype,
-        statistics: statistics,
+        price: getPrice(state, props),
+        region: getRegion(state),
+        selectedBrands: getSelectedBrands(state),
+        selectedFueltype: getSelectedFueltype(state),
+        statistics: getMostRecentStatistics(state),
     };
 };
 

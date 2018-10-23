@@ -1,10 +1,11 @@
-import { filter, has, map } from 'lodash';
+import { filter, map } from 'lodash';
 import { Container, Content, List as NBList } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
 
 import Header from '../header';
 import Item from './item';
+import { getBrands } from '../../selectors';
 import styles from '../../styles/styles';
 import { isActive } from '../utils';
 
@@ -33,7 +34,7 @@ class List extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        list: state.db.brands
+        list: getBrands(state)
     };
 };
 
