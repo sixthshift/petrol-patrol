@@ -1,4 +1,5 @@
 import objectHash from 'object-hash';
+import stringify from 'json-stable-stringify';
 
 /**
  * Generates an SHA1 hash from the input
@@ -7,5 +8,6 @@ import objectHash from 'object-hash';
  * @returns {string} The hash value of the input
  */
 export const hash = (data) => {
-    return objectHash(data, { unorderedArrays: true, unorderedObjects: true });
+    const serialisedData = stringify(data);
+    return objectHash(serialisedData);
 };
