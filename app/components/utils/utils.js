@@ -1,4 +1,5 @@
-import { get, has, isNull } from 'lodash';
+import fastHaversine from 'fast-haversine';
+import { get, has, isNull, round } from 'lodash';
 
 import gradiate from './gradient';
 
@@ -36,5 +37,34 @@ export const colour = (price, statistics) => {
             const upperBound = mean + stdev * 2;
             return gradiate(lowerBound, upperBound, price.price);
         }
+    }
+};
+
+/**
+ * Calculates the distance between two geo-points
+ * 
+ * @param {object} from Geopoint
+ * @param {object} to Geopoint
+ * @returns {number} The distance between the two geopoints
+ */
+export const haversine = (from, to) => {
+    if (isNull(from) || isNull(to)) {
+        return null;
+    }
+    from = {
+        lat: from.latitude,
+        lon: from.longitude,
+    };
+    to = {
+        lat: to.latitude,
+        lon: to.longitude,
+    };
+    const distanceInMetres = fastHaversine(from, to);
+    if (distanceInMetres >= 1000) {
+        // If distance is > 1 km, display to nearest 0.1 km
+        return round((distanceInMetres / 1000), 1) + ' km';
+    } else {
+        // Otherwise display to nearest 10 m
+        return round(distanceInMetres, -1) + ' m';
     }
 };

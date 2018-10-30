@@ -9,10 +9,13 @@ export default StyleSheet.create({
         backgroundColor: '#FFF',
     },
     left: {
-        flex: 1,
+        flex: 2,
         flexDirection: 'row',
     },
+    middle: {
+        flex: 4,
+    },
     right: {
-        flex: 2,
+        flex: 1,
     },
 });

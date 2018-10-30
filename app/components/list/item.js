@@ -1,15 +1,15 @@
+import _, { lowerCase, startCase } from 'lodash';
 import moment from 'moment';
 import { Body, H1, Left, ListItem, Right, Text } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
-import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
-import _ from 'lodash';
+import { connect } from 'react-redux';
 
 import { fetchPrice } from '../../actions';
+import { getPrice, getMostRecentStatistics, getSelectedFueltype, getRegion } from '../../selectors';
 import styles from './styles';
-import { getPrice, getMostRecentStatistics, getSelectedFueltype } from '../../selectors';
-import { colour } from '../utils';
+import { colour, haversine } from '../utils';
 
 class Item extends React.Component {
 
@@ -36,23 +36,29 @@ class Item extends React.Component {
             return (null);
         } else {
             const timeDifference = moment.unix(this.props.price.time).fromNow();
+            const address1 = this.props.station.name;
+            const address2 = startCase(lowerCase(this.props.station.suburb))
+                + ' ' + this.props.station.postcode
+                + ' ' + this.props.station.state;
+            const from = this.props.region;
+            const to = this.props.station.location;
+            const distance = haversine(from, to);
             return (
                 <View style={{ ...styles.bar, backgroundColor: colour(this.props.price, this.props.statistics) }}>
                     <ListItem onPress={this.onPress} style={styles.item}>
-                        <Left>
+                        <Left style={styles.left}>
                             <Body>
                                 <H1>{this.props.price.price}</H1>
-                                <Text note>Last Updated</Text>
                                 <Text note>{timeDifference}</Text>
                             </Body>
                         </Left>
-                        <Body>
-                            <Text>{this.props.station.name}</Text>
-                            <Text>{this.props.station.suburb + ' ' + this.props.station.postcode + ' ' + this.props.station.state}</Text>
+                        <Body style={styles.middle}>
+                            <Text>{address1}</Text>
+                            <Text>{address2}</Text>
                         </Body>
-                        <Right>
+                        <Right style={styles.right}>
                             <Body>
-                                <Text></Text>
+                                <Text>{distance}</Text>
                             </Body>
                         </Right>
                     </ListItem>
@@ -66,6 +72,7 @@ const mapStateToProps = (state, ownProps) => {
     const props = { ...ownProps, fueltype: getSelectedFueltype(state) };
     return {
         price: getPrice(state, props),
+        region: getRegion(state),
         selectedFueltype: getSelectedFueltype(state),
         statistics: getMostRecentStatistics(state),
     };

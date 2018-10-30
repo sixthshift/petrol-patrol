@@ -6,6 +6,7 @@
     "eslint": "^4.19.1",
     "eslint-plugin-react": "^7.8.2",
     "expo": "^30.0.0",
+    "fast-haversine": "^1.0.0",
     "firebase": "^5.5.5",
     "geofire": "^4.1.2",
     "json-stable-stringify": "^1.0.1",
