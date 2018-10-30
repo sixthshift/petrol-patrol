@@ -4,11 +4,13 @@ import thunk from 'redux-thunk';
 
 import reducer from '../reducers';
 
+const __REMOTEDEV__ = (typeof atob !== 'undefined');
+
 const middleware = [
     thunk
 ];
 
-if (__DEV__) {
+if (__REMOTEDEV__) {
     middleware.push(logger);
 }
 
