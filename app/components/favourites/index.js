@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 
 import Footer from '../footer';
 import Header from '../header';
+import List from '../list';
+import { getFavourites } from '../../selectors/ui';
 
 class Favourites extends React.Component {
     render() {
@@ -16,9 +18,11 @@ class Favourites extends React.Component {
                     showSearch={true}
                 />
                 <Content>
-                    
+                    <List
+                        data={this.props.favourites}
+                    />
                 </Content>
-                <Footer/>
+                <Footer />
             </Container>
         );
     }
@@ -26,7 +30,7 @@ class Favourites extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-
+        favourites: getFavourites(state)
     };
 };
 

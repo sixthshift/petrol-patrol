@@ -5,8 +5,9 @@ import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { fetchPrice } from '../../actions/db';
-import gradiate from './gradient';
+import gradiate from '../utils/gradient';
 import { getRegion, getSelectedBrands, getSelectedFueltype, getPrice, getMostRecentStatistics } from '../../selectors';
+import { colour } from '../utils';
 
 const markerHeight = 36;
 const markerWidth = 48
@@ -33,24 +34,14 @@ class Marker extends React.Component {
     }
 
     onPress() {
-        this.props.navigation.navigate('details', { id: this.props.station.id });
+        const props = {
+            id: this.props.station.id,
+        };
+        this.props.navigation.navigate('details', props);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
         return (this.props !== nextProps || this.state !== nextState);
-    }
-
-    _colour() {
-        const statisticsForSelectedFuelType = _(this.props.statistics).get(this.props.selectedFueltype, null);
-        if (_(this.props.price).isNull() || _(statisticsForSelectedFuelType).isNull()) {
-            return 'grey';
-        } else {
-            const stdev = statisticsForSelectedFuelType.stdev;
-            const mean = statisticsForSelectedFuelType.mean;
-            const lowerBound = mean - stdev * 2;
-            const upperBound = mean + stdev * 2;
-            return gradiate(lowerBound, upperBound, this.props.price.price);
-        }
     }
 
     _update() {
@@ -84,7 +75,7 @@ class Marker extends React.Component {
                         <Svg.Path
                             d="M4,4 L44,4 L44,24 C28,24 28,24 24,32 C20,24 20,24 4,24 z"
                             fill="white"
-                            stroke={this._colour()}
+                            stroke={colour(this.props.price, this.props.statistics)}
                             strokeWidth="2"
                         />
                         <Svg.Text
@@ -105,7 +96,7 @@ class Marker extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const props = { fueltype: getSelectedFueltype(state), ...ownProps };
+    const props = { ...ownProps, fueltype: getSelectedFueltype(state) };
     return {
         price: getPrice(state, props),
         region: getRegion(state),

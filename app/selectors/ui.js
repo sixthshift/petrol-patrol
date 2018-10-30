@@ -1,7 +1,12 @@
 import _ from 'lodash';
 
+import { getStation } from './db';
+
 export const getFavourites = (state) => {
-    return state.ui.favourites;
+    return _(state.ui.favourites).map((stationID) => {
+        const props = { id: stationID };
+        return getStation(state, props);
+    }).value();
 };
 
 export const getRegion = (state) => {

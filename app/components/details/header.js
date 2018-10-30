@@ -17,13 +17,13 @@ const FavouritesButton = (props) => {
     const selected = props.selected;
     if (selected) {
         return (
-            <Button transparent onPress={() => { props.select(props.stationID) }}>
+            <Button transparent onPress={() => { props.select(props.station.id) }}>
                 <Icon type='MaterialIcons' name='favorite' />
             </Button>
         );
     } else {
         return (
-            <Button transparent onPress={() => { props.select(props.stationID) }}>
+            <Button transparent onPress={() => { props.select(props.station.id) }}>
                 <Icon type='MaterialIcons' name='favorite-border' />
             </Button>
         );
@@ -48,7 +48,7 @@ class Header extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        selected: includes(state.ui.favourites, ownProps.stationID),
+        selected: includes(state.ui.favourites, ownProps.station.id),
     };
 };
 

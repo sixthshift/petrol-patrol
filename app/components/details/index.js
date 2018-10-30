@@ -19,7 +19,7 @@ class Details extends React.Component {
         };
         return (
             <Container>
-                <Header />
+                <Header station={this.props.station} />
                 <Content contentContainerStyle={styles.details}>
                     <Card style={[styles.card, styles.info]} transparent={true}>
                         <CardItem>

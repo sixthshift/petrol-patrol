@@ -1,7 +1,6 @@
 import _, { get, last } from 'lodash';
 
 import { hash } from '../utils';
-import { getSelectedFueltype } from "./ui";
 
 export const getBrands = (state) => {
     return state.db.brands;

@@ -1,5 +1,5 @@
 import { Location, Permissions } from 'expo';
-import { isEqual, omit, slice } from 'lodash';
+import { isEqual, omit } from 'lodash';
 import { Container, Content } from 'native-base';
 import React from 'react';
 import ClusteredMapView from 'react-native-maps-super-cluster';
