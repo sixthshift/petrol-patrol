@@ -5,7 +5,6 @@ import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { fetchPrice } from '../../actions/db';
-import gradiate from '../utils/gradient';
 import { getRegion, getSelectedBrands, getSelectedFueltype, getPrice, getMostRecentStatistics } from '../../selectors';
 import { colour } from '../utils';
 

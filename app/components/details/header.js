@@ -4,6 +4,7 @@ import React from 'react';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { selectFavouritesAction } from '../../actions';
+import { isStationFavourited } from '../../selectors';
 
 const BackButton = (props) => {
     return (
@@ -48,7 +49,7 @@ class Header extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        selected: includes(state.ui.favourites, ownProps.station.id),
+        selected: isStationFavourited(state, ownProps),
     };
 };
 

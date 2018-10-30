@@ -33,5 +33,5 @@ export const isFueltypeSelected = (state, props) => {
 
 export const isStationFavourited = (state, props) => {
     const favourites = getFavourites(state);
-
+    return _(favourites).includes(props.station);
 };
