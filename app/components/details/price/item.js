@@ -26,13 +26,13 @@ class PriceListItem extends React.Component {
             return (
                 <View style={{ ...styles.bar, backgroundColor: colour(this.props.price, this.props.statistics) }}>
                     <ListItem style={styles.item}>
-                        <Left>
+                        <Left style={styles.left}>
                             <Body>
                                 <H1>{this.props.price.price}</H1>
                                 <Text note>Last updated {timeDifference}</Text>
                             </Body>
                         </Left>
-                        <Right>
+                        <Right style={styles.right}>
                             <Body>
                                 <H1>{this.props.item.code}</H1>
                                 <Text note>{this.props.item.name}</Text>

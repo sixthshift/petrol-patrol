@@ -15,7 +15,7 @@ export default StyleSheet.create({
         flex: 0,
     },
     list: {
-        flex: 3,
+        flex: 2,
     },
     map: {
         flex: 1,

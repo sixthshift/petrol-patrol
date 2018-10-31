@@ -9,8 +9,7 @@ export default StyleSheet.create({
         backgroundColor: '#FFF',
     },
     left: {
-        flex: 1,
-        flexDirection: 'row',
+        flex: 3,
     },
     right: {
         flex: 2,
