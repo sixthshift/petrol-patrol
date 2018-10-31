@@ -1,7 +1,8 @@
-import { MapView } from 'expo';
+import { Linking, MapView } from 'expo';
 import _ from 'lodash';
-import { Body, Card, Content, CardItem, Left, Text, Container } from 'native-base';
+import { Body, Card, Container, Content, CardItem, Fab, Left, Text, Icon } from 'native-base';
 import React from 'react';
+import { Platform } from 'react-native';
 import { connect } from 'react-redux';
 
 import Header from './header';
@@ -10,6 +11,20 @@ import styles from './styles';
 import PriceList from './price';
 
 class Details extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.onNavigatePress = this.onNavigatePress.bind(this);
+    }
+
+    onNavigatePress() {
+        const daddr = this.props.station.location.latitude + ',' + this.props.station.location.longitude;
+        if (Platform.OS === 'ios') {
+            Linking.openURL(`http://maps.apple.com/?daddr=${daddr}`);
+        } else {
+            Linking.openURL(`http://maps.google.com/?daddr=${daddr}`);
+        }
+    }
 
     render() {
         const region = {
@@ -44,6 +59,12 @@ class Details extends React.Component {
                                 coordinate={this.props.station.location}
                             />
                         </MapView>
+                        <Fab
+                            onPress={this.onNavigatePress}
+                            position={'bottomRight'}
+                        >
+                            <Icon type='MaterialIcons' name='directions' />
+                        </Fab>
                     </Card>
                     <Card style={[styles.card, styles.list]}>
                         <PriceList station={this.props.station} style={styles.list} />
