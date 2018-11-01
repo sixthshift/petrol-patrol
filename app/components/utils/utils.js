@@ -1,5 +1,5 @@
 import fastHaversine from 'fast-haversine';
-import { get, has, isNull, round } from 'lodash';
+import { get, has, isNil, isNull, round } from 'lodash';
 
 import gradiate from './gradient';
 
@@ -49,6 +49,12 @@ export const colour = (price, statistics) => {
  */
 export const haversine = (from, to) => {
     if (isNull(from) || isNull(to)) {
+        return null;
+    }
+    if (isNil(from.latitude) || isNil(from.longitude)) {
+        return null;
+    }
+    if (isNil(to.latitude) || isNil(to.longitude)) {
         return null;
     }
     from = {

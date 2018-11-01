@@ -9,6 +9,10 @@ export const getFavourites = (state) => {
     }).value();
 };
 
+export const getLocation = (state) => {
+    return state.ui.location;
+};
+
 export const getRegion = (state) => {
     return state.ui.region;
 };
