@@ -5,13 +5,13 @@ import React from 'react';
 import ClusteredMapView from 'react-native-maps-super-cluster';
 import { connect } from 'react-redux';
 
-import { setRegionAction } from '../../actions';
+import { setRegionAction, setLocationAction } from '../../actions';
 import Cluster from './cluster';
 import Footer from '../footer';
 import Header from '../header';
 import Marker from './marker';
 import { getStations, getRegion } from '../../selectors';
-import { noLocationPermissions } from './strings';
+import { noLocationPermissions } from '../strings';
 import styles from './styles';
 
 class Map extends React.Component {
@@ -34,6 +34,7 @@ class Map extends React.Component {
                 latitudeDelta: this.props.region.latitudeDelta,
                 longitudeDelta: this.props.region.longitudeDelta,
             };
+            this.props.setLocation(location.coords);
             this._moveToRegion(region);
         } else {
             ToastAndroid.show(noLocationPermissions, ToastAndroid.LONG);
@@ -105,8 +106,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        setLocation: (location) => {
+            dispatch(setLocationAction(location));
+        },
         setRegion: (region) => {
-            dispatch(setRegionAction(region))
+            dispatch(setRegionAction(region));
         }
     };
 }

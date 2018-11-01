@@ -7,7 +7,7 @@ import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { fetchPrice } from '../../actions';
-import { getPrice, getMostRecentStatistics, getSelectedFueltype, getRegion } from '../../selectors';
+import { getLocation, getPrice, getMostRecentStatistics, getRegion, getSelectedFueltype } from '../../selectors';
 import styles from './styles';
 import { colour, haversine } from '../utils';
 
@@ -40,7 +40,7 @@ class Item extends React.Component {
             const address2 = startCase(lowerCase(this.props.station.suburb))
                 + ' ' + this.props.station.postcode
                 + ' ' + this.props.station.state;
-            const from = this.props.region;
+            const from = this.props.location;
             const to = this.props.station.location;
             const distance = haversine(from, to);
             return (
@@ -71,6 +71,7 @@ class Item extends React.Component {
 const mapStateToProps = (state, ownProps) => {
     const props = { ...ownProps, fueltype: getSelectedFueltype(state) };
     return {
+        location: getLocation(state),
         price: getPrice(state, props),
         region: getRegion(state),
         selectedFueltype: getSelectedFueltype(state),
