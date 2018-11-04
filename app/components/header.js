@@ -1,8 +1,11 @@
 import { Font } from "expo";
-import { Button, Header as NBHeader, Input, Icon, Item, Left, Right } from 'native-base';
+import { Button, Header as NBHeader, Input, Icon, Item, Left, Right, Text } from 'native-base';
 import React from 'react';
+import { connect } from 'react-redux';
 import { View } from 'react-native';
 import { withNavigation } from 'react-navigation';
+
+import { getSelectedFueltype } from '../selectors';
 
 const BackButton = (props) => {
     if (props.showBack) {
@@ -32,7 +35,7 @@ const FueltypesButton = (props) => {
     if (props.showFueltypes) {
         return (
             <Button transparent onPress={() => { props.navigation.navigate('fueltypes') }}>
-                <Icon type='Entypo' name='drop' />
+                { props.ready ? <Text>{ props.selectedFueltype }</Text> : <Icon type='Entypo' name='drop' /> }
             </Button>
         );
     } else {
@@ -89,7 +92,7 @@ class Header extends React.Component {
                     </Left>
                     <Right>
                         <BrandsButton {...this.props} />
-                        <FueltypesButton {...this.props} />
+                        <FueltypesButton {...this.props} {...this.state} />
                     </Right>
                 </NBHeader>
                 <SearchBar {...this.props} />
@@ -98,4 +101,10 @@ class Header extends React.Component {
     }
 }
 
-export default withNavigation(Header);
+const mapStateToProps = (state) => {
+    return {
+        selectedFueltype: getSelectedFueltype(state)
+    };
+};
+
+export default withNavigation(connect(mapStateToProps)(Header));
