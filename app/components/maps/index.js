@@ -13,6 +13,7 @@ import Marker from './marker';
 import { getStations, getRegion } from '../../selectors';
 import { noLocationPermissions } from '../strings';
 import styles from './styles';
+import { encompassingRegion } from '../utils';
 
 class Map extends React.Component {
 
@@ -45,10 +46,15 @@ class Map extends React.Component {
         this.props.setRegion(region);
     };
 
+    onSearch = (stations) => {
+        this._moveToRegion(encompassingRegion(stations));
+    }
+
     render() {
         return (
             <Container>
                 <Header
+                    content={this}
                     showBack={false}
                     showBrands={true}
                     showFueltypes={true}

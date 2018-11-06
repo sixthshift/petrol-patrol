@@ -26,10 +26,15 @@ class Favourites extends React.Component {
         }
     };
 
+    onSearch = (stations) => {
+
+    }
+
     render() {
         return (
             <Container>
                 <Header
+                    content={this}
                     showBack={false}
                     showBrands={true}
                     showFueltypes={true}

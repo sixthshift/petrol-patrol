@@ -30,4 +30,5 @@ const sync = () => {
     store.dispatch(fetchStatistics());
 };
 
-export default persistStore(store, null, sync);
+const persistor = persistStore(store, null, sync);
+export default persistor;

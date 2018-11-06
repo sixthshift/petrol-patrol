@@ -1,8 +1,12 @@
 import { Font } from "expo";
-import { Button, Header as NBHeader, Input, Icon, Item, Left, Right } from 'native-base';
+import { Button, Header as NBHeader, Icon, Left, Right } from 'native-base';
 import React from 'react';
+import { connect } from 'react-redux';
 import { View } from 'react-native';
 import { withNavigation } from 'react-navigation';
+
+import { setRegionAction } from "../../actions";
+import Search from './search';
 
 const BackButton = (props) => {
     if (props.showBack) {
@@ -34,21 +38,6 @@ const FueltypesButton = (props) => {
             <Button transparent onPress={() => { props.navigation.navigate('fueltypes') }}>
                 <Icon type='Entypo' name='drop' />
             </Button>
-        );
-    } else {
-        return null;
-    }
-}
-
-const SearchBar = (props) => {
-    if (props.showSearch) {
-        return (
-            <NBHeader searchBar rounded>
-                <Item>
-                    <Icon name='search' />
-                    <Input placeholder='Search' />
-                </Item>
-            </NBHeader>
         );
     } else {
         return null;
@@ -92,10 +81,18 @@ class Header extends React.Component {
                         <FueltypesButton {...this.props} />
                     </Right>
                 </NBHeader>
-                <SearchBar {...this.props} />
+                <Search {...this.props} />
             </View>
         );
     }
 }
 
-export default withNavigation(Header);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setRegion: (region) => {
+            dispatch(setRegionAction(region));
+        }
+    };
+}
+
+export default withNavigation(connect(null, mapDispatchToProps)(Header));
