@@ -1,12 +1,12 @@
 import { Font } from "expo";
-import { Button, Header as NBHeader, Icon, Left, Right } from 'native-base';
+import { Button, Header as NBHeader, Icon, Left, Right, Text } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
 import { withNavigation } from 'react-navigation';
 
-import { setRegionAction } from "../../actions";
 import Search from './search';
+import { getSelectedFueltype } from '../../selectors';
 
 const BackButton = (props) => {
     if (props.showBack) {
@@ -36,7 +36,7 @@ const FueltypesButton = (props) => {
     if (props.showFueltypes) {
         return (
             <Button transparent onPress={() => { props.navigation.navigate('fueltypes') }}>
-                <Icon type='Entypo' name='drop' />
+                {props.ready ? <Text>{props.selectedFueltype}</Text> : <Icon type='Entypo' name='drop' />}
             </Button>
         );
     } else {
@@ -78,7 +78,7 @@ class Header extends React.Component {
                     </Left>
                     <Right>
                         <BrandsButton {...this.props} />
-                        <FueltypesButton {...this.props} />
+                        <FueltypesButton {...this.props} {...this.state} />
                     </Right>
                 </NBHeader>
                 <Search {...this.props} />
@@ -87,12 +87,10 @@ class Header extends React.Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
     return {
-        setRegion: (region) => {
-            dispatch(setRegionAction(region));
-        }
+        selectedFueltype: getSelectedFueltype(state)
     };
-}
+};
 
-export default withNavigation(connect(null, mapDispatchToProps)(Header));
+export default withNavigation(connect(mapStateToProps)(Header));
