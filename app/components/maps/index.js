@@ -18,7 +18,10 @@ import { encompassingRegion } from '../utils';
 class Map extends React.Component {
 
     componentDidMount() {
-        this._getLocationAsync();
+        const getLocation = this.props.navigation.getParam('getLocation', false);
+        if (getLocation) {
+            this._getLocationAsync();
+        }
     }
 
     _moveToRegion(region) {

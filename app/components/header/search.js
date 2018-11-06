@@ -4,7 +4,6 @@ import React from 'react';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import { setRegionAction } from '../../actions';
 import { getStations } from '../../selectors';
 import { noSearchResults } from '../strings';
 
@@ -63,12 +62,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        setRegion: (region) => {
-            dispatch(setRegionAction(region))
-        }
-    };
-};
-
-export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(Search));
+export default withNavigation(connect(mapStateToProps)(Search));

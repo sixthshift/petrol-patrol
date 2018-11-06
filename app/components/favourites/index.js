@@ -1,14 +1,16 @@
 import { Location, Permissions } from 'expo';
 import { Container, Content } from 'native-base';
 import React from 'react';
+import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import { setLocationAction } from '../../actions';
+import { setLocationAction, setRegionAction } from '../../actions';
 import Footer from '../footer';
 import Header from '../header';
 import List from '../list';
 import { getFavourites } from '../../selectors/ui';
 import { noLocationPermissions } from '../strings';
+import { encompassingRegion } from '../utils';
 
 class Favourites extends React.Component {
 
@@ -27,7 +29,13 @@ class Favourites extends React.Component {
     };
 
     onSearch = (stations) => {
-
+        this.props.setRegion(encompassingRegion(stations));
+        const action = StackActions.reset({
+            actions: [NavigationActions.navigate({ routeName: 'maps' })],
+            index: 0,
+            key: null,
+        });
+        this.props.navigation.dispatch(action);
     }
 
     render() {
@@ -61,6 +69,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setLocation: (location) => {
             dispatch(setLocationAction(location));
+        },
+        setRegion: (region) => {
+            dispatch(setRegionAction(region))
         }
     };
 };

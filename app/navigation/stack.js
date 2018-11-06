@@ -26,6 +26,9 @@ export default createStackNavigator(
     },
     {
         initialRouteName: 'maps',
+        initialRouteParams: {
+            getLocation: true
+        },
         headerMode: 'none',
     }
 );
