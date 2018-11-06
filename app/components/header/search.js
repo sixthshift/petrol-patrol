@@ -1,6 +1,7 @@
 import { filter, isEmpty, isEqual, lowerCase, toString, trim } from 'lodash';
 import { Header as NBHeader, Input, Icon, Item } from 'native-base';
 import React from 'react';
+import { ToastAndroid } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 

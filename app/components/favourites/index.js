@@ -1,6 +1,7 @@
 import { Location, Permissions } from 'expo';
 import { Container, Content } from 'native-base';
 import React from 'react';
+import { ToastAndroid } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
