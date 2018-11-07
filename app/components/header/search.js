@@ -6,7 +6,7 @@ import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { getStations } from '../../selectors';
-import { noSearchResults } from '../strings';
+import { noSearchResults, searchPlaceholder } from '../strings';
 
 class Search extends React.Component {
 
@@ -46,7 +46,7 @@ class Search extends React.Component {
                         <Input
                             onChangeText={this.onChangeText}
                             onSubmitEditing={this.search}
-                            placeholder='Search by Postcode or Suburb'
+                            placeholder={searchPlaceholder}
                         />
                     </Item>
                 </NBHeader>
