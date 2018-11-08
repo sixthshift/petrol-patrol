@@ -3,6 +3,7 @@ import moment from 'moment';
 import { Body, Left, ListItem, Right, Text, H1 } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
+import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { fetchPrice } from '../../../actions';
@@ -12,10 +13,23 @@ import { colour } from '../../utils';
 
 class PriceListItem extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.onPress = this.onPress.bind(this);
+    }
+
     componentDidMount() {
         if (_(this.props.price).isNull()) {
             this.props.fetchPrice(this.props.station, this.props.item.code);
         }
+    }
+
+    onPress() {
+        const props = {
+            id: this.props.price.id,
+            fueltype: this.props.price.fueltype,
+        };
+        this.props.navigation.navigate('history', props);
     }
 
     render() {
@@ -25,7 +39,7 @@ class PriceListItem extends React.Component {
             const timeDifference = moment.unix(this.props.price.time).fromNow();
             return (
                 <View style={{ ...styles.bar, backgroundColor: colour(this.props.price, this.props.statistics) }}>
-                    <ListItem style={styles.item}>
+                    <ListItem onPress={this.onPress} style={styles.item}>
                         <Left style={styles.left}>
                             <Body>
                                 <H1>{this.props.price.price}</H1>
@@ -61,4 +75,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PriceListItem);
+export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(PriceListItem));
