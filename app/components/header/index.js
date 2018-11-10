@@ -1,4 +1,5 @@
 import { Font } from "expo";
+import { isEmpty } from 'lodash';
 import { Button, Header as NBHeader, Icon, Left, Right, Text } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -34,11 +35,19 @@ const BrandsButton = (props) => {
 
 const FueltypesButton = (props) => {
     if (props.showFueltypes) {
-        return (
-            <Button transparent onPress={() => { props.navigation.navigate('fueltypes') }}>
-                {props.ready ? <Text>{props.selectedFueltype}</Text> : <Icon type='Entypo' name='drop' />}
-            </Button>
-        );
+        if (props.ready && !isEmpty(props.selectedFueltype)) {
+            return (
+                <Button transparent onPress={() => { props.navigation.navigate('fueltypes') }}>
+                    <Text>{props.selectedFueltype}</Text>
+                </Button>
+            );
+        } else {
+            return (
+                <Button transparent onPress={() => { props.navigation.navigate('fueltypes') }}>
+                    <Icon type='Entypo' name='drop' />
+                </Button>
+            );
+        }
     } else {
         return null;
     }
