@@ -1,7 +1,8 @@
-import { table } from './constants';
 import firebase from 'firebase';
 import Geofire, { distance } from 'geofire';
-import { has, sortBy, values } from 'lodash';
+import { has, isNull, sortBy, values } from 'lodash';
+
+import { table } from './constants';
 import { hash } from '../../utils';
 
 export default class FireDB {
@@ -91,20 +92,19 @@ export default class FireDB {
      * Fetches a list of the current prices for a given station
      * 
      * @param {number} id The id of the station
-     * @returns {[object]} A list of prices associated with the given station
+     * @param {string} fueltype The fueltype to query
+     * @returns {object} The latest price associated with the given station
      */
-    async fetchPrice(id, selectedFueltype) {
-        const key = {
-            id: id,
-            fueltype: selectedFueltype,
-        };
-        const hashID = hash(key);
-        const path = table.prices + '/' + hashID;
-        const snapshot = await this.database.ref(path).once('value');
-        const price = snapshot.val();
-        return price;
+    async fetchPrice(id, fueltype) {
+        const priceHistory = await this.fetchPriceHistory(id, fueltype, 1);
+        return priceHistory;
     }
 
+    /**
+     * Fetches all of the current prices
+     * 
+     * @returns {[object]} The list of all of the current prices
+     */
     async fetchPrices() {
         const snapshot = await this.database.ref(table.prices).once('value');
         const stations = snapshot.val();
@@ -116,10 +116,23 @@ export default class FireDB {
      * 
      * @param {number} id The id of the station
      * @param {string} fueltype The fueltype to query
+     * @param {number} n The number of data points to fetch
      * @returns {[object]} A list of historical prices for the given station and fueltype
      */
-    async fetchPriceHistoryForStation(id, fueltype) {
-
+    async fetchPriceHistory(id, fueltype, n = 1) {
+        const key = {
+            id: id,
+            fueltype: fueltype,
+        };
+        const hashID = hash(key);
+        const path = table.prices + '/' + hashID;
+        const snapshot = await this.database.ref(path).orderByKey().limitToLast(n).once('value');
+        const history = snapshot.val();
+        if (isNull(history)) {
+            return null;
+        } else {
+            return values(history);
+        }
     }
 
     /**
@@ -141,8 +154,10 @@ export default class FireDB {
      * @returns {[object]} The list of stations
      */
     async fetchStations() {
-        const snapshot = await this.database.ref(table.stations).orderByChild('active').equalTo(true).once('value');
-        const stations = snapshot.val();
+        this.database.ref(table.stations).orderByChild('active').equalTo(true).once('value').then((res) => { console.log(res.val()) });
+        const snapshot = this.database.ref(table.stations).orderByChild('active').equalTo(true).once('value');
+        const awaitedsnapshot = await snapshot;
+        const stations = awaitedsnapshot.val();
         return values(sortBy(stations, 'id'));
     }
 

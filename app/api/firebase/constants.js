@@ -3,7 +3,7 @@ export const table = {
     fueltypes: 'fueltypestest',
     hash: 'hash',
     history: 'historytest',
-    prices: 'pricestest',
+    prices: 'prices',
     stations: 'stationstest',
     statistics: 'statistics',
 };

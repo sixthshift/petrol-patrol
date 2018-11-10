@@ -1,4 +1,4 @@
-import _, { get, last } from 'lodash';
+import _, { get, isArray, last } from 'lodash';
 
 import { hash } from '../utils';
 
@@ -31,7 +31,12 @@ export const getPrice = (state, props) => {
         fueltype: props.fueltype,
     };
     const hashID = hash(key);
-    return get(prices, hashID, null);
+    const price = get(prices, hashID, null);
+    if (isArray(price)) {
+        return last(price);
+    } else {
+        return null;
+    }
 };
 
 export const getStatistics = (state) => {
