@@ -16,7 +16,7 @@ const MapsButton = (props) => {
             <Icon type='MaterialIcons' name='map' />
         </Button>
     );
-}
+};
 
 const FavouritesButton = (props) => {
     const onPress = () => {
@@ -24,7 +24,7 @@ const FavouritesButton = (props) => {
             actions: [NavigationActions.navigate({ routeName: 'favourites' })],
             index: 0,
             key: null,
-            });
+        });
         props.navigation.dispatch(action);
     };
     return (
@@ -32,7 +32,23 @@ const FavouritesButton = (props) => {
             <Icon type='MaterialIcons' name='favorite' />
         </Button>
     );
-}
+};
+
+const StatisticsButton = (props) => {
+    const onPress = () => {
+        const action = StackActions.reset({
+            actions: [NavigationActions.navigate({ routeName: 'statistics' })],
+            index: 0,
+            key: null,
+        });
+        props.navigation.dispatch(action);
+    };
+    return (
+        <Button onPress={onPress}>
+            <Icon type='MaterialIcons' name='show-chart' />
+        </Button>
+    );
+};
 
 class Footer extends React.Component {
 
@@ -40,6 +56,7 @@ class Footer extends React.Component {
         return (
             <NBFooter>
                 <FooterTab>
+                    <StatisticsButton {...this.props} />
                     <MapsButton {...this.props} />
                     <FavouritesButton {...this.props} />
                 </FooterTab>
