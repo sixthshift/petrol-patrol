@@ -72,7 +72,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(setLocationAction(location));
         },
         setRegion: (region) => {
-            dispatch(setRegionAction(region))
+            dispatch(setRegionAction(region));
         }
     };
 };

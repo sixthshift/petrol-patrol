@@ -1,4 +1,4 @@
-import _, { clamp, get, isNull, mean, round } from 'lodash';
+import _, { clamp, isEmpty, isNull, mean, round } from 'lodash';
 
 import gradientPalette from '../../constants/gradient';
 
@@ -75,17 +75,14 @@ export const colour = (price, statistics) => {
     const defaultColour = 'grey';
     if (isNull(price)) {
         return defaultColour;
+    }
+    else if (isEmpty(statistics)) {
+        return defaultColour;
     } else {
-        const fueltype = price.fueltype;
-        const statisticForFueltype = get(statistics, fueltype, null);
-        if (isNull(statisticForFueltype)) {
-            return defaultColour;
-        } else {
-            const stdev = statisticForFueltype.stdev;
-            const mean = statisticForFueltype.mean;
-            const lowerBound = mean - stdev * 2;
-            const upperBound = mean + stdev * 2;
-            return gradiate(lowerBound, upperBound, price.price);
-        }
+        const stdev = statistics.stdev;
+        const mean = statistics.mean;
+        const lowerBound = mean - stdev * 2;
+        const upperBound = mean + stdev * 2;
+        return gradiate(lowerBound, upperBound, price.price);
     }
 };

@@ -33,7 +33,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         select: (fueltype) => {
-            dispatch(selectFueltypeAction(fueltype))
+            dispatch(selectFueltypeAction(fueltype));
         }
     };
 };

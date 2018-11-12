@@ -11,13 +11,4 @@ export default StyleSheet.create({
         backgroundColor: colours.primary,
         flex: 1,
     },
-    info: {
-        flex: 0,
-    },
-    list: {
-        flex: 2,
-    },
-    map: {
-        flex: 1,
-    },
 });

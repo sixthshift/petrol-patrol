@@ -63,14 +63,14 @@ const mapStateToProps = (state, ownProps) => {
     const props = { ...ownProps, fueltype: ownProps.item.code };
     return {
         price: getPrice(state, props),
-        statistics: getMostRecentStatistics(state),
+        statistics: getMostRecentStatistics(state, props),
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchPrice: (stationID, fueltype) => {
-            dispatch(fetchPrice(stationID, fueltype))
+            dispatch(fetchPrice(stationID, fueltype));
         }
     };
 };

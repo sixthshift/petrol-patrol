@@ -75,14 +75,14 @@ const mapStateToProps = (state, ownProps) => {
         price: getPrice(state, props),
         region: getRegion(state),
         selectedFueltype: getSelectedFueltype(state),
-        statistics: getMostRecentStatistics(state),
+        statistics: getMostRecentStatistics(state, props),
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchPrice: (stationID, fueltype) => {
-            dispatch(fetchPrice(stationID, fueltype))
+            dispatch(fetchPrice(stationID, fueltype));
         }
     };
 };
