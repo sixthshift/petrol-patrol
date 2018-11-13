@@ -1,11 +1,12 @@
-import _, { isEmpty, last, round } from 'lodash';
+import _, { isEmpty, isUndefined, last, round, values } from 'lodash';
 import { Card, CardItem, Container, Content, H1, Left, Right, Text } from 'native-base';
+import { LineChart } from 'react-native-chart-kit';
 import React from 'react';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { VictoryChart, VictoryArea, VictoryLine, VictoryTheme } from 'victory';
 
 import { fetchStatistics } from '../../actions';
+import Colours from '../../constants/colours';
 import Footer from '../footer';
 import Header from '../header';
 import { encompassingRegion } from '../utils';
@@ -13,6 +14,7 @@ import { getSelectedFueltype, getStatistics } from '../../selectors';
 import styles from './styles';
 
 const emptyStatistics = {
+    distribution: {},
     max: NaN,
     mean: NaN,
     median: NaN,
@@ -20,7 +22,58 @@ const emptyStatistics = {
     stdev: NaN,
 };
 
+const PriceHistoryChart = (props) => {
+    if (isUndefined(props.width)) {
+        return (null);
+    }
+    else if (isEmpty(props.data)) {
+        return (null);
+    } else {
+        const data = {
+            labels: [],
+            datasets: [{
+                data: _(props.data).map('mean').value()
+            }],
+        };
+        return (
+            <LineChart {...props} data={data} />
+        );
+    }
+};
+
+const PriceDistributionChart = (props) => {
+    if (isUndefined(props.width)) {
+        return (null);
+    }
+    else if (isEmpty(props.data.distribution)) {
+        return (null);
+    } else {
+        const data = {
+            labels: [],
+            datasets: [{
+                data: values(_(props.data).get('distribution')),
+            }],
+        };
+        return (
+            <LineChart {...props} data={data} />
+        );
+    }
+};
+
 class Statistics extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            chartWidth: undefined,
+            chartHeight: 250
+        };
+        this.chartConfig = {
+            backgroundGradientFrom: '#FFFFFF',
+            backgroundGradientTo: '#FFFFFF',
+            color: () => (Colours.primary)
+        };
+    }
 
     componentDidMount() {
         this.props.fetchStatistics(30);
@@ -36,9 +89,15 @@ class Statistics extends React.Component {
         this.props.navigation.dispatch(action);
     }
 
+    onLayout = (event) => {
+        if (isUndefined(this.state.chartWidth)) {
+            var { width } = event.nativeEvent.layout;
+            this.setState({ chartWidth: width });
+        }
+    };
+
     render() {
         const mostRecentStatistics = isEmpty(this.props.statistics) ? emptyStatistics : last(this.props.statistics);
-        const data = [{ x: 1, y: 2 }, { x: 2, y: 4 }, { x: 3, y: 7 }, { x: 4, y: 1 }, { x: 5, y: 4 }, { x: 6, y: 7 }, { x: 7, y: 5 }, { x: 8, y: 9 }, { x: 9, y: 3 }, { x: 10, y: 7 }, { x: 11, y: 1 }];
         return (
             <Container>
                 <Header
@@ -67,21 +126,31 @@ class Statistics extends React.Component {
                             <Text>Average Price History</Text>
                         </CardItem>
                         <CardItem>
-                            {/* <VictoryChart
-                                theme={VictoryTheme.material}
-                            >
-                                <VictoryLine
-                                    data={data}
+                            <Content onLayout={this.onLayout}>
+                                <PriceHistoryChart
+                                    bezier
+                                    chartConfig={this.chartConfig}
+                                    data={this.props.statistics}
+                                    height={this.state.chartHeight}
+                                    width={this.state.chartWidth}
                                 />
-                            </VictoryChart> */}
+                            </Content>
                         </CardItem>
                     </Card>
                     <Card style={styles.card}>
                         <CardItem header>
-                            <Text>Price Spread</Text>
+                            <Text>Price Distribution</Text>
                         </CardItem>
                         <CardItem>
-
+                            <Content onLayout={this.onLayout}>
+                                <PriceDistributionChart
+                                    bezier
+                                    chartConfig={this.chartConfig}
+                                    data={mostRecentStatistics}
+                                    height={this.state.chartHeight}
+                                    width={this.state.chartWidth}
+                                />
+                            </Content>
                         </CardItem>
                     </Card>
                     <Card style={styles.card}>
@@ -90,6 +159,9 @@ class Statistics extends React.Component {
                         </CardItem>
                         <CardItem>
 
+                        </CardItem>
+                        <CardItem footer>
+                            <Text note>Sourced from NRMA</Text>
                         </CardItem>
                     </Card>
                 </Content>
