@@ -1,7 +1,6 @@
 import { Card, CardItem, Container, Content } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
-import { VictoryChart, VictoryLine } from 'victory';
 
 import Header from '../header';
 
