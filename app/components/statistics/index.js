@@ -1,11 +1,12 @@
-import _, { isEmpty, isUndefined, last, round, values } from 'lodash';
+import _, { first, isEmpty, isNaN, isUndefined, keys, last, round, size, values } from 'lodash';
+import moment from 'moment';
 import { Card, CardItem, Container, Content, H1, Left, Right, Text } from 'native-base';
 import { LineChart } from 'react-native-chart-kit';
 import React from 'react';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import { fetchStatistics } from '../../actions';
+import { fetchStatistics, setRegionAction } from '../../actions';
 import Colours from '../../constants/colours';
 import Footer from '../footer';
 import Header from '../header';
@@ -29,10 +30,19 @@ const PriceHistoryChart = (props) => {
     else if (isEmpty(props.data)) {
         return (null);
     } else {
+        const sparseData = _(props.data).chunk(48).map((chunk) => {
+            return first(chunk);
+        }).value();
+        const interval = size(sparseData) / props.chartConfig.nLabelX;
+        const labels = _(sparseData).chunk(interval).map((chunk) => {
+            const timestamp = first(chunk).timestamp;
+            return moment.unix(timestamp).fromNow();
+        }).value();
+        const preparedData = _(sparseData).map('mean').value();
         const data = {
-            labels: [],
+            labels: labels,
             datasets: [{
-                data: _(props.data).map('mean').value()
+                data: preparedData,
             }],
         };
         return (
@@ -48,10 +58,16 @@ const PriceDistributionChart = (props) => {
     else if (isEmpty(props.data.distribution)) {
         return (null);
     } else {
+        const distributionKeys = keys(_(props.data).get('distribution'));
+        const interval = size(distributionKeys) / props.chartConfig.nLabelX;
+        const labels = _(distributionKeys).chunk(interval).map((chunk) => {
+            return first(chunk);
+        }).value();
+        const preparedData = values(_(props.data).get('distribution'));
         const data = {
-            labels: [],
+            labels: labels,
             datasets: [{
-                data: values(_(props.data).get('distribution')),
+                data: preparedData,
             }],
         };
         return (
@@ -71,12 +87,13 @@ class Statistics extends React.Component {
         this.chartConfig = {
             backgroundGradientFrom: '#FFFFFF',
             backgroundGradientTo: '#FFFFFF',
-            color: () => (Colours.primary)
+            color: () => (Colours.primary),
+            nLabelX: 3,
         };
     }
 
     componentDidMount() {
-        this.props.fetchStatistics(30);
+        this.props.fetchStatistics(2 * 24 * 30);
     }
 
     onSearch = (stations) => {
@@ -117,7 +134,7 @@ class Statistics extends React.Component {
                                 <H1>{this.props.fueltype}</H1>
                             </Left>
                             <Right>
-                                <H1>{round(mostRecentStatistics.mean, 1)}</H1>
+                                <H1>{isNaN(mostRecentStatistics.mean) ? null : round(mostRecentStatistics.mean, 1)}</H1>
                             </Right>
                         </CardItem>
                     </Card>
