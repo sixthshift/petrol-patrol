@@ -1,3 +1,4 @@
+import { filter, map } from 'lodash';
 import { Container, Content, List as NBList } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -10,8 +11,14 @@ import { isActive } from '../utils';
 
 class List extends React.Component {
 
+    renderItem(item) {
+        return (
+            <Item key={item.code} item={item} />
+        );
+    }
+
     render() {
-        const activeList = this.props.list.filter(isActive);
+        const activeList = filter(this.props.list, isActive);
         return (
             <Container>
                 <Header
@@ -20,7 +27,7 @@ class List extends React.Component {
                 />
                 <Content style={styles.container}>
                     <NBList>
-                        {activeList.map((item) => (<Item key={item.code} item={item} />))}
+                        {map(activeList, this.renderItem)}
                     </NBList>
                 </Content>
             </Container>
