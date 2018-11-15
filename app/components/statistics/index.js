@@ -7,6 +7,7 @@ import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { fetchStatistics, setRegionAction } from '../../actions';
+import { scheduleFrequency, statisticsHistoryRange } from '../../constants/app';
 import Colours from '../../constants/colours';
 import Footer from '../footer';
 import Header from '../header';
@@ -22,6 +23,8 @@ const emptyStatistics = {
     min: NaN,
     stdev: NaN,
 };
+
+const dataPoints = scheduleFrequency * 24 * statisticsHistoryRange;
 
 const PriceHistoryChart = (props) => {
     if (isUndefined(props.width)) {
@@ -93,7 +96,9 @@ class Statistics extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchStatistics(2 * 24 * 30);
+        if (size(this.props.statistics) < dataPoints) {
+            this.props.fetchStatistics(dataPoints);
+        }
     }
 
     onSearch = (stations) => {
