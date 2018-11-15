@@ -19,7 +19,6 @@ class List extends React.Component {
 
     render() {
         const activeList = filter(this.props.list, isActive);
-
         return (
             <Container>
                 <Header
