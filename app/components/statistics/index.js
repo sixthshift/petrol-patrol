@@ -1,6 +1,6 @@
 import _, { first, isEmpty, isNaN, isUndefined, keys, last, round, size, values } from 'lodash';
 import moment from 'moment';
-import { Card, CardItem, Container, Content, H1, Left, Right, Text } from 'native-base';
+import { Card, CardItem, Container, Content, H1, H2, H3, Left, Right, Text } from 'native-base';
 import { LineChart } from 'react-native-chart-kit';
 import React from 'react';
 import { StackActions, NavigationActions } from 'react-navigation';
@@ -132,20 +132,41 @@ class Statistics extends React.Component {
                 <Content style={styles.content}>
                     <Card style={styles.card}>
                         <CardItem header>
-                            <Text>Average Price</Text>
+                            <Left>
+                                <Text>Average</Text>
+                            </Left>
+                            <Right>
+                                <Text>Deviation</Text>
+                            </Right>
                         </CardItem>
                         <CardItem>
                             <Left>
-                                <H1>{this.props.fueltype}</H1>
+                                <H1>{isNaN(mostRecentStatistics.mean) ? null : round(mostRecentStatistics.mean, 1)}</H1>
                             </Left>
                             <Right>
-                                <H1>{isNaN(mostRecentStatistics.mean) ? null : round(mostRecentStatistics.mean, 1)}</H1>
+                                <H1>{isNaN(mostRecentStatistics.stdev) ? null : round(mostRecentStatistics.stdev, 1)}</H1>
+                            </Right>
+                        </CardItem>
+                        <CardItem header>
+                            <Left>
+                                <Text>Min</Text>
+                            </Left>
+                            <Right>
+                                <Text>Max</Text>
+                            </Right>
+                        </CardItem>
+                        <CardItem>
+                            <Left>
+                                <H1>{isNaN(mostRecentStatistics.min) ? null : round(mostRecentStatistics.min, 1)}</H1>
+                            </Left>
+                            <Right>
+                                <H1>{isNaN(mostRecentStatistics.max) ? null : round(mostRecentStatistics.max, 1)}</H1>
                             </Right>
                         </CardItem>
                     </Card>
                     <Card style={styles.card}>
                         <CardItem header>
-                            <Text>Average Price History</Text>
+                            <Text>Price History</Text>
                         </CardItem>
                         <CardItem>
                             <Content onLayout={this.onLayout}>
