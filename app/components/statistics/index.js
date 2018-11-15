@@ -1,6 +1,6 @@
 import _, { first, isEmpty, isNaN, isUndefined, keys, last, round, size, values } from 'lodash';
 import moment from 'moment';
-import { Card, CardItem, Container, Content, H1, H2, H3, Left, Right, Text } from 'native-base';
+import { Card, CardItem, Container, Content, H1, Left, Right, Text } from 'native-base';
 import { LineChart } from 'react-native-chart-kit';
 import React from 'react';
 import { StackActions, NavigationActions } from 'react-navigation';
