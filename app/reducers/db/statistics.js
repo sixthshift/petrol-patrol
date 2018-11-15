@@ -1,4 +1,4 @@
-import { has, isEqual, unionWith } from 'lodash';
+import { has } from 'lodash';
 import { handleAction } from 'redux-actions';
 
 import { STATISTICS_FETCH } from '../../actions';
@@ -9,7 +9,7 @@ export default handleAction(
     STATISTICS_FETCH,
     (state, action) => {
         if (has(action, 'payload')) {
-            return unionWith(state, action.payload, isEqual);
+            return action.payload;
         } else {
             return state;
         }
