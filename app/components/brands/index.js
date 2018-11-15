@@ -11,11 +11,15 @@ import { isActive } from '../utils';
 
 class List extends React.Component {
 
-    render() {
-        const activeList = filter(this.props.list, isActive);
-        renderItem = (item) => (
+    renderItem(item) {
+        return (
             <Item key={item.name} item={item} />
         );
+    }
+
+    render() {
+        const activeList = filter(this.props.list, isActive);
+
         return (
             <Container>
                 <Header
@@ -24,7 +28,7 @@ class List extends React.Component {
                 />
                 <Content style={styles.container}>
                     <NBList>
-                        {map(activeList, renderItem)}
+                        {map(activeList, this.renderItem)}
                     </NBList>
                 </Content>
             </Container>
