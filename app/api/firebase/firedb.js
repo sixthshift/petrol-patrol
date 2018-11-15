@@ -154,7 +154,6 @@ export default class FireDB {
      * @returns {[object]} The list of stations
      */
     async fetchStations() {
-        this.database.ref(table.stations).orderByChild('active').equalTo(true).once('value').then((res) => { console.log(res.val()) });
         const snapshot = this.database.ref(table.stations).orderByChild('active').equalTo(true).once('value');
         const awaitedsnapshot = await snapshot;
         const stations = awaitedsnapshot.val();
