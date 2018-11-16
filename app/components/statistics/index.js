@@ -1,7 +1,6 @@
 import _, { first, isEmpty, isNaN, isUndefined, keys, last, round, size, values } from 'lodash';
 import moment from 'moment';
 import { Card, CardItem, Container, Content, H1, Left, Right, Text } from 'native-base';
-import { LineChart } from 'react-native-chart-kit';
 import React from 'react';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -11,6 +10,7 @@ import { scheduleFrequency, statisticsHistoryRange } from '../../constants/app';
 import Colours from '../../constants/colours';
 import Footer from '../footer';
 import Header from '../header';
+import LineChart from './LineChart';
 import { encompassingRegion } from '../utils';
 import { getSelectedFueltype, getStatistics } from '../../selectors';
 import styles from './styles';
@@ -171,7 +171,6 @@ class Statistics extends React.Component {
                         <CardItem>
                             <Content onLayout={this.onLayout}>
                                 <PriceHistoryChart
-                                    bezier
                                     chartConfig={this.chartConfig}
                                     data={this.props.statistics}
                                     height={this.state.chartHeight}
@@ -187,7 +186,6 @@ class Statistics extends React.Component {
                         <CardItem>
                             <Content onLayout={this.onLayout}>
                                 <PriceDistributionChart
-                                    bezier
                                     chartConfig={this.chartConfig}
                                     data={mostRecentStatistics}
                                     height={this.state.chartHeight}
