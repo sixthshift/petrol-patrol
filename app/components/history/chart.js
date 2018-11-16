@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import { AbstractChart } from 'react-native-chart-kit';
 import { Circle, G, Path, Polygon, Polyline, Rect, Svg, } from 'react-native-svg'
 
-class LineChart extends AbstractChart {
+class Chart extends AbstractChart {
 
     renderDots = config => {
         const { data, width, height, paddingTop, paddingRight } = config
@@ -215,4 +215,4 @@ class LineChart extends AbstractChart {
     }
 }
 
-export default LineChart
+export default Chart

@@ -10,7 +10,7 @@ import { scheduleFrequency, statisticsHistoryRange } from '../../constants/app';
 import Colours from '../../constants/colours';
 import Footer from '../footer';
 import Header from '../header';
-import LineChart from './LineChart';
+import Chart from './chart';
 import { encompassingRegion } from '../utils';
 import { getSelectedFueltype, getStatistics } from '../../selectors';
 import styles from './styles';
@@ -49,7 +49,7 @@ const PriceHistoryChart = (props) => {
             }],
         };
         return (
-            <LineChart {...props} data={data} />
+            <Chart {...props} data={data} />
         );
     }
 };
@@ -74,7 +74,7 @@ const PriceDistributionChart = (props) => {
             }],
         };
         return (
-            <LineChart {...props} data={data} />
+            <Chart {...props} data={data} />
         );
     }
 };

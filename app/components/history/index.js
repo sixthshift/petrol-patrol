@@ -1,14 +1,14 @@
-import { isEmpty, isUndefined } from 'lodash';
+import { isEmpty, isUndefined, times } from 'lodash';
 import { Card, CardItem, Container, Content } from 'native-base';
 import React from 'react';
-import { LineChart } from 'react-native-chart-kit';
 import { connect } from 'react-redux';
 
+import Chart from './chart';
 import Colours from '../../constants/colours';
 import Header from '../header';
 import styles from './styles';
 
-const Chart = (props) => {
+const PriceChart = (props) => {
     if (isUndefined(props.width)) {
         return (null);
     }
@@ -23,7 +23,7 @@ const Chart = (props) => {
             }],
         };
         return (
-            <LineChart {...props} data={data} />
+            <Chart {...props} data={data} />
         );
     }
 };
@@ -52,6 +52,7 @@ class History extends React.Component {
     };
 
     render() {
+        const data = times(1000, (i) => (i));
         return (
             <Container>
                 <Header
@@ -61,10 +62,9 @@ class History extends React.Component {
                     <Card style={styles.card}>
                         <CardItem>
                             <Content onLayout={this.onLayout}>
-                                <Chart
-                                    bezier
+                                <PriceChart
                                     chartConfig={this.chartConfig}
-                                    data={[]}
+                                    data={data}
                                     height={this.state.chartHeight}
                                     width={this.state.chartWidth}
                                 />
