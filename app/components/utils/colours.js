@@ -1,6 +1,8 @@
-import _, { clamp, isEmpty, isNil, mean, round } from 'lodash';
+import _, { clamp, isEmpty, isNaN, isNil, mean, round } from 'lodash';
 
 import gradientPalette from '../../constants/gradient';
+
+const defaultColour = 'grey';
 
 /**
  * Converts a hex colour value to its RGB components
@@ -61,7 +63,11 @@ const gradiate = (min, max, gradiable) => {
     r = round(r);
     g = round(g);
     b = round(b);
-    return rgb2Hex(r, g, b);
+    if (isNaN(r) || isNaN(g) || isNaN(b)) {
+        return defaultColour;
+    } else {
+        return rgb2Hex(r, g, b);
+    }
 }
 
 /**
@@ -72,7 +78,6 @@ const gradiate = (min, max, gradiable) => {
  * @returns {string} The gradiated colour for the price
  */
 export const colour = (price, statistics) => {
-    const defaultColour = 'grey';
     if (isNil(price)) {
         return defaultColour;
     }
