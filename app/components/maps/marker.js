@@ -1,5 +1,5 @@
 import { MapView, Svg } from 'expo';
-import _, { inRange, isNil, isUndefined } from 'lodash';
+import { inRange, isNil, isUndefined } from 'lodash';
 import React from 'react';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -61,7 +61,6 @@ class Marker extends React.Component {
     }
 
     render() {
-        if (_(this.props.selectedBrands).includes(this.props.station.brand)) {
             return (
                 <MapView.Marker {...this.markerProps}>
                     <Svg
@@ -87,9 +86,6 @@ class Marker extends React.Component {
                     </Svg>
                 </MapView.Marker>
             );
-        } else {
-            return (null);
-        }
     }
 }
 
