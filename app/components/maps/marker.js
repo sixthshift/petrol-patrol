@@ -1,5 +1,5 @@
 import { MapView, Svg } from 'expo';
-import _, { inRange } from 'lodash';
+import _, { inRange, isNil, isUndefined } from 'lodash';
 import React from 'react';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -39,12 +39,9 @@ class Marker extends React.Component {
         this.props.navigation.navigate('details', props);
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return (this.props !== nextProps || this.state !== nextState);
-    }
-
     _update() {
-        if (_(this.props.price).isNull() && this.withinRegion()) {
+        if (isUndefined(this.props.price) && this.withinRegion()) {
+            // If price is null, it means it is still fetching, don't fetch again
             this.props.fetchPrice(this.props.station, this.props.selectedFueltype);
         }
     }
@@ -84,7 +81,9 @@ class Marker extends React.Component {
                             x={markerWidth / 2}
                             y={markerHeight / 2}
                             textAnchor="middle"
-                        >{this.props.price == null ? 'N/A' : this.props.price.price}</Svg.Text>
+                        >
+                            {isNil(this.props.price) ? 'N/A' : this.props.price.price}
+                        </Svg.Text>
                     </Svg>
                 </MapView.Marker>
             );

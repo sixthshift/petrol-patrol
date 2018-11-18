@@ -1,8 +1,9 @@
-import { first, isNull, map } from 'lodash';
+import { first, get, isNull, map } from 'lodash';
 import { createAction } from 'redux-actions';
 
 import firedb from '../api/firebase';
 import { selectBrandsAction, selectFueltypeAction } from './ui';
+import { hash } from '../utils';
 
 export const BRANDS_FETCH = 'BRANDS_FETCH';
 export const fetchBrandsAction = createAction(BRANDS_FETCH);
@@ -11,7 +12,7 @@ export const FUELTYPES_FETCH = 'FUELTYPES_FETCH';
 export const fetchFueltypesAction = createAction(FUELTYPES_FETCH);
 
 export const PRICE_FETCH = 'PRICE_FETCH';
-export const fetchPriceAction = createAction(PRICE_FETCH);
+export const fetchPriceAction = createAction(PRICE_FETCH, (payload) => (get(payload, 'payload')), (payload) => (get(payload, 'meta')));
 
 export const STATIONS_FETCH = 'STATIONS_FETCH';
 export const fetchStationsAction = createAction(STATIONS_FETCH);
@@ -47,14 +48,32 @@ export function fetchFueltypes() {
 
 export function fetchPrice(station, fueltype) {
     return (dispatch) => {
-        firedb.fetchPrice(station.id, fueltype)
+        const key = {
+            id: station.id,
+            fueltype: fueltype,
+        };
+        const hashID = hash(key);
+        const payload = {
+            payload: [],
+            meta: { hash: hashID, success: null }
+        };
+        dispatch(fetchPriceAction(payload));
+        firedb.fetchPrice(hashID)
             .then((response) => {
                 if (!isNull(response)) {
-                    dispatch(fetchPriceAction(response, { success: true }));
+                    const payload = {
+                        payload: response,
+                        meta: { hash: hashID, success: true }
+                    };
+                    dispatch(fetchPriceAction(payload));
                 }
             })
             .catch((error) => {
-                dispatch(fetchPriceAction(error, { success: false }));
+                const payload = {
+                    payload: error,
+                    meta: { hash: hashID, success: false }
+                };
+                dispatch(fetchPriceAction(payload));
             });
     };
 }

@@ -91,12 +91,11 @@ export default class FireDB {
     /**
      * Fetches a list of the current prices for a given station
      * 
-     * @param {number} id The id of the station
-     * @param {string} fueltype The fueltype to query
+     * @param {string} hashID The hash key identifying the price data point
      * @returns {object} The latest price associated with the given station
      */
-    async fetchPrice(id, fueltype) {
-        const priceHistory = await this.fetchPriceHistory(id, fueltype, 1);
+    async fetchPrice(hashID) {
+        const priceHistory = await this.fetchPriceHistory(hashID, 1);
         return priceHistory;
     }
 
@@ -107,24 +106,18 @@ export default class FireDB {
      */
     async fetchPrices() {
         const snapshot = await this.database.ref(table.prices).once('value');
-        const stations = snapshot.val();
-        return values(stations);
+        const prices = snapshot.val();
+        return values(prices);
     }
 
     /**
      * Fetches a list of historical prices for a given station and fueltype
      * 
-     * @param {number} id The id of the station
-     * @param {string} fueltype The fueltype to query
+     * @param {string} hashID The hash key identifying the price data point
      * @param {number} n The number of data points to fetch
      * @returns {[object]} A list of historical prices for the given station and fueltype
      */
-    async fetchPriceHistory(id, fueltype, n = 1) {
-        const key = {
-            id: id,
-            fueltype: fueltype,
-        };
-        const hashID = hash(key);
+    async fetchPriceHistory(hashID, n = 1) {
         const path = table.prices + '/' + hashID;
         const snapshot = await this.database.ref(path).orderByKey().limitToLast(n).once('value');
         const history = snapshot.val();

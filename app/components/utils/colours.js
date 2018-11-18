@@ -1,4 +1,4 @@
-import _, { clamp, isEmpty, isNull, mean, round } from 'lodash';
+import _, { clamp, isEmpty, isNil, mean, round } from 'lodash';
 
 import gradientPalette from '../../constants/gradient';
 
@@ -73,7 +73,7 @@ const gradiate = (min, max, gradiable) => {
  */
 export const colour = (price, statistics) => {
     const defaultColour = 'grey';
-    if (isNull(price)) {
+    if (isNil(price)) {
         return defaultColour;
     }
     else if (isEmpty(statistics)) {

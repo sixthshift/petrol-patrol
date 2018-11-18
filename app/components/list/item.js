@@ -1,4 +1,4 @@
-import _, { lowerCase, startCase } from 'lodash';
+import { isNil, isUndefined, lowerCase, startCase } from 'lodash';
 import moment from 'moment';
 import { Body, H1, Left, ListItem, Right, Text } from 'native-base';
 import React from 'react';
@@ -19,7 +19,7 @@ class Item extends React.Component {
     }
 
     componentDidMount() {
-        if (_(this.props.price).isNull()) {
+        if (isUndefined(this.props.price)) {
             this.props.fetchPrice(this.props.station, this.props.selectedFueltype);
         }
     }
@@ -32,7 +32,7 @@ class Item extends React.Component {
     }
 
     render() {
-        if (_(this.props.price).isNull()) {
+        if (isNil(this.props.price)) {
             return (null);
         } else {
             const timeDifference = moment.unix(this.props.price.time).fromNow();

@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { isNil, isUndefined } from 'lodash';
 import moment from 'moment';
 import { Body, Left, ListItem, Right, Text, H1 } from 'native-base';
 import React from 'react';
@@ -19,7 +19,7 @@ class PriceListItem extends React.Component {
     }
 
     componentDidMount() {
-        if (_(this.props.price).isNull()) {
+        if (isUndefined(this.props.price)) {
             this.props.fetchPrice(this.props.station, this.props.item.code);
         }
     }
@@ -33,9 +33,9 @@ class PriceListItem extends React.Component {
     }
 
     render() {
-        if (_(this.props.price).isNull()) {
+        if (isNil(this.props.price)) {
             return (null);
-        } else {
+        } else {            
             const timeDifference = moment.unix(this.props.price.time).fromNow();
             return (
                 <View style={{ ...styles.bar, backgroundColor: colour(this.props.price, this.props.statistics) }}>
