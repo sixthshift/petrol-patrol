@@ -3,48 +3,60 @@ import React from 'react';
 import { withNavigation, StackActions, NavigationActions } from 'react-navigation';
 
 const MapsButton = (props) => {
+    const routeName = 'maps';
+    const active = props.navigation.state.routeName === routeName;
     const onPress = () => {
-        const action = StackActions.reset({
-            actions: [NavigationActions.navigate({ routeName: 'maps' })],
-            index: 0,
-            key: null,
-        });
-        props.navigation.dispatch(action);
+        if (!active) {
+            const action = StackActions.reset({
+                actions: [NavigationActions.navigate({ routeName: routeName })],
+                index: 0,
+                key: null,
+            });
+            props.navigation.dispatch(action);
+        }
     };
     return (
-        <Button onPress={onPress}>
+        <Button active={active} onPress={onPress}>
             <Icon type='MaterialIcons' name='map' />
         </Button>
     );
 };
 
 const FavouritesButton = (props) => {
+    const routeName = 'favourites';
+    const active = props.navigation.state.routeName === routeName;
     const onPress = () => {
-        const action = StackActions.reset({
-            actions: [NavigationActions.navigate({ routeName: 'favourites' })],
-            index: 0,
-            key: null,
-        });
-        props.navigation.dispatch(action);
+        if (!active) {
+            const action = StackActions.reset({
+                actions: [NavigationActions.navigate({ routeName: routeName })],
+                index: 0,
+                key: null,
+            });
+            props.navigation.dispatch(action);
+        }
     };
     return (
-        <Button onPress={onPress}>
+        <Button active={active} onPress={onPress}>
             <Icon type='MaterialIcons' name='favorite' />
         </Button>
     );
 };
 
 const StatisticsButton = (props) => {
+    const routeName = 'statistics';
+    const active = props.navigation.state.routeName === routeName;
     const onPress = () => {
-        const action = StackActions.reset({
-            actions: [NavigationActions.navigate({ routeName: 'statistics' })],
-            index: 0,
-            key: null,
-        });
-        props.navigation.dispatch(action);
+        if (!active) {
+            const action = StackActions.reset({
+                actions: [NavigationActions.navigate({ routeName: routeName })],
+                index: 0,
+                key: null,
+            });
+            props.navigation.dispatch(action);
+        }
     };
     return (
-        <Button onPress={onPress}>
+        <Button active={active} onPress={onPress}>
             <Icon type='MaterialIcons' name='show-chart' />
         </Button>
     );
