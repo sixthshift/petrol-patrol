@@ -1,5 +1,4 @@
 import { Linking, MapView } from 'expo';
-import _ from 'lodash';
 import { Body, Card, Container, Content, CardItem, Fab, Left, Text, Icon } from 'native-base';
 import React from 'react';
 import { Platform } from 'react-native';

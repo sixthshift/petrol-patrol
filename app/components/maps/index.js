@@ -1,5 +1,5 @@
 import { Location, Permissions } from 'expo';
-import _, { filter, includes, isEqual, omit } from 'lodash';
+import { filter, includes, isEqual, omit } from 'lodash';
 import { Container, Content } from 'native-base';
 import React from 'react';
 import { ToastAndroid } from 'react-native';
@@ -100,7 +100,7 @@ class Map extends React.Component {
         />;
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
+    shouldComponentUpdate(nextProps) {
         const before = omit(this.props, 'region');
         const after = omit(nextProps, 'region');
         return !isEqual(before, after);
