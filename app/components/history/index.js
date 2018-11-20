@@ -1,4 +1,4 @@
-import { isEmpty, isUndefined, times } from 'lodash';
+import { isEmpty, isUndefined } from 'lodash';
 import { Card, CardItem, Container, Content } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -52,7 +52,7 @@ class History extends React.Component {
     };
 
     render() {
-        const data = times(1000, (i) => (i));
+        const data = [1, 4, 5, 1, 6, 7, 3, 4, 5, 3, 8, 2];
         return (
             <Container>
                 <Header
@@ -77,7 +77,7 @@ class History extends React.Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = () => {
     return {
 
     };
