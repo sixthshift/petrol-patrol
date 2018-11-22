@@ -1,18 +1,18 @@
-import _, { first, isEmpty, isNaN, isUndefined, keys, last, round, size, values } from 'lodash';
+import _, { first, isEmpty, isNaN, isUndefined, keys, last, map, round, size, values } from 'lodash';
 import moment from 'moment';
 import { Card, CardItem, Container, Content, H1, Left, Right, Text } from 'native-base';
 import React from 'react';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import { fetchStatistics, setRegionAction } from '../../actions';
+import { fetchAnalysis, fetchStatistics, setRegionAction } from '../../actions';
+import Chart from './chart';
 import { scheduleFrequency, statisticsHistoryRange } from '../../constants/app';
 import Colours from '../../constants/colours';
 import Footer from '../footer';
 import Header from '../header';
-import Chart from './chart';
 import { encompassingRegion } from '../utils';
-import { getSelectedFueltype, getStatistics } from '../../selectors';
+import { getSelectedFueltype, getStatistics, getAnalysis } from '../../selectors';
 import styles from './styles';
 
 const emptyStatistics = {
@@ -98,6 +98,9 @@ class Statistics extends React.Component {
     componentDidMount() {
         if (size(this.props.statistics) < dataPoints) {
             this.props.fetchStatistics(dataPoints);
+        }
+        if (isEmpty(this.props.analysis)) {
+            this.props.fetchAnalysis();
         }
     }
 
@@ -195,11 +198,10 @@ class Statistics extends React.Component {
                         </CardItem>
                     </Card>
                     <Card style={styles.card}>
-                        <CardItem header>
-                            <Text>Analysis</Text>
-                        </CardItem>
                         <CardItem>
-
+                            {map(this.props.analysis, (line, i) => (
+                                <Text key={i}>{line}</Text>
+                            ))}
                         </CardItem>
                         <CardItem footer>
                             <Text note>Sourced from NRMA</Text>
@@ -213,17 +215,22 @@ class Statistics extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+    const fueltype = getSelectedFueltype(state);
     const props = {
-        fueltype: getSelectedFueltype(state)
+        fueltype: fueltype,
     };
     return {
+        analysis: getAnalysis(state),
+        fueltype: fueltype,
         statistics: getStatistics(state, props),
-        fueltype: getSelectedFueltype(state),
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        fetchAnalysis: () => {
+            dispatch(fetchAnalysis());
+        },
         fetchStatistics: (n) => {
             dispatch(fetchStatistics(n));
         },

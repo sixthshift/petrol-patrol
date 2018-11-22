@@ -3,7 +3,6 @@ import Geofire, { distance } from 'geofire';
 import { has, isNull, sortBy, values } from 'lodash';
 
 import { table } from './constants';
-import { hash } from '../../utils';
 
 export default class FireDB {
 
@@ -53,6 +52,18 @@ export default class FireDB {
             radius: radius
         });
         return geoQuery;
+    }
+
+    /**
+     * Fetches the latest analysis stored in the Firebase Database
+     * 
+     * @returns {object} The analysis data
+     * 
+     */
+    async fetchAnalysis() {
+        const snapshot = await this.database.ref(table.analysis).limitToLast(1).once('value');
+        const analysis = snapshot.val();
+        return values(analysis);
     }
 
     /**
@@ -154,14 +165,26 @@ export default class FireDB {
     }
 
     /**
+     * Fetches statistics at a given timestamp
+     * 
+     * @param {number} timestamp The unix timestamp to fetch from in seconds
+     */
+    async fetchStatistic(timestamp) {
+        const path = table.statistics + '/' + timestamp;
+        const snapshot = await this.database.ref(path).once('value');
+        const statistic = snapshot.val();
+        return statistic;
+    }
+
+    /**
      * Fetches the n most recent statistics values stored in the Firebase Database
      * 
-     * @param {*} n The number of most recent data points to query
+     * @param {number} n The number of most recent data points to query
      */
     async fetchStatistics(n = 1) {
         const snapshot = await this.database.ref(table.statistics).limitToLast(n).once('value');
         const statistics = snapshot.val();
-        return values(sortBy(statistics, 'timestamp'));
+        return values(statistics);
     }
 
     /**

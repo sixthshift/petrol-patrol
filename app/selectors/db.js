@@ -2,6 +2,10 @@ import _, { get, isArray, isEmpty, last, map } from 'lodash';
 
 import { hash } from '../utils';
 
+export const getAnalysis = (state) => {
+    return state.db.analysis;
+};
+
 export const getBrands = (state) => {
     return state.db.brands;
 };

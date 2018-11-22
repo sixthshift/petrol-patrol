@@ -5,6 +5,9 @@ import firedb from '../api/firebase';
 import { selectBrandsAction, selectFueltypeAction } from './ui';
 import { hash } from '../utils';
 
+export const ANALYSIS_FETCH = 'ANALYSIS_FETCH';
+export const fetchAnalysisAction = createAction(ANALYSIS_FETCH);
+
 export const BRANDS_FETCH = 'BRANDS_FETCH';
 export const fetchBrandsAction = createAction(BRANDS_FETCH);
 
@@ -19,6 +22,18 @@ export const fetchStationsAction = createAction(STATIONS_FETCH);
 
 export const STATISTICS_FETCH = 'STATISTICS_FETCH';
 export const fetchStatisticsAction = createAction(STATISTICS_FETCH);
+
+export function fetchAnalysis() {
+    return (dispatch) => {
+        firedb.fetchAnalysis()
+            .then((response) => {
+                dispatch(fetchAnalysisAction(response, { success: true }));
+            })
+            .catch((error) => {
+                dispatch(fetchAnalysisAction(error, { success: false }));
+            });
+    };
+}
 
 export function fetchBrands() {
     return (dispatch) => {

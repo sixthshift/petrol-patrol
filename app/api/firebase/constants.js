@@ -1,4 +1,5 @@
 export const table = {
+    analysis: 'analysis',
     brands: 'brandstest',
     fueltypes: 'fueltypestest',
     hash: 'hash',

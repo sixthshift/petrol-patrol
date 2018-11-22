@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
+import analysisReducer from './analysis';
 import brandsReducer from './brands';
 import fueltypesReducer from './fueltypes';
 import pricesReducer from './prices';
@@ -11,11 +12,12 @@ import statisticsReducer from './statistics';
 const persistConfig = {
     key: 'db',
     storage: storage,
-    blacklist: ['prices'],
+    blacklist: ['analysis', 'prices'],
 };
 
 const reducer = combineReducers(
     {
+        analysis: analysisReducer,
         brands: brandsReducer,
         fueltypes: fueltypesReducer,
         prices: pricesReducer,
