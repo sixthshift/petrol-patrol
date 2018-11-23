@@ -12,7 +12,7 @@ import statisticsReducer from './statistics';
 const persistConfig = {
     key: 'db',
     storage: storage,
-    blacklist: ['analysis', 'prices'],
+    blacklist: ['analysis', 'prices', 'statistics'],
 };
 
 const reducer = combineReducers(

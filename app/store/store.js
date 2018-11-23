@@ -14,7 +14,7 @@ if (__REMOTEDEV__) {
     middleware.push(logger);
 }
 
-export default store = createStore(
+export default createStore(
     reducer,
     applyMiddleware(...middleware)
 );

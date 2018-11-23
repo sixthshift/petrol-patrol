@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import { fetchAnalysis, fetchStatistics, setRegionAction } from '../../actions';
 import Chart from './chart';
-import { scheduleFrequency, statisticsHistoryRange } from '../../constants/app';
+import { statisticsHistoryRange } from '../../constants/app';
 import Colours from '../../constants/colours';
 import Footer from '../footer';
 import Header from '../header';
@@ -24,7 +24,7 @@ const emptyStatistics = {
     stdev: NaN,
 };
 
-const dataPoints = scheduleFrequency * 24 * statisticsHistoryRange;
+const dataPoints = statisticsHistoryRange;
 
 const PriceHistoryChart = (props) => {
     if (isUndefined(props.width)) {
@@ -33,15 +33,12 @@ const PriceHistoryChart = (props) => {
     else if (isEmpty(props.data)) {
         return (null);
     } else {
-        const sparseData = _(props.data).chunk(48).map((chunk) => {
-            return first(chunk);
-        }).value();
-        const interval = size(sparseData) / props.chartConfig.nLabelX;
-        const labels = _(sparseData).chunk(interval).map((chunk) => {
+        const interval = size(props.data) / props.chartConfig.nLabelX;
+        const labels = _(props.data).chunk(interval).map((chunk) => {
             const timestamp = first(chunk).timestamp;
             return moment.unix(timestamp).fromNow();
         }).value();
-        const preparedData = _(sparseData).map('mean').value();
+        const preparedData = _(props.data).map('mean').value();
         const data = {
             labels: labels,
             datasets: [{
@@ -174,10 +171,12 @@ class Statistics extends React.Component {
                         <CardItem>
                             <Content onLayout={this.onLayout}>
                                 <PriceHistoryChart
+                                    bezier
                                     chartConfig={this.chartConfig}
                                     data={this.props.statistics}
                                     height={this.state.chartHeight}
                                     width={this.state.chartWidth}
+                                    withDots={false}
                                 />
                             </Content>
                         </CardItem>
@@ -189,6 +188,7 @@ class Statistics extends React.Component {
                         <CardItem>
                             <Content onLayout={this.onLayout}>
                                 <PriceDistributionChart
+                                    bezier
                                     chartConfig={this.chartConfig}
                                     data={mostRecentStatistics}
                                     height={this.state.chartHeight}

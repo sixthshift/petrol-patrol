@@ -1,4 +1,5 @@
-import { first, get, isNull, map } from 'lodash';
+import { first, get, isNull, map, times } from 'lodash';
+import moment from 'moment';
 import { createAction } from 'redux-actions';
 
 import firedb from '../api/firebase';
@@ -107,12 +108,20 @@ export function fetchStations() {
 
 export function fetchStatistics(n = 1) {
     return (dispatch) => {
-        firedb.fetchStatistics(n)
-            .then((response) => {
-                dispatch(fetchStatisticsAction(response, { success: true }));
-            })
-            .catch((error) => {
-                dispatch(fetchStatisticsAction(error, { success: false }));
-            });
+        const now = moment().startOf('day');
+
+        const intervals = times(n, () => {
+            return now.subtract(1, 'days').unix();
+        });
+
+        map(intervals, (interval) => {
+            firedb.fetchStatistic(interval)
+                .then((response) => {
+                    dispatch(fetchStatisticsAction(response, { success: true }));
+                })
+                .catch((error) => {
+                    dispatch(fetchStatisticsAction(error, { success: false }));
+                });
+        });
     };
 }
