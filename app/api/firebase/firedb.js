@@ -1,5 +1,4 @@
 import firebase from 'firebase';
-import Geofire, { distance } from 'geofire';
 import { has, isNull, sortBy, values } from 'lodash';
 
 import { table } from './constants';
@@ -14,7 +13,6 @@ export default class FireDB {
                 this.auth.signInAnonymously();
             }
             this.database = firebase.database();
-            this.geofire = new Geofire(this.database.ref(table.stations));
         } else {
             throw new TypeError('Invalid credentials');
         }
@@ -32,26 +30,6 @@ export default class FireDB {
             && has(credentials, 'authDomain')
             && has(credentials, 'databaseURL')
             && has(credentials, 'storageBucket');
-    }
-
-    /**
-     * Creates a geoquery object initialised with the given region
-     * 
-     * @param {object} region The current region 
-     * @returns {object} The GeoQuery object
-     */
-    createGeoQuery(region) {
-        const latitude = region.latitude;
-        const longitude = region.longitude;
-        const radius = distance(
-            [latitude, longitude],
-            [latitude + region.latitudeDelta, longitude + region.longitudeDelta]
-        );
-        const geoQuery = this.geofire.query({
-            center: [latitude, longitude],
-            radius: radius
-        });
-        return geoQuery;
     }
 
     /**
@@ -100,37 +78,27 @@ export default class FireDB {
     }
 
     /**
-     * Fetches a list of the current prices for a given station
      * 
      * @param {string} hashID The hash key identifying the price data point
-     * @returns {object} The latest price associated with the given station
+     * @returns {object} The latest price associated with the given hash
      */
     async fetchPrice(hashID) {
-        const priceHistory = await this.fetchPriceHistory(hashID, 1);
-        return priceHistory;
-    }
-
-    /**
-     * Fetches all of the current prices
-     * 
-     * @returns {[object]} The list of all of the current prices
-     */
-    async fetchPrices() {
-        const snapshot = await this.database.ref(table.prices).once('value');
-        const prices = snapshot.val();
-        return values(prices);
+        const path = table.prices + '/' + hashID;
+        const snapshot = await this.database.ref(path).orderByKey().limitToLast(1).once('value');
+        const price = snapshot.val();
+        return values(price);
     }
 
     /**
      * Fetches a list of historical prices for a given station and fueltype
      * 
      * @param {string} hashID The hash key identifying the price data point
-     * @param {number} n The number of data points to fetch
+     * @param {number} timestamp The timestamp to fetch prices after
      * @returns {[object]} A list of historical prices for the given station and fueltype
      */
-    async fetchPriceHistory(hashID, n = 1) {
+    async fetchPriceHistory(hashID, timestamp) {
         const path = table.prices + '/' + hashID;
-        const snapshot = await this.database.ref(path).orderByKey().limitToLast(n).once('value');
+        const snapshot = await this.firebase.database.ref(path).orderByKey().startAt(timestamp).once('value');
         const history = snapshot.val();
         if (isNull(history)) {
             return null;
@@ -185,26 +153,5 @@ export default class FireDB {
         const snapshot = await this.database.ref(table.statistics).limitToLast(n).once('value');
         const statistics = snapshot.val();
         return values(statistics);
-    }
-
-    /**
-     * Updates a geoquery with the new region
-     * 
-     * @param {object} geoQuery The geoquery to be updated
-     * @param {object} region The region to update the geoquery to
-     */
-    updateGeoQuery(geoQuery, region) {
-        const latitude = region.latitude;
-        const longitude = region.longitude;
-        if (region.latitudeDelta !== undefined && region.longitudeDelta !== undefined) {
-            const radius = distance(
-                [latitude, longitude],
-                [latitude + region.latitudeDelta, longitude + region.longitudeDelta]
-            );
-            geoQuery.updateCriteria({
-                center: [latitude, longitude],
-                radius: radius
-            });
-        }
     }
 }
