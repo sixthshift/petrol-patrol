@@ -1,4 +1,4 @@
-import _, { get, isArray, isEmpty, last, map } from 'lodash';
+import _, { get, isArray, isEmpty, isNil, last, map } from 'lodash';
 
 import { hash } from '../utils';
 
@@ -29,6 +29,15 @@ export const getPrices = (state) => {
 };
 
 export const getPrice = (state, props) => {
+    const price = getPriceHistory(state, props);
+    if (isNil(price)) {
+        return price;
+    } else {
+        return last(price);
+    }
+};
+
+export const getPriceHistory = (state, props) => {
     const prices = getPrices(state);
     const key = {
         id: props.station.id,
@@ -40,7 +49,7 @@ export const getPrice = (state, props) => {
         return null;
     }
     else if (isArray(price) && !isEmpty(price)) {
-        return last(price);
+        return price;
     } else {
         return undefined;
     }

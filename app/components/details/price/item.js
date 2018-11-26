@@ -26,7 +26,7 @@ class PriceListItem extends React.Component {
 
     onPress() {
         const props = {
-            id: this.props.price.id,
+            station: this.props.station,
             fueltype: this.props.price.fueltype,
         };
         this.props.navigation.navigate('history', props);
@@ -35,7 +35,7 @@ class PriceListItem extends React.Component {
     render() {
         if (isNil(this.props.price)) {
             return (null);
-        } else {            
+        } else {
             const timeDifference = moment.unix(this.props.price.time).fromNow();
             return (
                 <View style={{ ...styles.bar, backgroundColor: colour(this.props.price, this.props.statistics) }}>

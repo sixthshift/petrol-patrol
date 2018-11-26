@@ -82,6 +82,50 @@ export function fetchPrice(station, fueltype) {
                         meta: { hash: hashID, success: true }
                     };
                     dispatch(fetchPriceAction(payload));
+                } else {
+                    const payload = {
+                        payload: response,
+                        meta: { hash: hashID, success: false }
+                    }
+                    dispatch(fetchPriceAction(payload));
+                }
+            })
+            .catch((error) => {
+                const payload = {
+                    payload: error,
+                    meta: { hash: hashID, success: false }
+                };
+                dispatch(fetchPriceAction(payload));
+            });
+    };
+}
+
+export function fetchPriceHistory(station, fueltype, timestamp) {
+    return (dispatch) => {
+        const key = {
+            id: station.id,
+            fueltype: fueltype,
+        };
+        const hashID = hash(key);
+        const payload = {
+            payload: [],
+            meta: { hash: hashID, success: null }
+        };
+        dispatch(fetchPriceAction(payload));
+        firedb.fetchPriceHistory(hashID, timestamp)
+            .then((response) => {
+                if (!isNull(response)) {
+                    const payload = {
+                        payload: response,
+                        meta: { hash: hashID, success: true }
+                    };
+                    dispatch(fetchPriceAction(payload));
+                } else {
+                    const payload = {
+                        payload: response,
+                        meta: { hash: hashID, success: false }
+                    };
+                    dispatch(fetchPriceAction(payload));
                 }
             })
             .catch((error) => {

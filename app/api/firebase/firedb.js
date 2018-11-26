@@ -86,7 +86,11 @@ export default class FireDB {
         const path = table.prices + '/' + hashID;
         const snapshot = await this.database.ref(path).orderByKey().limitToLast(1).once('value');
         const price = snapshot.val();
-        return values(price);
+        if (isNull(price)) {
+            return null;
+        } else {
+            return values(price);
+        }
     }
 
     /**
@@ -98,7 +102,7 @@ export default class FireDB {
      */
     async fetchPriceHistory(hashID, timestamp) {
         const path = table.prices + '/' + hashID;
-        const snapshot = await this.firebase.database.ref(path).orderByKey().startAt(timestamp).once('value');
+        const snapshot = await this.database.ref(path).orderByChild('time').startAt(timestamp).once('value');
         const history = snapshot.val();
         if (isNull(history)) {
             return null;

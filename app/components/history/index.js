@@ -1,11 +1,15 @@
-import { isEmpty, isUndefined } from 'lodash';
+import { isEmpty, isUndefined, map } from 'lodash';
+import moment from 'moment';
 import { Card, CardItem, Container, Content } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { fetchPriceHistory } from '../../actions';
+import { priceHistoryRange } from '../../constants/app';
 import Chart from './chart';
 import Colours from '../../constants/colours';
 import Header from '../header';
+import { getPriceHistory } from '../../selectors';
 import styles from './styles';
 
 const PriceChart = (props) => {
@@ -15,7 +19,7 @@ const PriceChart = (props) => {
     else if (isEmpty(props.data)) {
         return (null);
     } else {
-        const preparedData = props.data;
+        const preparedData = map(props.data, 'price');
         const data = {
             labels: [],
             datasets: [{
@@ -44,6 +48,11 @@ class History extends React.Component {
         };
     }
 
+    componentDidMount() {
+        const timestamp = moment().subtract(priceHistoryRange, 'days').unix();
+        this.props.fetchPriceHistory(this.props.station, this.props.fueltype, timestamp);
+    }
+
     onLayout = (event) => {
         if (isUndefined(this.state.chartWidth)) {
             var { width } = event.nativeEvent.layout;
@@ -52,7 +61,6 @@ class History extends React.Component {
     };
 
     render() {
-        const data = [1, 4, 5, 1, 6, 7, 3, 4, 5, 3, 8, 2];
         return (
             <Container>
                 <Header
@@ -64,7 +72,7 @@ class History extends React.Component {
                             <Content onLayout={this.onLayout}>
                                 <PriceChart
                                     chartConfig={this.chartConfig}
-                                    data={data}
+                                    data={this.props.prices}
                                     height={this.state.chartHeight}
                                     width={this.state.chartWidth}
                                 />
@@ -77,10 +85,20 @@ class History extends React.Component {
     }
 }
 
-const mapStateToProps = () => {
+const mapStateToProps = (state, ownProps) => {
+    const props = ownProps.navigation.state.params;
     return {
-
+        prices: getPriceHistory(state, props),
+        ...props,
     };
 };
 
-export default connect(mapStateToProps)(History);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchPriceHistory: (station, fueltype, timestamp) => {
+            dispatch(fetchPriceHistory(station, fueltype, timestamp));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(History);
