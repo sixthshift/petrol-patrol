@@ -36,7 +36,7 @@ class PriceListItem extends React.Component {
         if (isNil(this.props.price)) {
             return (null);
         } else {
-            const timeDifference = moment.unix(this.props.price.time).fromNow();
+            const timeDifference = moment.unix(this.props.price.timestamp).fromNow();
             return (
                 <View style={{ ...styles.bar, backgroundColor: colour(this.props.price, this.props.statistics) }}>
                     <ListItem onPress={this.onPress} style={styles.item}>

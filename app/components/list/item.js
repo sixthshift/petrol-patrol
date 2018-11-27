@@ -35,7 +35,7 @@ class Item extends React.Component {
         if (isNil(this.props.price)) {
             return (null);
         } else {
-            const timeDifference = moment.unix(this.props.price.time).fromNow();
+            const timeDifference = moment.unix(this.props.price.timestamp).fromNow();
             const address1 = this.props.station.name;
             const address2 = startCase(lowerCase(this.props.station.suburb))
                 + ' ' + this.props.station.postcode

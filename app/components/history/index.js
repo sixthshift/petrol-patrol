@@ -11,6 +11,7 @@ import Colours from '../../constants/colours';
 import Header from '../header';
 import { getPriceHistory } from '../../selectors';
 import styles from './styles';
+import { accumulatedRatio } from './utils';
 
 const PriceChart = (props) => {
     if (isUndefined(props.width)) {
@@ -20,10 +21,12 @@ const PriceChart = (props) => {
         return (null);
     } else {
         const preparedData = map(props.data, 'price');
+        const ratio = accumulatedRatio(map(props.data, 'timestamp'));
         const data = {
             labels: [],
             datasets: [{
                 data: preparedData,
+                ratio: ratio,
             }],
         };
         return (

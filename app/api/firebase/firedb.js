@@ -102,7 +102,7 @@ export default class FireDB {
      */
     async fetchPriceHistory(hashID, timestamp) {
         const path = table.prices + '/' + hashID;
-        const snapshot = await this.database.ref(path).orderByChild('time').startAt(timestamp).once('value');
+        const snapshot = await this.database.ref(path).orderByChild('timestamp').startAt(timestamp).once('value');
         const history = snapshot.val();
         if (isNull(history)) {
             return null;
