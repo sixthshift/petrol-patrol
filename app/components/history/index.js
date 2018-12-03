@@ -9,6 +9,7 @@ import { priceHistoryRange } from '../../constants/app';
 import Chart from './chart';
 import Colours from '../../constants/colours';
 import Header from '../header';
+import PriceList from './price';
 import { getPriceHistory } from '../../selectors';
 import styles from './styles';
 import { accumulatedRatio } from './utils';
@@ -81,6 +82,9 @@ class History extends React.Component {
                                 />
                             </Content>
                         </CardItem>
+                    </Card>
+                    <Card style={styles.card}>
+                        <PriceList list={this.props.prices} />
                     </Card>
                 </Content>
             </Container>

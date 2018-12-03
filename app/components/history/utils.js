@@ -4,7 +4,7 @@ import moment from 'moment';
 const ratio = (arr) => {
     const range = last(arr) - first(arr);
     const equalInterval = range / size(arr);
-    let proportion = [0];
+    const proportion = [0];
     for (let i = 1; i < size(arr); i++) {
         proportion.push(arr[i] - arr[i - 1]);
     }
