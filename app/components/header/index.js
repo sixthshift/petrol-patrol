@@ -69,7 +69,7 @@ class Header extends React.Component {
         };
     }
 
-    async componentWillMount() {
+    async componentDidMount() {
         // This is needed for text in the header as an error will occur
         await Font.loadAsync({
             Roboto: require("native-base/Fonts/Roboto.ttf"),
