@@ -1,3 +1,4 @@
+import { initial, map, tail, zip } from 'lodash';
 import objectHash from 'object-hash';
 import stringify from 'json-stable-stringify';
 
@@ -10,4 +11,15 @@ import stringify from 'json-stable-stringify';
 export const hash = (data) => {
     const serialisedData = stringify(data);
     return objectHash(serialisedData);
+};
+
+/**
+ * Generates consecutive pairs of the input list
+ * 
+ * @param {[object]} arr The array to pair up
+ * @returns {[object]} A new Array with paired values
+ */
+export const pairwise = (arr) => {
+    const pairs = initial(zip(arr, tail(arr)));
+    return map(pairs);
 };
