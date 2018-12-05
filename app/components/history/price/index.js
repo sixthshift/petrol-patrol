@@ -12,15 +12,9 @@ class PriceList extends React.Component {
     }
 
     render() {
-        let nowPrice = undefined;
-        if (!isEmpty(this.props.list)) {
-            nowPrice = { ...last(this.props.list) };
-            nowPrice.timestamp = moment().unix();
-        }
-        const list = isUndefined(nowPrice) ? this.props.list : [...this.props.list, nowPrice];
         return (
             <FlatList
-                data={list}
+                data={this.props.list}
                 inverted
                 keyExtractor={(item) => { return item.timestamp.toString(); }}
                 renderItem={this.renderItem}
