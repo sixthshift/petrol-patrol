@@ -33,7 +33,7 @@ export default createStackNavigator(
         },
     },
     {
-        initialRouteName: 'maps',
+        initialRouteName: 'statistics',
         initialRouteParams: {
             getLocation: true
         },

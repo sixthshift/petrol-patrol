@@ -1,4 +1,4 @@
-import { initial, map, tail, zip } from 'lodash';
+import { floor, initial, isNumber, map, tail, times, zip } from 'lodash';
 import objectHash from 'object-hash';
 import stringify from 'json-stable-stringify';
 
@@ -11,6 +11,27 @@ import stringify from 'json-stable-stringify';
 export const hash = (data) => {
     const serialisedData = stringify(data);
     return objectHash(serialisedData);
+};
+
+/**
+ * Generates a series of equal intervals for a start-end boundary (inclusive)
+ * 
+ * @param {number} start The lower boundary of the interval range
+ * @param {number} end The upper boundary of the interval range
+ * @param {number} n The number of intervals to partition into
+ * @returns {[number]} An array containing the intervals
+ */
+export const intervalise = (start, end, n) => {
+    if (isNumber(start) && isNumber(end) && isNumber(n)) {
+        const difference = end - start;
+        const equalInterval = floor(difference / n);
+        const intervals = times(n, (index) => {
+            return start + (index * equalInterval);
+        });
+        return intervals;
+    } else {
+        return [];
+    }
 };
 
 /**

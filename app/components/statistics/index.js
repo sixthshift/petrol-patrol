@@ -1,12 +1,12 @@
-import _, { first, isEmpty, isNaN, isUndefined, keys, last, map, round, size, values } from 'lodash';
-import moment from 'moment';
+import { isEmpty, isNaN, isUndefined, last, map, round, size } from 'lodash';
 import { Card, CardItem, Container, Content, H1, Left, Right, Text } from 'native-base';
 import React from 'react';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { fetchAnalysis, fetchStatistics, setRegionAction } from '../../actions';
-import Chart from './chart';
+import DistributionChart from './chart/distribution';
+import HistoryChart from './chart/history';
 import { statisticsHistoryRange } from '../../constants/app';
 import Colours from '../../constants/colours';
 import Footer from '../footer';
@@ -25,56 +25,6 @@ const emptyStatistics = {
 };
 
 const dataPoints = statisticsHistoryRange;
-
-const PriceHistoryChart = (props) => {
-    if (isUndefined(props.width)) {
-        return (null);
-    }
-    else if (isEmpty(props.data)) {
-        return (null);
-    } else {
-        const interval = size(props.data) / props.chartConfig.nLabelX;
-        const labels = _(props.data).chunk(interval).map((chunk) => {
-            const timestamp = first(chunk).timestamp;
-            return moment.unix(timestamp).fromNow();
-        }).value();
-        const preparedData = _(props.data).map('mean').value();
-        const data = {
-            labels: labels,
-            datasets: [{
-                data: preparedData,
-            }],
-        };
-        return (
-            <Chart {...props} data={data} />
-        );
-    }
-};
-
-const PriceDistributionChart = (props) => {
-    if (isUndefined(props.width)) {
-        return (null);
-    }
-    else if (isEmpty(props.data.distribution)) {
-        return (null);
-    } else {
-        const distributionKeys = keys(_(props.data).get('distribution'));
-        const interval = size(distributionKeys) / props.chartConfig.nLabelX;
-        const labels = _(distributionKeys).chunk(interval).map((chunk) => {
-            return first(chunk);
-        }).value();
-        const preparedData = values(_(props.data).get('distribution'));
-        const data = {
-            labels: labels,
-            datasets: [{
-                data: preparedData,
-            }],
-        };
-        return (
-            <Chart {...props} data={data} />
-        );
-    }
-};
 
 class Statistics extends React.Component {
 
@@ -170,13 +120,8 @@ class Statistics extends React.Component {
                         </CardItem>
                         <CardItem>
                             <Content onLayout={this.onLayout}>
-                                <PriceHistoryChart
-                                    bezier
-                                    chartConfig={this.chartConfig}
+                                <HistoryChart
                                     data={this.props.statistics}
-                                    height={this.state.chartHeight}
-                                    width={this.state.chartWidth}
-                                    withDots={false}
                                 />
                             </Content>
                         </CardItem>
@@ -187,12 +132,8 @@ class Statistics extends React.Component {
                         </CardItem>
                         <CardItem>
                             <Content onLayout={this.onLayout}>
-                                <PriceDistributionChart
-                                    bezier
-                                    chartConfig={this.chartConfig}
+                                <DistributionChart
                                     data={mostRecentStatistics}
-                                    height={this.state.chartHeight}
-                                    width={this.state.chartWidth}
                                 />
                             </Content>
                         </CardItem>
