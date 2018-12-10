@@ -12,21 +12,17 @@ const nYAxis = 5;
 
 class HistoryChart extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.xAxis = intervalise(
-            get(minBy(props.data, 'timestamp'), 'timestamp', undefined),
-            get(maxBy(props.data, 'timestamp'), 'timestamp', undefined),
+    render() {
+        const xAxis = intervalise(
+            get(minBy(this.props.data, 'timestamp'), 'timestamp', undefined),
+            get(maxBy(this.props.data, 'timestamp'), 'timestamp', undefined),
             nXAxis
         );
-        this.yAxis = intervalise(
-            get(minBy(props.data, 'mean'), 'mean', undefined),
-            get(maxBy(props.data, 'mean'), 'mean', undefined),
+        const yAxis = intervalise(
+            get(minBy(this.props.data, 'mean'), 'mean', undefined),
+            get(maxBy(this.props.data, 'mean'), 'mean', undefined),
             nYAxis
         );
-    }
-
-    render() {
         return (
             <View style={{ height: 250 }}>
                 <LineChart
@@ -52,7 +48,7 @@ class HistoryChart extends React.Component {
                         left: 20,
                         right: 20,
                     }}
-                    data={this.xAxis}
+                    data={xAxis}
                     formatLabel={(value) => (moment.unix(value).format("D/M"))}
                     xAccessor={({ item }) => (item)}
                 />

@@ -2,7 +2,7 @@ import { isEmpty, maxBy, minBy, } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { View } from 'react-native';
-import { LineChart, XAxis } from 'react-native-svg-charts';
+import { Grid, LineChart, XAxis } from 'react-native-svg-charts';
 
 import Colours from '../../constants/colours';
 import { intervalise } from '../../utils';
@@ -36,6 +36,7 @@ class Chart extends React.Component {
                         xAccessor={({ item }) => (item.timestamp)}
                         yAccessor={({ item }) => (item.price)}
                     >
+                        <Grid />
                     </LineChart>
                     <XAxis
                         contentInset={{

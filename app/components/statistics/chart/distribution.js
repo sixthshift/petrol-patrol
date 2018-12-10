@@ -1,4 +1,4 @@
-import { reduce } from 'lodash';
+import { get, maxBy, minBy, reduce, toNumber } from 'lodash';
 import React from 'react';
 import { View } from 'react-native';
 import { Grid, LineChart, XAxis, YAxis } from 'react-native-svg-charts';
@@ -11,16 +11,21 @@ const nYAxis = 5;
 
 class DistributionChart extends React.Component {
 
-    constructor(props) {
-        super(props);
-
-    }
-
     render() {
         const distribution = reduce(this.props.data.distribution, (accumulator, value, key) => {
-            accumulator.push({ index: key, value: value });
+            accumulator.push({ index: toNumber(key), value: value });
             return accumulator;
         }, []);
+        const xAxis = intervalise(
+            get(minBy(distribution, 'index'), 'index', undefined),
+            get(maxBy(distribution, 'index'), 'index', undefined),
+            nXAxis
+        );
+        const yAxis = intervalise(
+            get(minBy(distribution, 'value'), 'value', undefined),
+            get(maxBy(distribution, 'value'), 'value', undefined),
+            nYAxis
+        );
         return (
             <View style={{ height: 250 }}>
                 <LineChart
@@ -41,8 +46,17 @@ class DistributionChart extends React.Component {
                 >
                     <Grid />
                 </LineChart>
+                <XAxis
+                    contentInset={{
+                        left: 20,
+                        right: 20,
+                    }}
+                    data={xAxis}
+                    formatLabel={(value) => (value)}
+                    xAccessor={({ item }) => (item)}
+                />
             </View>
-        )
+        );
     }
 }
 

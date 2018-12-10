@@ -116,7 +116,9 @@ class Statistics extends React.Component {
                     </Card>
                     <Card style={styles.card}>
                         <CardItem header>
-                            <Text>Price History</Text>
+                            <Content>
+                                <Text>Average Price History</Text>
+                            </Content>
                         </CardItem>
                         <CardItem>
                             <Content onLayout={this.onLayout}>
@@ -128,7 +130,10 @@ class Statistics extends React.Component {
                     </Card>
                     <Card style={styles.card}>
                         <CardItem header>
-                            <Text>Price Distribution</Text>
+                            <Content>
+                                <Text>Price Distribution</Text>
+                                <Text note>Current spread of prices across the state</Text>
+                            </Content>
                         </CardItem>
                         <CardItem>
                             <Content onLayout={this.onLayout}>
