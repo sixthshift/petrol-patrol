@@ -1,15 +1,6 @@
-import _, { get, isArray, isEmpty, isNil, last, map } from 'lodash';
+import _, { get, isArray, isEmpty, isNil, isUndefined, last } from 'lodash';
 
 import { hash } from '../utils';
-
-const emptyStatistics = {
-    distribution: {},
-    max: NaN,
-    mean: NaN,
-    median: NaN,
-    min: NaN,
-    stdev: NaN,
-};
 
 export const getAnalysis = (state) => {
     return state.db.analysis;
@@ -67,9 +58,10 @@ export const getPriceHistory = (state, props) => {
 export const getStatistics = (state, props) => {
     const statistics = state.db.statistics;
     const fueltype = props.fueltype;
-    return map(statistics, (statistic) => {
-        return get(statistic, fueltype, emptyStatistics);
-    });
+    return _(statistics)
+        .map((statistic) => (get(statistic, fueltype, undefined)))
+        .reject(isUndefined)
+        .value();
 };
 
 export const getMostRecentStatistics = (state, props) => {
