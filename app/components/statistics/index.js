@@ -132,7 +132,7 @@ class Statistics extends React.Component {
                         <CardItem header>
                             <Content>
                                 <Text>Price Distribution</Text>
-                                <Text note>Current spread of prices across the state</Text>
+                                <Text note>Current spread of prices seen at service stations across the state</Text>
                             </Content>
                         </CardItem>
                         <CardItem>

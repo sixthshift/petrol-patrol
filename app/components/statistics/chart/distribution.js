@@ -9,6 +9,9 @@ import { intervalise } from '../../../utils';
 const nXAxis = 5;
 const nYAxis = 5;
 
+const yAxisWidth = 30;
+const xAxisHeight = 30;
+
 class DistributionChart extends React.Component {
 
     render() {
@@ -27,25 +30,35 @@ class DistributionChart extends React.Component {
             nYAxis
         );
         return (
-            <View style={{ height: 250 }}>
-                <LineChart
-                    contentInset={{
-                        top: 20,
-                        bottom: 20,
-                    }}
-                    data={distribution}
-                    style={{
-                        flex: 1,
-                    }}
-                    svg={{
-                        stroke: Colours.primary,
-                        strokeWidth: 3,
-                    }}
-                    xAccessor={({ item }) => (item.index)}
-                    yAccessor={({ item }) => (item.value)}
-                >
-                    <Grid />
-                </LineChart>
+            <View>
+                <View style={{ height: 250, flexDirection: 'row' }}>
+                    <YAxis
+                        contentInset={{
+                            top: 10,
+                            bottom: 10,
+                        }}
+                        data={yAxis}
+                        style={{ width: yAxisWidth }}
+                    />
+                    <LineChart
+                        contentInset={{
+                            top: 20,
+                            bottom: 20,
+                        }}
+                        data={distribution}
+                        style={{
+                            flex: 1,
+                        }}
+                        svg={{
+                            stroke: Colours.primary,
+                            strokeWidth: 3,
+                        }}
+                        xAccessor={({ item }) => (item.index)}
+                        yAccessor={({ item }) => (item.value)}
+                    >
+                        <Grid />
+                    </LineChart>
+                </View>
                 <XAxis
                     contentInset={{
                         left: 20,
@@ -53,9 +66,10 @@ class DistributionChart extends React.Component {
                     }}
                     data={xAxis}
                     formatLabel={(value) => (value)}
+                    style={{ height: xAxisHeight, marginLeft: yAxisWidth }}
                     xAccessor={({ item }) => (item)}
                 />
-            </View>
+            </View >
         );
     }
 }

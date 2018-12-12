@@ -24,7 +24,7 @@ export const hash = (data) => {
 export const intervalise = (start, end, n) => {
     if (isNumber(start) && isNumber(end) && isNumber(n)) {
         const difference = end - start;
-        const equalInterval = floor(difference / n);
+        const equalInterval = (difference / (n - 1));
         const intervals = times(n, (index) => {
             return start + (index * equalInterval);
         });
