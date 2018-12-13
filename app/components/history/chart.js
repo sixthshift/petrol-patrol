@@ -1,9 +1,10 @@
-import { get, isEmpty, maxBy, minBy, } from 'lodash';
+import { get, isEmpty, maxBy, minBy } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { View } from 'react-native';
 import { Grid, LineChart, XAxis, YAxis } from 'react-native-svg-charts';
 
+import { Dots } from '../chart/decorators';
 import Colours from '../../constants/colours';
 import { intervalise } from '../../utils';
 
@@ -34,16 +35,18 @@ class Chart extends React.Component {
                     <View style={{ height: 250, flexDirection: 'row' }}>
                         <YAxis
                             contentInset={{
-                                top: 20,
                                 bottom: 20,
+                                top: 20,
                             }}
                             data={yAxis}
                             style={{ width: yAxisWidth }}
                         />
                         <LineChart
                             contentInset={{
-                                top: 20,
                                 bottom: 20,
+                                left: 20,
+                                right: 20,
+                                top: 20,
                             }}
                             data={this.props.data}
                             style={{
@@ -56,6 +59,10 @@ class Chart extends React.Component {
                             xAccessor={({ item }) => (item.timestamp)}
                             yAccessor={({ item }) => (item.price)}
                         >
+                            <Dots
+                                xAccessor={({ item }) => (item.timestamp)}
+                                yAccessor={({ item }) => (item.price)}
+                            />
                             <Grid />
                         </LineChart>
                     </View>
