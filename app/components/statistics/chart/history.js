@@ -1,3 +1,4 @@
+import { curveNatural } from 'd3-shape';
 import { get, maxBy, minBy, } from 'lodash';
 import moment from 'moment';
 import React from 'react';
@@ -42,6 +43,7 @@ class HistoryChart extends React.Component {
                             top: 20,
                             bottom: 20,
                         }}
+                        curve={curveNatural}
                         data={this.props.data}
                         style={{
                             flex: 1,

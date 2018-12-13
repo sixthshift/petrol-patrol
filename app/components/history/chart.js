@@ -1,3 +1,4 @@
+import { curveStepAfter } from 'd3-shape';
 import { get, isEmpty, maxBy, minBy } from 'lodash';
 import moment from 'moment';
 import React from 'react';
@@ -48,6 +49,7 @@ class Chart extends React.Component {
                                 right: 20,
                                 top: 20,
                             }}
+                            curve={curveStepAfter}
                             data={this.props.data}
                             style={{
                                 flex: 1,
