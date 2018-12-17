@@ -1,5 +1,5 @@
 import { curveStepAfter } from 'd3-shape';
-import { get, isEmpty, maxBy, minBy } from 'lodash';
+import { get, isEmpty, last, maxBy, minBy } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { View } from 'react-native';
@@ -17,13 +17,24 @@ const xAxisHeight = 30;
 
 class Chart extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.now = this.now.bind(this);
+    }
+
+    now() {
+        const now = { ...last(this.props.data) };
+        now.timestamp = moment().unix();
+        return now;
+    }
+
     render() {
         if (isEmpty(this.props.data)) {
             return (null);
         } else {
             const xAxis = intervalise(
-                get(minBy(this.props.data, 'timestamp'), 'timestamp', undefined),
-                get(maxBy(this.props.data, 'timestamp'), 'timestamp', undefined),
+                get(minBy([...this.props.data, this.now()], 'timestamp'), 'timestamp', undefined),
+                get(maxBy([...this.props.data, this.now()], 'timestamp'), 'timestamp', undefined),
                 nXAxis
             );
             const yAxis = intervalise(
@@ -50,7 +61,7 @@ class Chart extends React.Component {
                                 top: 20,
                             }}
                             curve={curveStepAfter}
-                            data={this.props.data}
+                            data={[...this.props.data, this.now()]}
                             style={{
                                 flex: 1,
                             }}
