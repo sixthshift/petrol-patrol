@@ -5,7 +5,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Grid, LineChart, XAxis, YAxis } from 'react-native-svg-charts';
 
-import { Dots } from '../chart/decorators';
+import { Dots, Tooltip } from '../decorators/chart';
 import Colours from '../../constants/colours';
 import { intervalise } from '../../utils';
 
@@ -73,6 +73,10 @@ class Chart extends React.Component {
                             yAccessor={({ item }) => (item.price)}
                         >
                             <Dots
+                                xAccessor={({ item }) => (item.timestamp)}
+                                yAccessor={({ item }) => (item.price)}
+                            />
+                            <Tooltip
                                 xAccessor={({ item }) => (item.timestamp)}
                                 yAccessor={({ item }) => (item.price)}
                             />
