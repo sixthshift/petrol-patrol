@@ -28,6 +28,14 @@ class Chart extends React.Component {
         return now;
     }
 
+    xAccessor({ item }) {
+        return item.timestamp;
+    }
+
+    yAccessor({ item }) {
+        return item.price;
+    }
+
     render() {
         if (isEmpty(this.props.data)) {
             return (null);
@@ -69,16 +77,16 @@ class Chart extends React.Component {
                                 stroke: Colours.primary,
                                 strokeWidth: 3,
                             }}
-                            xAccessor={({ item }) => (item.timestamp)}
-                            yAccessor={({ item }) => (item.price)}
+                            xAccessor={this.xAccessor}
+                            yAccessor={this.yAccessor}
                         >
                             <Dots
-                                xAccessor={({ item }) => (item.timestamp)}
-                                yAccessor={({ item }) => (item.price)}
+                                xAccessor={this.xAccessor}
+                                yAccessor={this.yAccessor}
                             />
                             <Tooltip
-                                xAccessor={({ item }) => (item.timestamp)}
-                                yAccessor={({ item }) => (item.price)}
+                                xAccessor={this.xAccessor}
+                                yAccessor={this.yAccessor}
                             />
                             <Grid />
                         </LineChart>

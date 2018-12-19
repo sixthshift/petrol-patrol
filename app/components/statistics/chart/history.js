@@ -1,11 +1,12 @@
 import { curveNatural } from 'd3-shape';
-import { get, maxBy, minBy, } from 'lodash';
+import { get, maxBy, minBy, round } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { View } from 'react-native';
 import { Grid, LineChart, XAxis, YAxis } from 'react-native-svg-charts';
 
 import Colours from '../../../constants/colours';
+import { Tooltip } from '../../decorators/chart';
 import { intervalise } from '../../../utils';
 
 const nXAxis = 5;
@@ -15,6 +16,14 @@ const yAxisWidth = 30;
 const xAxisHeight = 30;
 
 class HistoryChart extends React.Component {
+
+    xAccessor({ item }) {
+        return item.timestamp;
+    }
+
+    yAccessor({ item }) {
+        return round(item.mean, 1);
+    }
 
     render() {
         const xAxis = intervalise(
@@ -37,6 +46,7 @@ class HistoryChart extends React.Component {
                         }}
                         data={yAxis}
                         style={{ width: yAxisWidth }}
+                        yAccessor={({ item }) => (item)}
                     />
                     <LineChart
                         contentInset={{
@@ -52,10 +62,14 @@ class HistoryChart extends React.Component {
                             stroke: Colours.primary,
                             strokeWidth: 3,
                         }}
-                        xAccessor={({ item }) => (item.timestamp)}
-                        yAccessor={({ item }) => (item.mean)}
+                        xAccessor={this.xAccessor}
+                        yAccessor={this.yAccessor}
                     >
                         <Grid />
+                        <Tooltip
+                            xAccessor={this.xAccessor}
+                            yAccessor={this.yAccessor}
+                        />
                     </LineChart>
                 </View>
                 <XAxis

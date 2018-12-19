@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import { Grid, LineChart, XAxis, YAxis } from 'react-native-svg-charts';
 
 import Colours from '../../../constants/colours';
+import { Tooltip } from '../../decorators/chart';
 import { intervalise } from '../../../utils';
 
 const nXAxis = 5;
@@ -13,6 +14,14 @@ const yAxisWidth = 30;
 const xAxisHeight = 30;
 
 class DistributionChart extends React.Component {
+
+    xAccessor({ item }) {
+        return item.index;
+    }
+
+    yAccessor({ item }) {
+        return item.value;
+    }
 
     render() {
         const distribution = reduce(this.props.data.distribution, (accumulator, value, key) => {
@@ -39,6 +48,7 @@ class DistributionChart extends React.Component {
                         }}
                         data={yAxis}
                         style={{ width: yAxisWidth }}
+                        yAccessor={({ item }) => (item)}
                     />
                     <LineChart
                         contentInset={{
@@ -53,10 +63,14 @@ class DistributionChart extends React.Component {
                             stroke: Colours.primary,
                             strokeWidth: 3,
                         }}
-                        xAccessor={({ item }) => (item.index)}
-                        yAccessor={({ item }) => (item.value)}
+                        xAccessor={this.xAccessor}
+                        yAccessor={this.yAccessor}
                     >
                         <Grid />
+                        <Tooltip
+                            xAccessor={this.xAccessor}
+                            yAccessor={this.yAccessor}
+                        />
                     </LineChart>
                 </View>
                 <XAxis
