@@ -1,6 +1,6 @@
 import { isEqual, map } from 'lodash';
 import React from 'react';
-import { Circle, G, Rect, Text } from 'react-native-svg';
+import { Circle, G, Line, Rect, Text } from 'react-native-svg';
 
 import Colours from '../../../constants/colours';
 
@@ -59,6 +59,14 @@ class Tooltip extends React.Component {
                                 fill={'white'}
                                 ry={5}
                                 rx={5}
+                            />
+                            <Line
+                                stroke={Colours.primary}
+                                strokeWidth={2}
+                                x1={tooltipWidth / 2}
+                                y1={tooltipHeight}
+                                x2={tooltipWidth / 2}
+                                y2={(tooltipHeight / 2) + tooltipHeightOffset}
                             />
                             <Text
                                 alignmentBaseline={'middle'}
