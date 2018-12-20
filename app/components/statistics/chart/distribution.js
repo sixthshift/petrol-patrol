@@ -1,3 +1,4 @@
+import { curveNatural } from 'd3-shape';
 import { get, maxBy, minBy, reduce, toNumber } from 'lodash';
 import React from 'react';
 import { View } from 'react-native';
@@ -55,6 +56,7 @@ class DistributionChart extends React.Component {
                             top: 20,
                             bottom: 20,
                         }}
+                        curve={curveNatural}
                         data={distribution}
                         style={{
                             flex: 1,
