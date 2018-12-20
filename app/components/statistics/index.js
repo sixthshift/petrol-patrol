@@ -118,6 +118,7 @@ class Statistics extends React.Component {
                         <CardItem header>
                             <Content>
                                 <Text>Average Price History</Text>
+                                <Text note>Average price trends over the last {statisticsHistoryRange} days</Text>
                             </Content>
                         </CardItem>
                         <CardItem>
