@@ -45,7 +45,7 @@ class Favourites extends React.Component {
                 <Header
                     content={this}
                     showBack={false}
-                    showBrands={true}
+                    showBrands={false}
                     showFueltypes={true}
                     showSearch={true}
                 />
