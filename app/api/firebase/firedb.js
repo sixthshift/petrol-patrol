@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import { has, isNull, sortBy, values } from 'lodash';
+import { has, isNull, last, sortBy, values } from 'lodash';
 
 import { table } from './constants';
 
@@ -41,7 +41,7 @@ export default class FireDB {
     async fetchAnalysis() {
         const snapshot = await this.database.ref(table.analysis).limitToLast(1).once('value');
         const analysis = snapshot.val();
-        return values(analysis);
+        return last(values(analysis));
     }
 
     /**

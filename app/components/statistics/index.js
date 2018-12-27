@@ -1,4 +1,4 @@
-import { isEmpty, isNaN, isUndefined, last, map, round, size } from 'lodash';
+import { get, isEmpty, isNaN, isUndefined, last, round, size } from 'lodash';
 import { Card, CardItem, Container, Content, H1, Left, Right, Text } from 'native-base';
 import React from 'react';
 import { StackActions, NavigationActions } from 'react-navigation';
@@ -146,9 +146,7 @@ class Statistics extends React.Component {
                     </Card>
                     <Card style={styles.card}>
                         <CardItem>
-                            {map(this.props.analysis, (line, i) => (
-                                <Text key={i}>{line}</Text>
-                            ))}
+                            <Text>{get(this.props.analysis, 'data')}</Text>
                         </CardItem>
                         <CardItem footer>
                             <Text note>Sourced from NRMA</Text>

@@ -1,11 +1,12 @@
 import { persistStore } from 'redux-persist';
 
-import { fetchBrands, fetchFueltypes, fetchStations, fetchStatistics } from '../actions';
+import { fetchAnalysis, fetchBrands, fetchFueltypes, fetchStations, fetchStatistics } from '../actions';
 import firedb from '../api/firebase';
 import store from './store';
 import { hash } from '../utils';
 
 const sync = () => {
+    const analysis = store.getState().db.analysis;
     const brands = store.getState().db.brands;
     const fueltypes = store.getState().db.fueltypes;
     const stations = store.getState().db.stations;
@@ -25,6 +26,11 @@ const sync = () => {
             const stationsHash = hash(stations);
             if (stationsHash != fetchedStationsHash) {
                 store.dispatch(fetchStations());
+            }
+            const analysisHash = hash(analysis);
+            const fetchedAnalysisHash = response.analysis.hash;
+            if (analysisHash != fetchedAnalysisHash) {
+                store.dispatch(fetchAnalysis());
             }
         });
     store.dispatch(fetchStatistics());
