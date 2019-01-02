@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "petrol-patrol",
+    "name": "Petrol Patrol",
     "description": "Finds the cheapest petrol prices nearby",
     "slug": "petrol-patrol",
     "privacy": "public",
@@ -23,7 +23,11 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "android": {
+      "package": "com.sixthshift.petrolpatrol"
+    },
     "ios": {
+      "bundleIdentifier": "com.sixthshift.petrolpatrol",
       "supportsTablet": true
     }
   }
