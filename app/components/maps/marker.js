@@ -1,5 +1,5 @@
 import { MapView, Svg } from 'expo';
-import { inRange, isNil, isUndefined } from 'lodash';
+import { inRange, isEqual, isNil, isUndefined } from 'lodash';
 import React from 'react';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -46,6 +46,10 @@ class Marker extends React.Component {
         }
     }
 
+    shouldComponentUpdate(nextProps) {
+        return !isEqual(this.props, nextProps);
+    }
+
     withinRegion() {
         const markerLatitude = this.props.station.location.latitude;
         const latitudeLowerBound = this.props.region.latitude - this.props.region.latitudeDelta;
@@ -61,31 +65,31 @@ class Marker extends React.Component {
     }
 
     render() {
-            return (
-                <MapView.Marker {...this.markerProps}>
-                    <Svg
-                        height={markerHeight}
-                        width={markerWidth}
+        return (
+            <MapView.Marker {...this.markerProps}>
+                <Svg
+                    height={markerHeight}
+                    width={markerWidth}
+                >
+                    <Svg.Path
+                        d="M4,4 L44,4 L44,24 C28,24 28,24 24,32 C20,24 20,24 4,24 z"
+                        fill="white"
+                        stroke={colour(this.props.price, this.props.statistics)}
+                        strokeWidth="2"
+                    />
+                    <Svg.Text
+                        fill="black"
+                        fontSize="10"
+                        fontWeight="bold"
+                        x={markerWidth / 2}
+                        y={markerHeight / 2}
+                        textAnchor="middle"
                     >
-                        <Svg.Path
-                            d="M4,4 L44,4 L44,24 C28,24 28,24 24,32 C20,24 20,24 4,24 z"
-                            fill="white"
-                            stroke={colour(this.props.price, this.props.statistics)}
-                            strokeWidth="2"
-                        />
-                        <Svg.Text
-                            fill="black"
-                            fontSize="10"
-                            fontWeight="bold"
-                            x={markerWidth / 2}
-                            y={markerHeight / 2}
-                            textAnchor="middle"
-                        >
-                            {isNil(this.props.price) ? 'N/A' : this.props.price.price}
-                        </Svg.Text>
-                    </Svg>
-                </MapView.Marker>
-            );
+                        {isNil(this.props.price) ? 'N/A' : this.props.price.price}
+                    </Svg.Text>
+                </Svg>
+            </MapView.Marker>
+        );
     }
 }
 
