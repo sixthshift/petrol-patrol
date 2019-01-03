@@ -88,14 +88,15 @@ class Map extends React.Component {
 
     renderCluster(cluster, onPress) {
         return <Cluster
-            cluster={cluster}
+            {...cluster}
             onPress={onPress}
         />;
     }
 
     renderMarker(station) {
         return <Marker
-            key={station.id}
+            // https://github.com/react-native-community/react-native-maps/issues/578
+            key={station.id + Math.random()} // append random number to ensure component is unique and does not get overriden
             station={station}
         />;
     }
