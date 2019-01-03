@@ -7,12 +7,8 @@ const borderSize = 2;
 export default class Cluster extends React.Component {
 
     render() {
-        const markerProps = {
-            coordinate: this.props.cluster.coordinate,
-            onPress: this.props.onPress
-        };
         return (
-            <MapView.Marker {...markerProps}>
+            <MapView.Marker {...this.props}>
                 <Svg
                     height={markerSize}
                     width={markerSize}
@@ -34,9 +30,9 @@ export default class Cluster extends React.Component {
                         dx="-0.1em"
                         dy="0.2em"
                         textAnchor="middle"
-                    >{this.props.cluster.pointCount}</Svg.Text>
+                    >{this.props.pointCount}</Svg.Text>
                 </Svg>
-            </MapView.Marker>
+            </MapView.Marker >
         );
     }
 }
