@@ -2,9 +2,8 @@ import { createStore, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 
+import { __REMOTEDEV__ } from '../constants/app';
 import reducer from '../reducers';
-
-const __REMOTEDEV__ = (typeof atob !== 'undefined');
 
 const middleware = [
     thunk
