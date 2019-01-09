@@ -1,4 +1,5 @@
 import { get, isEmpty, isNaN, isUndefined, last, round, size } from 'lodash';
+import moment from 'moment';
 import { Card, CardItem, Container, Content, H1, Left, Right, Text } from 'native-base';
 import React from 'react';
 import { StackActions, NavigationActions } from 'react-navigation';
@@ -149,7 +150,9 @@ class Statistics extends React.Component {
                             <Text>{get(this.props.analysis, 'data')}</Text>
                         </CardItem>
                         <CardItem footer>
-                            <Text note>Sourced from NRMA</Text>
+                            <Text note>
+                                {"Sourced from NRMA\nFetched " + moment.unix(get(this.props.analysis, 'timestamp')).fromNow()}
+                            </Text>
                         </CardItem>
                     </Card>
                 </Content>
