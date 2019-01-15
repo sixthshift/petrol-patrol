@@ -1,17 +1,41 @@
 import { Location, Permissions } from 'expo';
-import { Container, Content } from 'native-base';
+import { isEmpty } from 'lodash';
+import { Body, Container, Content, Icon, Text } from 'native-base';
 import React from 'react';
-import { ToastAndroid } from 'react-native';
+import { ToastAndroid, View } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { setLocationAction, setRegionAction } from '../../actions';
+import Colour from '../../constants/colours';
 import Footer from '../footer';
 import Header from '../header';
 import List from '../list';
 import { getFavourites } from '../../selectors/ui';
-import { noLocationPermissions } from '../strings';
+import { noLocationPermissions, emptyFavourites } from '../strings';
 import { encompassingRegion } from '../utils';
+
+const EmptyState = () => {
+    return (
+        <View style={{
+            alignItems: "center"
+        }}>
+            <Icon
+                name="heart-broken"
+                style={{
+                    color: Colour.primaryLight,
+                    fontSize: 200,
+                }}
+                type="MaterialCommunityIcons"
+            />
+            <Text style={{
+                color: Colour.primaryLight
+            }}>
+                {emptyFavourites}
+            </Text>
+        </View>
+    );
+};
 
 class Favourites extends React.Component {
 
@@ -50,9 +74,16 @@ class Favourites extends React.Component {
                     showSearch={true}
                 />
                 <Content>
-                    <List
-                        data={this.props.favourites}
-                    />
+                    {isEmpty(this.props.favourites) ? (
+                        <Body>
+                            <EmptyState />
+                        </Body>
+                    ) : (
+                            <List
+                                data={this.props.favourites}
+                            />
+                        )
+                    }
                 </Content>
                 <Footer />
             </Container>

@@ -7,3 +7,5 @@ export const noLocationPermissions = "Location permissions not granted";
 export const noSearchResults = "No stations found for the search";
 export const remoteDevEnabled = "Remote debugging enabled";
 export const searchPlaceholder = "Search by Postcode or Suburb";
+
+export const emptyFavourites = "Your favourites list is empty";
