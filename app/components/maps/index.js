@@ -2,7 +2,7 @@ import { Location, Permissions } from 'expo';
 import { filter, includes, isEqual, omit } from 'lodash';
 import { Container, Content } from 'native-base';
 import React from 'react';
-import { ToastAndroid } from 'react-native';
+import { ToastAndroid, View } from 'react-native';
 import ClusteredMapView from 'react-native-maps-super-cluster';
 import { connect } from 'react-redux';
 
@@ -64,23 +64,21 @@ class Map extends React.Component {
                     showFueltypes={true}
                     showSearch={true}
                 />
-                <Content>
-                    <ClusteredMapView
-                        data={this.props.stations}
-                        loadingEnabled={true}
-                        onRegionChangeComplete={this._onRegionChange}
-                        pitchEnabled={false}
-                        initialRegion={this.props.region}
-                        ref={map => this.map = map}
-                        renderMarker={this.renderMarker}
-                        renderCluster={this.renderCluster}
-                        showsBuildings={false}
-                        showsTraffic={true}
-                        showsMyLocationButton={true}
-                        showsUserLocation={true}
-                        style={styles.map}
-                    />
-                </Content>
+                <ClusteredMapView
+                    data={this.props.stations}
+                    loadingEnabled={true}
+                    onRegionChangeComplete={this._onRegionChange}
+                    pitchEnabled={false}
+                    initialRegion={this.props.region}
+                    ref={map => this.map = map}
+                    renderMarker={this.renderMarker}
+                    renderCluster={this.renderCluster}
+                    showsBuildings={false}
+                    showsTraffic={true}
+                    showsMyLocationButton={true}
+                    showsUserLocation={true}
+                    style={styles.map}
+                />
                 <Footer />
             </Container>
         );
