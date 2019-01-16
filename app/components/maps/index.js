@@ -1,8 +1,8 @@
 import { Location, Permissions } from 'expo';
 import { filter, includes, isEqual, omit } from 'lodash';
-import { Container, Content } from 'native-base';
+import { Container } from 'native-base';
 import React from 'react';
-import { ToastAndroid, View } from 'react-native';
+import { ToastAndroid } from 'react-native';
 import ClusteredMapView from 'react-native-maps-super-cluster';
 import { connect } from 'react-redux';
 
