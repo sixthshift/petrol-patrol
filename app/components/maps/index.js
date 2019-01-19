@@ -62,6 +62,7 @@ class Map extends React.Component {
                     showBack={false}
                     showBrands={true}
                     showFueltypes={true}
+                    showList={true}
                     showSearch={true}
                 />
                 <ClusteredMapView

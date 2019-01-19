@@ -8,9 +8,9 @@ import { connect } from 'react-redux';
 
 import { setLocationAction, setRegionAction } from '../../actions';
 import Colour from '../../constants/colours';
+import FlatList from '../flatlist';
 import Footer from '../footer';
 import Header from '../header';
-import List from '../list';
 import { getFavourites } from '../../selectors/ui';
 import { noLocationPermissions, emptyFavourites } from '../strings';
 import { encompassingRegion } from '../utils';
@@ -79,7 +79,7 @@ class Favourites extends React.Component {
                             <EmptyState />
                         </Body>
                     ) : (
-                            <List
+                            <FlatList
                                 data={this.props.favourites}
                             />
                         )

@@ -53,6 +53,18 @@ const FueltypesButton = (props) => {
     }
 }
 
+const ListButton = (props) => {
+    if (props.showList) {
+        return (
+            <Button transparent onPress={() => { props.navigation.navigate('list') }}>
+                <Icon type="MaterialIcons" name="view-list" />
+            </Button>
+        );
+    } else {
+        return null;
+    }
+};
+
 class Header extends React.Component {
 
     constructor(props) {
@@ -65,6 +77,7 @@ class Header extends React.Component {
             showBack: true,
             showBrands: false,
             showFueltypes: false,
+            showList: false,
             showSearch: false,
         };
     }
@@ -86,8 +99,9 @@ class Header extends React.Component {
                         <BackButton {...this.props} />
                     </Left>
                     <Right>
-                        <BrandsButton {...this.props} />
                         <FueltypesButton {...this.props} {...this.state} />
+                        <BrandsButton {...this.props} />
+                        <ListButton {...this.props} />
                     </Right>
                 </NBHeader>
                 <Search {...this.props} />

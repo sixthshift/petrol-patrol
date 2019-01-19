@@ -1,25 +1,42 @@
+import { Container, Content } from 'native-base';
 import React from 'react';
-import { FlatList } from 'react-native';
+import { connect } from 'react-redux';
 
-import Item from './item';
+import FlatList from '../flatlist';
+import Header from '../header';
+
+const EmptyState = () => {
+    return (null);
+};
 
 class List extends React.Component {
 
-    renderItem(item) {
-        return (
-            <Item station={item.item} />
-        );
+    sort() {
+
     }
 
     render() {
         return (
-            <FlatList
-                data={this.props.data}
-                keyExtractor={(item) => { return item.id.toString(); }}
-                renderItem={this.renderItem}
-            />
+            <Container>
+                <Header
+                    content={this}
+                    showBack={true}
+                    showBrands={true}
+                    showFueltypes={true}
+                    showSearch={false}
+                />
+                <Content>
+                    <FlatList />
+                </Content>
+            </Container>
         );
     }
 }
 
-export default List;
+const mapStateToProps = (state) => {
+    return {
+
+    };
+};
+
+export default connect(mapStateToProps)(List);
