@@ -4,7 +4,7 @@ import React from 'react';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import { fetchPrice } from '../../actions/db';
+import { addVisibleMarkerAction, fetchPrice, removeVisibleMarkerAction } from '../../actions';
 import { getRegion, getSelectedBrands, getSelectedFueltype, getPrice, getMostRecentStatistics } from '../../selectors';
 import { colour } from '../utils';
 
@@ -26,6 +26,11 @@ class Marker extends React.Component {
 
     componentDidMount() {
         this._update();
+        this.props.addVisibleMarker(this.props.station.id);
+    }
+
+    componentWillUnmount() {
+        this.props.removeVisibleMarker(this.props.station.id);
     }
 
     componentDidUpdate() {
@@ -108,7 +113,13 @@ const mapDispatchToProps = (dispatch) => {
     return {
         fetchPrice: (stationID, fueltype) => {
             dispatch(fetchPrice(stationID, fueltype));
-        }
+        },
+        addVisibleMarker: (stationID) => {
+            dispatch(addVisibleMarkerAction(stationID))
+        },
+        removeVisibleMarker: (stationID) => {
+            dispatch(removeVisibleMarkerAction(stationID))
+        },
     };
 };
 

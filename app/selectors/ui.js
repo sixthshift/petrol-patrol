@@ -25,6 +25,13 @@ export const getSelectedFueltype = (state) => {
     return state.ui.fueltype;
 };
 
+export const getVisibleMarkers = (state) => {
+    return _(state.ui.visible).map((stationID) => {
+        const props = { id: stationID };
+        return getStation(state, props);
+    }).value();
+};
+
 export const isBrandSelected = (state, props) => {
     const brands = getSelectedBrands(state);
     return _(brands).includes(props.item.name);

@@ -14,3 +14,9 @@ export const setLocationAction = createAction(LOCATION_SET);
 
 export const REGION_SET = 'REGION_SET';
 export const setRegionAction = createAction(REGION_SET);
+
+export const VISIBLE_MARKER_ADD = 'VISIBLE_MARKER_ADD';
+export const addVisibleMarkerAction = createAction(VISIBLE_MARKER_ADD);
+
+export const VISIBLE_MARKER_REMOVE = 'VISIBLE_MARKER_REMOVE';
+export const removeVisibleMarkerAction = createAction(VISIBLE_MARKER_REMOVE);

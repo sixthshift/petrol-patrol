@@ -18,6 +18,11 @@ import { encompassingRegion } from '../utils';
 
 class Map extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.renderCluster = this.renderCluster.bind(this);
+    }
+
     componentDidMount() {
         const getLocation = this.props.navigation.getParam('getLocation', false);
         if (getLocation) {
@@ -26,7 +31,7 @@ class Map extends React.Component {
     }
 
     _moveToRegion(region) {
-        this.map.mapview.animateToRegion(region);
+        this.map.getMapRef().animateToRegion(region);
     }
 
     _getLocationAsync = async () => {
@@ -88,6 +93,7 @@ class Map extends React.Component {
     renderCluster(cluster, onPress) {
         return <Cluster
             {...cluster}
+            clusterEngine={this.map.getClusteringEngine()}
             onPress={onPress}
         />;
     }
@@ -95,7 +101,8 @@ class Map extends React.Component {
     renderMarker(station) {
         return <Marker
             // https://github.com/react-native-community/react-native-maps/issues/578
-            key={station.id + Math.random()} // append random number to ensure component is unique and does not get overriden
+            // key={station.id + Math.random()} // append random number to ensure component is unique and does not get overriden
+            key={'marker-' + station.id}
             station={station}
         />;
     }

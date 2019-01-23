@@ -1,9 +1,11 @@
-import { Container, Content } from 'native-base';
+import { isEmpty } from 'lodash';
+import { Body, Container, Content } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
 
 import FlatList from '../flatlist';
 import Header from '../header';
+import { getVisibleMarkers } from '../../selectors';
 
 const EmptyState = () => {
     return (null);
@@ -26,7 +28,16 @@ class List extends React.Component {
                     showSearch={false}
                 />
                 <Content>
-                    <FlatList />
+                    {isEmpty(this.props.visible) ? (
+                        <Body>
+                            <EmptyState />
+                        </Body>
+                    ) : (
+                            <FlatList
+                                data={this.props.visible}
+                            />
+                        )
+                    }
                 </Content>
             </Container>
         );
@@ -35,7 +46,7 @@ class List extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-
+        visible: getVisibleMarkers(state)
     };
 };
 

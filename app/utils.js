@@ -1,4 +1,4 @@
-import { floor, initial, isNumber, map, tail, times, zip } from 'lodash';
+import { initial, isNumber, map, tail, times, zip } from 'lodash';
 import objectHash from 'object-hash';
 import stringify from 'json-stable-stringify';
 

@@ -1,10 +1,32 @@
 import { MapView, Svg } from 'expo';
+import { map } from 'lodash';
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { addVisibleMarkerAction, removeVisibleMarkerAction } from '../../actions';
 
 const markerSize = 36;
 const borderSize = 2;
 
-export default class Cluster extends React.Component {
+class Cluster extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this._getChildren = this._getChildren.bind(this);
+    }
+
+    componentDidMount() {
+        this.props.addVisibleMarkers(this._getChildren());
+    }
+
+    componentWillUnmount() {
+        this.props.removeVisibleMarkers(this._getChildren());
+    }
+
+    _getChildren() {
+        const children = this.props.clusterEngine.getLeaves(this.props.clusterId, Infinity);
+        return map(children, (child) => (child.properties.item.id));
+    }
 
     render() {
         return (
@@ -36,3 +58,16 @@ export default class Cluster extends React.Component {
         );
     }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addVisibleMarkers: (stationIDs) => {
+            dispatch(addVisibleMarkerAction(stationIDs))
+        },
+        removeVisibleMarkers: (stationIDs) => {
+            dispatch(removeVisibleMarkerAction(stationIDs))
+        },
+    };
+};
+
+export default connect(null, mapDispatchToProps)(Cluster);

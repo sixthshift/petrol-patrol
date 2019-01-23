@@ -7,11 +7,12 @@ import favouritesReducer from './favourites';
 import fueltypeReducer from './fueltypes';
 import locationReducer from './location';
 import regionReducer from './region';
+import visibleReducer from './visible';
 
 const persistConfig = {
     key: 'ui',
     storage: storage,
-    blacklist: ['location'],
+    blacklist: ['location', 'visible'],
 };
 
 const reducer = combineReducers(
@@ -21,6 +22,7 @@ const reducer = combineReducers(
         fueltype: fueltypeReducer,
         location: locationReducer,
         region: regionReducer,
+        visible: visibleReducer,
     }
 );
 
