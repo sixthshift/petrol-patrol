@@ -29,11 +29,11 @@ export const getPrices = (state) => {
 };
 
 export const getPrice = (state, props) => {
-    const price = getPriceHistory(state, props);
-    if (isNil(price)) {
-        return price;
+    const prices = getPriceHistory(state, props);
+    if (isNil(prices)) {
+        return prices;
     } else {
-        return last(price);
+        return last(prices);
     }
 };
 

@@ -2,7 +2,7 @@ import { Body, ListItem, Text, CheckBox } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
 import { selectBrandsAction } from '../../actions';
-import { isBrandSelected } from '../../selectors/ui';
+import { isBrandSelected } from '../../selectors';
 
 class Item extends React.Component {
     render() {
