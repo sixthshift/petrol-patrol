@@ -1,19 +1,19 @@
 import { Location, Permissions } from 'expo';
-import { isEmpty } from 'lodash';
+import { find, get, isEmpty, map, sortBy } from 'lodash';
 import { Body, Container, Content, Icon, Text } from 'native-base';
 import React from 'react';
 import { ToastAndroid, View } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import { setLocationAction, setRegionAction } from '../../actions';
+import { reorderFavouritesAction, setLocationAction, setRegionAction } from '../../actions';
 import Colour from '../../constants/colours';
 import FlatList from '../flatlist';
 import Footer from '../footer';
 import Header from '../header';
-import { getFavourites } from '../../selectors/ui';
+import { getFavourites, getLocation, getPrice, getSelectedFueltype } from '../../selectors';
 import { noLocationPermissions, emptyFavourites } from '../strings';
-import { encompassingRegion } from '../utils';
+import { encompassingRegion, haversine } from '../utils';
 
 const EmptyState = () => {
     return (
@@ -63,6 +63,35 @@ class Favourites extends React.Component {
         this.props.navigation.dispatch(action);
     }
 
+    sort(sortBy) {
+        let sorted = this.props.favourites;
+        if (sortBy == 'distance') {
+            sorted = this.sortByDistance();
+        }
+        else if (sortBy == 'price') {
+            sorted = this.sortByPrice();
+        }
+        this.props.reorder(sorted);
+    }
+
+    sortByDistance() {
+        const from = this.props.location;
+        const sorted = sortBy(this.props.favourites, (station) => {
+            const to = station.location;
+            return haversine(from, to);
+        });
+        return map(sorted, 'id');
+    }
+
+    sortByPrice() {
+        const sorted = sortBy(this.props.favourites, (station) => {
+            const price = find(this.props.prices, { id: station.id });
+            return get(price, 'price', Infinity);
+        });
+        return map(sorted, 'id');
+    }
+
+
     render() {
         return (
             <Container>
@@ -72,6 +101,8 @@ class Favourites extends React.Component {
                     showBrands={false}
                     showFueltypes={true}
                     showSearch={true}
+                    showSortByDistance={true}
+                    showSortByPrice={true}
                 />
                 <Content>
                     {isEmpty(this.props.favourites) ? (
@@ -92,13 +123,20 @@ class Favourites extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+    const favourites = getFavourites(state);
+    const fueltype = getSelectedFueltype(state);
     return {
-        favourites: getFavourites(state)
+        favourites: favourites,
+        location: getLocation(state),
+        prices: map(favourites, (station) => (getPrice(state, { station: station, fueltype: fueltype }))),
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        reorder: (favourites) => {
+            dispatch(reorderFavouritesAction(favourites));
+        },
         setLocation: (location) => {
             dispatch(setLocationAction(location));
         },

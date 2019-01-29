@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { fetchPrice } from '../../actions';
 import { getLocation, getPrice, getMostRecentStatistics, getRegion, getSelectedFueltype } from '../../selectors';
 import styles from './styles';
-import { colour, haversine } from '../utils';
+import { colour, distance } from '../utils';
 
 class Item extends React.Component {
 
@@ -42,7 +42,6 @@ class Item extends React.Component {
                 + ' ' + this.props.station.state;
             const from = this.props.location;
             const to = this.props.station.location;
-            const distance = haversine(from, to);
             return (
                 <View style={{ ...styles.bar, backgroundColor: colour(this.props.price, this.props.statistics) }}>
                     <ListItem onPress={this.onPress} style={styles.item}>
@@ -58,7 +57,7 @@ class Item extends React.Component {
                         </Body>
                         <Right style={styles.right}>
                             <Body>
-                                <Text>{distance}</Text>
+                                <Text>{distance(from, to)}</Text>
                             </Body>
                         </Right>
                     </ListItem>
