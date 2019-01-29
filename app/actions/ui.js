@@ -6,6 +6,9 @@ export const selectBrandsAction = createAction(BRANDS_SELECT);
 export const FAVOURITES_SELECT = 'FAVOURITES_SELECT';
 export const selectFavouritesAction = createAction(FAVOURITES_SELECT);
 
+export const FAVOURITES_REORDER = 'FAVOURITES_REORDER';
+export const reorderFavouritesAction = createAction(FAVOURITES_REORDER);
+
 export const FUELTYPE_SELECT = 'FUELTYPE_SELECT';
 export const selectFueltypeAction = createAction(FUELTYPE_SELECT);
 
@@ -20,3 +23,6 @@ export const addVisibleMarkerAction = createAction(VISIBLE_MARKER_ADD);
 
 export const VISIBLE_MARKER_REMOVE = 'VISIBLE_MARKER_REMOVE';
 export const removeVisibleMarkerAction = createAction(VISIBLE_MARKER_REMOVE);
+
+export const VISIBLE_MARKER_REORDER = 'VISIBLE_MARKER_REORDER';
+export const reorderVisibleMarkerAction = createAction(VISIBLE_MARKER_REORDER);
