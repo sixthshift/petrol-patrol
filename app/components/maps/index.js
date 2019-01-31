@@ -59,6 +59,29 @@ class Map extends React.Component {
         this._moveToRegion(encompassingRegion(stations));
     }
 
+    renderCluster(cluster, onPress) {
+        return <Cluster
+            {...cluster}
+            clusterEngine={this.map.getClusteringEngine()}
+            onPress={onPress}
+        />;
+    }
+
+    renderMarker(station) {
+        return <Marker
+            // https://github.com/react-native-community/react-native-maps/issues/578
+            // key={station.id + Math.random()} // append random number to ensure component is unique and does not get overriden
+            key={'marker-' + station.id}
+            station={station}
+        />;
+    }
+
+    shouldComponentUpdate(nextProps) {
+        const before = omit(this.props, 'region');
+        const after = omit(nextProps, 'region');
+        return !isEqual(before, after);
+    }
+
     render() {
         return (
             <Container>
@@ -89,37 +112,14 @@ class Map extends React.Component {
             </Container>
         );
     }
-
-    renderCluster(cluster, onPress) {
-        return <Cluster
-            {...cluster}
-            clusterEngine={this.map.getClusteringEngine()}
-            onPress={onPress}
-        />;
-    }
-
-    renderMarker(station) {
-        return <Marker
-            // https://github.com/react-native-community/react-native-maps/issues/578
-            // key={station.id + Math.random()} // append random number to ensure component is unique and does not get overriden
-            key={'marker-' + station.id}
-            station={station}
-        />;
-    }
-
-    shouldComponentUpdate(nextProps) {
-        const before = omit(this.props, 'region');
-        const after = omit(nextProps, 'region');
-        return !isEqual(before, after);
-    }
 }
 
 const mapStateToProps = (state) => {
     const selectedBrands = getSelectedBrands(state);
     const stations = filter(getStations(state), (station) => (includes(selectedBrands, station.brand)));
     return {
-        stations: stations,
         region: getRegion(state),
+        stations: stations,
     };
 };
 

@@ -1,3 +1,4 @@
+import { isEqual, pick } from 'lodash';
 import { Button, Footer as NBFooter, FooterTab, Icon } from 'native-base';
 import React from 'react';
 import { withNavigation, StackActions, NavigationActions } from 'react-navigation';
@@ -63,6 +64,12 @@ const StatisticsButton = (props) => {
 };
 
 class Footer extends React.Component {
+
+    shouldComponentUpdate(nextProps) {
+        const before = pick(this.props, 'navigation');
+        const after = pick(nextProps, 'navigation');
+        return !isEqual(before, after);
+    }
 
     render() {
         return (

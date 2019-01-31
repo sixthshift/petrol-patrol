@@ -1,4 +1,4 @@
-import { filter, map } from 'lodash';
+import { filter, isEqual, map } from 'lodash';
 import { Container, Content, List as NBList } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -15,6 +15,10 @@ class List extends React.Component {
         return (
             <Item key={item.name} item={item} />
         );
+    }
+
+    shouldComponentUpdate(nextProps) {
+        return !isEqual(this.props, nextProps);
     }
 
     render() {

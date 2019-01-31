@@ -1,5 +1,5 @@
 import { Location, Permissions } from 'expo';
-import { find, get, isEmpty, map, sortBy } from 'lodash';
+import { find, get, isEmpty, isEqual, map, omit, sortBy } from 'lodash';
 import { Body, Container, Content, Icon, Text } from 'native-base';
 import React from 'react';
 import { ToastAndroid, View } from 'react-native';
@@ -91,6 +91,11 @@ class Favourites extends React.Component {
         return map(sorted, 'id');
     }
 
+    shouldComponentUpdate(nextProps) {
+        const before = omit(this.props, ['prices']);
+        const after = omit(nextProps, ['prices']);
+        return !isEqual(before, after);
+    }
 
     render() {
         return (
@@ -129,6 +134,7 @@ const mapStateToProps = (state) => {
         favourites: favourites,
         location: getLocation(state),
         prices: map(favourites, (station) => (getPrice(state, { station: station, fueltype: fueltype }))),
+        selectedFueltype: fueltype,
     };
 };
 

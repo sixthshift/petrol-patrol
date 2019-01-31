@@ -1,5 +1,5 @@
 import { Font } from "expo";
-import { isEmpty } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 import { Button, Header as NBHeader, Icon, Left, Right, Text } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -115,6 +115,10 @@ class Header extends React.Component {
             Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
         });
         this.setState({ ready: true });
+    }
+
+    shouldComponentUpdate(nextProps) {
+        return !isEqual(this.props, nextProps);
     }
 
     render() {

@@ -1,4 +1,4 @@
-import { filter } from 'lodash';
+import { filter, isEqual } from 'lodash';
 import { Container, Content, List } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -9,6 +9,10 @@ import { isActive } from '../../utils';
 import styles from './styles';
 
 class PriceList extends React.Component {
+
+    shouldComponentUpdate(nextProps) {
+        return !isEqual(this.props, nextProps);
+    }
 
     render() {
         const activeList = filter(this.props.list, isActive);

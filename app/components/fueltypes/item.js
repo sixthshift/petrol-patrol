@@ -1,3 +1,4 @@
+import {isEqual} from 'lodash';
 import { Body, ListItem, Text } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -6,6 +7,11 @@ import { selectFueltypeAction } from '../../actions';
 import { isFueltypeSelected } from '../../selectors';
 
 class Item extends React.Component {
+
+    shouldComponentUpdate(nextProps) {
+        return !isEqual(this.props, nextProps);
+    }
+
     render() {
         const onPress = () => {
             this.props.select(this.props.item.code);

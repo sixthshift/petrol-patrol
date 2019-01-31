@@ -37,6 +37,10 @@ class Search extends React.Component {
         }
     }
 
+    shouldComponentUpdate(nextProps) {
+        return !isEqual(this.props, nextProps);
+    }
+
     render() {
         if (this.props.showSearch) {
             return (

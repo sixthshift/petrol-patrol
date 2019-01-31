@@ -27,7 +27,25 @@ export const encompassingRegion = (stations) => {
 };
 
 /**
- * Calculates the distance between two geo-points
+ * Calculates and formats the distance between two geopoints
+ * 
+ * @param {object} from Geopoint
+ * @param {object} to Geopoint
+ * @returns {string} The formatted distance between the two geopoints
+ */
+export const distance = (from, to) => {
+    const distanceInMetres = haversine(from, to);
+    if (distanceInMetres >= 1000) {
+        // If distance is > 1 km, display to nearest 0.1 km
+        return round((distanceInMetres / 1000), 1) + ' km';
+    } else {
+        // Otherwise display to nearest 10 m
+        return round(distanceInMetres, -1) + ' m';
+    }
+}
+
+/**
+ * Calculates the distance in metres between two geopoints
  * 
  * @param {object} from Geopoint
  * @param {object} to Geopoint
@@ -51,12 +69,5 @@ export const haversine = (from, to) => {
         lat: to.latitude,
         lon: to.longitude,
     };
-    const distanceInMetres = fastHaversine(from, to);
-    if (distanceInMetres >= 1000) {
-        // If distance is > 1 km, display to nearest 0.1 km
-        return round((distanceInMetres / 1000), 1) + ' km';
-    } else {
-        // Otherwise display to nearest 10 m
-        return round(distanceInMetres, -1) + ' m';
-    }
+    return fastHaversine(from, to);
 };

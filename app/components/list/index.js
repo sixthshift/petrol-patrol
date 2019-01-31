@@ -1,4 +1,4 @@
-import { get, find, isEmpty, map, sortBy } from 'lodash';
+import { get, find, isEmpty, isEqual, map, omit, sortBy } from 'lodash';
 import { Body, Container, Content } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -20,6 +20,12 @@ class List extends React.Component {
         this.sort = this.sort.bind(this);
         this.sortByDistance = this.sortByDistance.bind(this);
         this.sortByPrice = this.sortByPrice.bind(this);
+    }
+
+    shouldComponentUpdate(nextProps) {
+        const before = omit(this.props, ['prices']);
+        const after = omit(nextProps, ['prices']);
+        return !isEqual(before, after);
     }
 
     sort(sortBy) {
@@ -83,6 +89,7 @@ const mapStateToProps = (state) => {
     const visible = getVisible(state);
     const fueltype = getSelectedFueltype(state);
     return {
+        selectedFueltype: fueltype,
         location: getLocation(state),
         prices: map(visible, (station) => (getPrice(state, { station: station, fueltype: fueltype }))),
         visible: visible,

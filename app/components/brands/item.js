@@ -1,3 +1,4 @@
+import { isEqual } from 'lodash';
 import { Body, ListItem, Text, CheckBox } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -5,6 +6,11 @@ import { selectBrandsAction } from '../../actions';
 import { isBrandSelected } from '../../selectors';
 
 class Item extends React.Component {
+
+    shouldComponentUpdate(nextProps) {
+        return !isEqual(this.props, nextProps);
+    }
+
     render() {
         const onPress = () => {
             this.props.select(this.props.item.name);

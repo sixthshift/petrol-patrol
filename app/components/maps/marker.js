@@ -1,5 +1,5 @@
 import { MapView, Svg } from 'expo';
-import { inRange, isEqual, isNil, isUndefined } from 'lodash';
+import { get, isEqual, isNil, isNull, isUndefined, omit } from 'lodash';
 import React from 'react';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -9,7 +9,7 @@ import { getRegion, getSelectedBrands, getSelectedFueltype, getPrice, getMostRec
 import { colour } from '../utils';
 
 const markerHeight = 36;
-const markerWidth = 48
+const markerWidth = 48;
 
 class Marker extends React.Component {
 
@@ -45,28 +45,21 @@ class Marker extends React.Component {
     }
 
     _update() {
-        if (isUndefined(this.props.price) && this.withinRegion()) {
+        if (isUndefined(this.props.price)) {
             // If price is null, it means it is still fetching, don't fetch again
             this.props.fetchPrice(this.props.station, this.props.selectedFueltype);
         }
     }
 
     shouldComponentUpdate(nextProps) {
-        return !isEqual(this.props, nextProps);
-    }
-
-    withinRegion() {
-        const markerLatitude = this.props.station.location.latitude;
-        const latitudeLowerBound = this.props.region.latitude - this.props.region.latitudeDelta;
-        const latitudeUpperBound = this.props.region.latitude + this.props.region.latitudeDelta;
-        const withinLatitude = inRange(markerLatitude, latitudeLowerBound, latitudeUpperBound);
-
-        const markerLongitude = this.props.station.location.longitude;
-        const longitudeLowerBound = this.props.region.longitude - this.props.region.longitudeDelta;
-        const longitudeUpperBound = this.props.region.longitude + this.props.region.longitudeDelta;
-        const withinLongitude = inRange(markerLongitude, longitudeLowerBound, longitudeUpperBound);
-
-        return withinLatitude && withinLongitude;
+        const before = omit(this.props, ['selectedBrands', 'selectedFueltype', 'region']);
+        const after = omit(nextProps, ['selectedBrands', 'selectedFueltype', 'region']);
+        if (!isEqual(before, after)) {
+            // // If price is being updated from undefined to null, don't re-render
+            return !isNull(get(after, 'price'));
+        } else {
+            return false;
+        }
     }
 
     render() {

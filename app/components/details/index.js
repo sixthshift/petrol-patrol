@@ -1,4 +1,5 @@
 import { Linking, MapView } from 'expo';
+import { isEqual } from 'lodash';
 import { Body, Card, Container, Content, CardItem, Fab, Left, Text, Icon } from 'native-base';
 import React from 'react';
 import { Platform } from 'react-native';
@@ -23,6 +24,10 @@ class Details extends React.Component {
         } else {
             Linking.openURL(`http://maps.google.com/?daddr=${daddr}`);
         }
+    }
+
+    shouldComponentUpdate(nextProps) {
+        return !isEqual(this.props, nextProps);
     }
 
     render() {

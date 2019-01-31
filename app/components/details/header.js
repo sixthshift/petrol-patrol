@@ -1,4 +1,4 @@
-import { includes } from 'lodash';
+import { isEqual } from 'lodash';
 import { Button, Header as NBHeader, Icon, Left, Right } from 'native-base';
 import React from 'react';
 import { withNavigation } from 'react-navigation';
@@ -32,6 +32,10 @@ const FavouritesButton = (props) => {
 };
 
 class Header extends React.Component {
+
+    shouldComponentUpdate(nextProps) {
+        return !isEqual(this.props, nextProps);
+    }
 
     render() {
         return (

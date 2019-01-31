@@ -1,4 +1,4 @@
-import { isNil, isUndefined } from 'lodash';
+import { isEqual, isNil, isUndefined } from 'lodash';
 import moment from 'moment';
 import { Body, Left, ListItem, Right, Text, H1 } from 'native-base';
 import React from 'react';
@@ -30,6 +30,10 @@ class PriceListItem extends React.Component {
             fueltype: this.props.price.fueltype,
         };
         this.props.navigation.navigate('history', props);
+    }
+
+    shouldComponentUpdate(nextProps) {
+        return !isEqual(this.props, nextProps);
     }
 
     render() {
