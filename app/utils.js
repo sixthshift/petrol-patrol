@@ -1,4 +1,4 @@
-import { initial, isNumber, map, tail, times, zip } from 'lodash';
+import { initial, isEqual, isNumber, isObject, map, tail, times, transform, zip } from 'lodash';
 import objectHash from 'object-hash';
 import stringify from 'json-stable-stringify';
 
@@ -33,6 +33,24 @@ export const intervalise = (start, end, n) => {
         return [];
     }
 };
+
+/**
+ * Deep diff between two objects
+ * 
+ * @param  {Object} object Object compared
+ * @param  {Object} base Object to compare with
+ * @return {Object} An object which represents the diff
+ */
+export const objectDiff = (object, base) => {
+    function changes(object, base) {
+        return transform(object, function (result, value, key) {
+            if (!isEqual(value, base[key])) {
+                result[key] = (isObject(value) && isObject(base[key])) ? changes(value, base[key]) : value;
+            }
+        });
+    }
+    return changes(object, base);
+}
 
 /**
  * Generates consecutive pairs of the input list
