@@ -65,30 +65,6 @@ const ListButton = (props) => {
     }
 };
 
-const SortByDistanceButton = (props) => {
-    if (props.showSortByDistance) {
-        return (
-            <Button transparent onPress={() => { props.content.sort('distance') }}>
-                <Icon type="MaterialIcons" name="sort" />
-            </Button>
-        );
-    } else {
-        return null;
-    }
-};
-
-const SortByPriceButton = (props) => {
-    if (props.showSortByPrice) {
-        return (
-            <Button transparent onPress={() => { props.content.sort('price') }}>
-                <Icon type="MaterialIcons" name="sort" />
-            </Button>
-        );
-    } else {
-        return null;
-    }
-};
-
 class Header extends React.Component {
 
     constructor(props) {
@@ -103,8 +79,6 @@ class Header extends React.Component {
             showFueltypes: false,
             showList: false,
             showSearch: false,
-            showSortByDistance: false,
-            showSortByPrice: false,
         };
     }
 
@@ -129,8 +103,6 @@ class Header extends React.Component {
                         <BackButton {...this.props} />
                     </Left>
                     <Right>
-                        <SortByDistanceButton {...this.props} />
-                        <SortByPriceButton {...this.props} />
                         <FueltypesButton {...this.props} {...this.state} />
                         <BrandsButton {...this.props} />
                         <ListButton {...this.props} />
