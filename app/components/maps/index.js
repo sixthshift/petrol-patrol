@@ -14,7 +14,7 @@ import Marker from './marker';
 import { getStations, getRegion, getSelectedBrands } from '../../selectors';
 import { noLocationPermissions } from '../strings';
 import styles from './styles';
-import { encompassingRegion } from '../utils';
+import { encompassingRegion } from '../../utils';
 
 class Map extends React.Component {
 
@@ -95,10 +95,10 @@ class Map extends React.Component {
                 />
                 <ClusteredMapView
                     data={this.props.stations}
+                    initialRegion={this.props.region}
                     loadingEnabled={true}
                     onRegionChangeComplete={this._onRegionChange}
                     pitchEnabled={false}
-                    initialRegion={this.props.region}
                     ref={map => this.map = map}
                     renderMarker={this.renderMarker}
                     renderCluster={this.renderCluster}

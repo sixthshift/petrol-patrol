@@ -13,7 +13,7 @@ import Footer from '../footer';
 import Header from '../header';
 import { getFavourites } from '../../selectors';
 import { noLocationPermissions, emptyFavourites } from '../strings';
-import { encompassingRegion } from '../utils';
+import { encompassingRegion } from '../../utils';
 
 const EmptyState = () => {
     return (

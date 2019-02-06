@@ -12,7 +12,7 @@ import { statisticsHistoryRange } from '../../constants/app';
 import Colours from '../../constants/colours';
 import Footer from '../footer';
 import Header from '../header';
-import { encompassingRegion } from '../utils';
+import { encompassingRegion } from '../../utils';
 import { getSelectedFueltype, getStatistics, getAnalysis } from '../../selectors';
 import styles from './styles';
 

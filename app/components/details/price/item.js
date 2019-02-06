@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { fetchPrice } from '../../../actions';
 import styles from './styles';
 import { getPrice, getMostRecentStatistics } from '../../../selectors';
-import { colour } from '../../utils';
+import { colour } from '../../../utils';
 
 class PriceListItem extends React.Component {
 

@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { fetchPrice } from '../../actions';
 import { getLocation, getPrice, getMostRecentStatistics, getRegion, getSelectedFueltype } from '../../selectors';
 import styles from './styles';
-import { colour, distance } from '../utils';
+import { colour, distance } from '../../utils';
 
 class Item extends React.Component {
 

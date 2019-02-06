@@ -1,6 +1,6 @@
 import _, { clamp, isEmpty, isNaN, isNil, mean, round } from 'lodash';
 
-import gradientPalette from '../../constants/gradient';
+import gradientPalette from '../constants/gradient';
 
 const defaultColour = 'grey';
 

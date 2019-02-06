@@ -1,4 +1,4 @@
-import { initial, isEqual, isNumber, isObject, map, tail, times, transform, zip } from 'lodash';
+import { has, initial, isEqual, isNumber, isObject, map, tail, times, transform, zip } from 'lodash';
 import objectHash from 'object-hash';
 import stringify from 'json-stable-stringify';
 
@@ -32,6 +32,17 @@ export const intervalise = (start, end, n) => {
     } else {
         return [];
     }
+};
+
+/**
+ * Determines whether a given object is active or not,
+ * if the 'active' property does not exist then it is assumed active
+ * 
+ * @param {object} object
+ * @returns {boolean}
+ */
+export const isActive = (item) => {
+    return has(item, 'active') && item.active;
 };
 
 /**

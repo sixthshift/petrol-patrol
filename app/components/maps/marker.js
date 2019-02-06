@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import { addVisibleMarkerAction, fetchPrice, removeVisibleMarkerAction } from '../../actions';
 import { getRegion, getSelectedBrands, getSelectedFueltype, getPrice, getMostRecentStatistics } from '../../selectors';
-import { colour } from '../utils';
+import { colour } from '../../utils';
 
 const markerHeight = 36;
 const markerWidth = 48;
