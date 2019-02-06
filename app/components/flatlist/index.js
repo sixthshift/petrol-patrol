@@ -1,11 +1,10 @@
+import { size } from 'lodash';
 import React from 'react';
 import { FlatList as RNFlatList } from 'react-native';
 
 import Item from './item';
 
-const initialNumToRender = 20;
-
-const itemHeight = 1000;
+const itemHeight = 75;
 
 class FlatList extends React.Component {
 
@@ -39,7 +38,7 @@ class FlatList extends React.Component {
             <RNFlatList
                 data={this.props.data}
                 getItemLayout={this.getItemLayout}
-                initialNumToRender={initialNumToRender}
+                initialNumToRender={size(this.props.data)}
                 keyExtractor={this.keyExtractor}
                 renderItem={this.renderItem}
             />
