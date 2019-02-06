@@ -5,7 +5,7 @@ import React from 'react';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import { fetchAnalysis, fetchStatistics, setRegionAction } from '../../actions';
+import { fetchAnalysis, fetchStatisticsByDay, setRegionAction } from '../../actions';
 import DistributionChart from './chart/distribution';
 import HistoryChart from './chart/history';
 import { statisticsHistoryRange } from '../../constants/app';
@@ -180,7 +180,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(fetchAnalysis());
         },
         fetchStatistics: (n) => {
-            dispatch(fetchStatistics(n));
+            dispatch(fetchStatisticsByDay(n));
         },
         setRegion: (region) => {
             dispatch(setRegionAction(region));

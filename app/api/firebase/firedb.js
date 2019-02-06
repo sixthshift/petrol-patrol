@@ -147,15 +147,4 @@ export default class FireDB {
         const statistic = snapshot.val();
         return statistic;
     }
-
-    /**
-     * Fetches the n most recent statistics values stored in the Firebase Database
-     * 
-     * @param {number} n The number of most recent data points to query
-     */
-    async fetchStatistics(n = 1) {
-        const snapshot = await this.database.ref(table.statistics).limitToLast(n).once('value');
-        const statistics = snapshot.val();
-        return values(statistics);
-    }
 }

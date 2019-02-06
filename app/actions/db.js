@@ -2,9 +2,10 @@ import { first, get, isNull, map, times } from 'lodash';
 import moment from 'moment';
 import { createAction } from 'redux-actions';
 
+import { syncFrequency } from '../constants/app';
 import firedb from '../api/firebase';
 import { selectBrandsAction, selectFueltypeAction } from './ui';
-import { hash } from '../utils';
+import { floorTo, hash, now } from '../utils';
 
 export const ANALYSIS_FETCH = 'ANALYSIS_FETCH';
 export const fetchAnalysisAction = createAction(ANALYSIS_FETCH);
@@ -150,7 +151,20 @@ export function fetchStations() {
     }
 }
 
-export function fetchStatistics(n = 1) {
+export function fetchMostRecentStatistic() {
+    return (dispatch) => {
+        const interval = floorTo(now(), syncFrequency).unix();
+        firedb.fetchStatistic(interval)
+            .then((response) => {
+                dispatch(fetchStatisticsAction(response, { success: true }));
+            })
+            .catch((error) => {
+                dispatch(fetchStatisticsAction(error, { success: false }));
+            });
+    };
+}
+
+export function fetchStatisticsByDay(n = 1) {
     return (dispatch) => {
         const now = moment().startOf('day');
 

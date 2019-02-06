@@ -1,7 +1,7 @@
 import { ToastAndroid } from 'react-native';
 import { persistStore } from 'redux-persist';
 
-import { fetchAnalysis, fetchBrands, fetchFueltypes, fetchStations, fetchStatistics } from '../actions';
+import { fetchAnalysis, fetchBrands, fetchFueltypes, fetchStations, fetchMostRecentStatistic } from '../actions';
 import { fetchingAnalysis, fetchingBrands, fetchingFueltype, fetchingStation } from '../components/strings';
 import firedb from '../api/firebase';
 import store from './store';
@@ -39,7 +39,7 @@ const sync = () => {
                 ToastAndroid.show(fetchingStation, ToastAndroid.LONG);
             }
         });
-    store.dispatch(fetchStatistics());
+    store.dispatch(fetchMostRecentStatistic());
 };
 
 const persistor = persistStore(store, null, sync);
