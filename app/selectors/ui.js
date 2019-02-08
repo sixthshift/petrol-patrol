@@ -26,7 +26,11 @@ export const getSelectedFueltype = (state) => {
 };
 
 export const getVisible = (state) => {
-    return _(state.ui.visible).map((stationID) => {
+    return state.ui.visible;
+};
+
+export const getVisibleStations = (state) => {
+    return _(getVisible(state)).map((stationID) => {
         const props = { id: stationID };
         return getStation(state, props);
     }).value();

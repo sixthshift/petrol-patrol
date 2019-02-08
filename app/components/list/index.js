@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { reorderVisibleMarkerAction } from '../../actions';
 import FlatList from '../flatlist';
 import Header from '../header';
-import { getVisible } from '../../selectors';
+import { getVisibleStations } from '../../selectors';
 
 const EmptyState = () => {
     return (null);
@@ -54,7 +54,7 @@ class List extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    const visible = getVisible(state);
+    const visible = getVisibleStations(state);
     return {
         visible: visible,
     };
