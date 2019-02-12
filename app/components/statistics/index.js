@@ -13,7 +13,7 @@ import Colours from '../../constants/colours';
 import Footer from '../footer';
 import Header from '../header';
 import { encompassingRegion } from '../../utils';
-import { getSelectedFueltype, getStatistics, getAnalysis } from '../../selectors';
+import { getSelectedFueltype, getStatisticsForFueltype, getAnalysis } from '../../selectors';
 import styles from './styles';
 
 const emptyStatistics = {
@@ -164,13 +164,11 @@ class Statistics extends React.Component {
 
 const mapStateToProps = (state) => {
     const fueltype = getSelectedFueltype(state);
-    const props = {
-        fueltype: fueltype,
-    };
+    const props = { fueltype };
     return {
         analysis: getAnalysis(state),
         fueltype: fueltype,
-        statistics: getStatistics(state, props),
+        statistics: getStatisticsForFueltype(state, props),
     };
 };
 

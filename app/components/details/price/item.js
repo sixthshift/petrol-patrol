@@ -1,4 +1,4 @@
-import { isEqual, isNil, isUndefined } from 'lodash';
+import { get, isEqual, isNil, isUndefined } from 'lodash';
 import moment from 'moment';
 import { Body, Left, ListItem, Right, Text, H1 } from 'native-base';
 import React from 'react';
@@ -64,7 +64,8 @@ class PriceListItem extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const props = { ...ownProps, fueltype: ownProps.item.code };
+    const station = get(ownProps, 'station');
+    const props = { fueltype: ownProps.item.code, station: station };
     return {
         price: getPrice(state, props),
         statistics: getMostRecentStatistics(state, props),

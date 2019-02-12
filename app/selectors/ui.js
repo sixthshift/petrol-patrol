@@ -1,8 +1,14 @@
 import _ from 'lodash';
+import createCachedSelector from 're-reselect'
 
 import { getStation } from './db';
+import { createDeepEqualsSelector } from '../utils';
 
 export const getFavourites = (state) => {
+    return state.ui.favourites;
+};
+
+export const getFavouriteStations = (state) => {
     return _(state.ui.favourites).map((stationID) => {
         const props = { id: stationID };
         return getStation(state, props);
@@ -36,17 +42,38 @@ export const getVisibleStations = (state) => {
     }).value();
 };
 
-export const isBrandSelected = (state, props) => {
-    const brands = getSelectedBrands(state);
-    return _(brands).includes(props.item.name);
-};
+export const isBrandSelected = createCachedSelector(
+    [getSelectedBrands, (_, props) => (props)],
+    (brands, props) => {
+        return _(brands).includes(props.item.name);
+    }
+)(
+    (_, props) => (props.item.name),
+    {
+        selectorCreator: createDeepEqualsSelector
+    }
+);
 
-export const isFueltypeSelected = (state, props) => {
-    const fueltype = getSelectedFueltype(state);
-    return fueltype == props.item.code;
-};
+export const isFueltypeSelected = createCachedSelector(
+    [getSelectedFueltype, (_, props) => (props)],
+    (fueltype, props) => {
+        return _(fueltype).includes(props.item.code);
+    }
+)(
+    (_, props) => (props.item.code),
+    {
+        selectorCreator: createDeepEqualsSelector
+    }
+);
 
-export const isStationFavourited = (state, props) => {
-    const favourites = getFavourites(state);
-    return _(favourites).includes(props.station);
-};
+export const isStationFavourited = createCachedSelector(
+    [getFavouriteStations, (_, props) => (props)],
+    (favourites, props) => {
+        return _(favourites).includes(props.station);
+    }
+)(
+    (_, props) => (props.station.id),
+    {
+        selectorCreator: createDeepEqualsSelector
+    }
+);

@@ -92,13 +92,15 @@ class Marker extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const props = { ...ownProps, fueltype: getSelectedFueltype(state) };
+    const fueltype = getSelectedFueltype(state);
+    const station = get(ownProps, 'station');
+    const props = { fueltype, station };
     return {
         price: getPrice(state, props),
         region: getRegion(state),
         selectedBrands: getSelectedBrands(state),
-        selectedFueltype: getSelectedFueltype(state),
-        statistics: getMostRecentStatistics(state, props),
+        selectedFueltype: fueltype,
+        statistics: getMostRecentStatistics(state, { fueltype }),
     };
 };
 

@@ -1,6 +1,15 @@
+import stringify from 'json-stable-stringify';
 import { has, initial, isEqual, isNumber, isObject, map, tail, times, transform, zip } from 'lodash';
 import objectHash from 'object-hash';
-import stringify from 'json-stable-stringify';
+import { createSelectorCreator, defaultMemoize } from 'reselect';
+
+/**
+ * A reselect selector that memoises based off deep equals equality
+ */
+export const createDeepEqualsSelector = createSelectorCreator(
+    defaultMemoize,
+    isEqual
+);
 
 /**
  * Generates an SHA1 hash from the input

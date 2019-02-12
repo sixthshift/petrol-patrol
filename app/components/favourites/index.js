@@ -11,7 +11,7 @@ import Colour from '../../constants/colours';
 import FlatList from '../flatlist';
 import Footer from '../footer';
 import Header from '../header';
-import { getFavourites } from '../../selectors';
+import { getFavouriteStations } from '../../selectors';
 import { noLocationPermissions, emptyFavourites } from '../strings';
 import { encompassingRegion } from '../../utils';
 
@@ -98,7 +98,7 @@ class Favourites extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    const favourites = getFavourites(state);
+    const favourites = getFavouriteStations(state);
     return {
         favourites: favourites,
     };
