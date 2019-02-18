@@ -1,13 +1,14 @@
 import { Location, Permissions } from 'expo';
-import { filter, includes, isEqual, omit } from 'lodash';
+import { filter, includes, isEqual, memoize, omit } from 'lodash';
 import { Container } from 'native-base';
 import React from 'react';
-import { ToastAndroid } from 'react-native';
+import { Dimensions, ToastAndroid } from 'react-native';
 import ClusteredMapView from 'react-native-maps-super-cluster';
 import { connect } from 'react-redux';
 
 import { setRegionAction, setLocationAction } from '../../actions';
 import Cluster from './cluster';
+import { extent } from '../../constants/maps';
 import Footer from '../footer';
 import Header from '../header';
 import Marker from './marker';
@@ -15,6 +16,12 @@ import { getStations, getRegion, getSelectedBrands } from '../../selectors';
 import { noLocationPermissions } from '../strings';
 import styles from './styles';
 import { encompassingRegion } from '../../utils';
+
+const radius = memoize(() => {
+    const screenWidth = Dimensions.get('window').width;
+    const portion = 0.075; // portion of the screen
+    return screenWidth * portion;
+});
 
 class Map extends React.Component {
 
@@ -95,10 +102,12 @@ class Map extends React.Component {
                 />
                 <ClusteredMapView
                     data={this.props.stations}
+                    extent={extent}
                     initialRegion={this.props.region}
                     loadingEnabled={true}
                     onRegionChangeComplete={this._onRegionChange}
                     pitchEnabled={false}
+                    radius={radius()}
                     ref={map => this.map = map}
                     renderMarker={this.renderMarker}
                     renderCluster={this.renderCluster}

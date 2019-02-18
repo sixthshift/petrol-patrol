@@ -4,3 +4,9 @@ export const defaultRegion = {
     latitudeDelta: 0.1,
     longitudeDelta: 0.1,
 };
+
+export const extent = 384;
+
+export const markerBorder = 3;
+export const markerHeight = 45;
+export const markerWidth = 70;

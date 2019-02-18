@@ -1,12 +1,14 @@
 import { MapView, Svg } from 'expo';
-import { map } from 'lodash';
+import { map, memoize } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 
 import { addVisibleMarkerAction, removeVisibleMarkerAction } from '../../actions';
+import { markerBorder, markerWidth as markerSize } from '../../constants/maps';
 
-const markerSize = 36;
-const borderSize = 2;
+const centrePosition = memoize(() => (markerSize - markerBorder) / 2);
+const centreTextPosition = memoize(() => (markerSize / 2));
+const radius = memoize(() => ((markerSize * (7 / 20)) - markerBorder));
 
 class Cluster extends React.Component {
 
@@ -36,21 +38,21 @@ class Cluster extends React.Component {
                     width={markerSize}
                 >
                     <Svg.Circle
-                        cx={(markerSize - borderSize) / 2}
-                        cy={(markerSize - borderSize) / 2}
+                        cx={centrePosition()}
+                        cy={centrePosition()}
                         fill="white"
-                        r={(markerSize / 2) - borderSize}
+                        r={radius(this.props.pointCount)}
                         stroke="grey"
-                        strokeWidth="2"
+                        strokeWidth={markerBorder}
                     />
                     <Svg.Text
                         fill="black"
-                        fontSize="10"
+                        fontSize="15"
                         fontWeight="bold"
-                        x={markerSize / 2}
-                        y={markerSize / 2}
+                        x={centreTextPosition()}
+                        y={centreTextPosition()}
                         dx="-0.1em"
-                        dy="0.2em"
+                        dy="0.25em"
                         textAnchor="middle"
                     >{this.props.pointCount}</Svg.Text>
                 </Svg>

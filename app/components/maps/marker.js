@@ -1,15 +1,71 @@
 import { MapView, Svg } from 'expo';
-import { get, isEqual, isNil, isNull, isUndefined, omit } from 'lodash';
+import { get, isEqual, isNil, isNull, isUndefined, memoize, omit, reduce } from 'lodash';
 import React from 'react';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { addVisibleMarkerAction, fetchPrice, removeVisibleMarkerAction } from '../../actions';
+import { markerBorder, markerHeight, markerWidth } from '../../constants/maps';
 import { getRegion, getSelectedBrands, getSelectedFueltype, getPrice, getMostRecentStatistics } from '../../selectors';
 import { colour } from '../../utils';
 
-const markerHeight = 36;
-const markerWidth = 48;
+const draw = memoize((markerHeight, markerWidth) => {
+    const offset = markerBorder;
+    const tailProportion = 0.25;
+    const tailCurve = 0.4;
+
+    const height = (markerHeight - (2 * offset));
+    const width = (markerWidth - (2 * offset));
+    const points = [
+        {
+            x: offset,
+            y: offset,
+            a: 'M',
+        },
+        {
+            x: width + offset,
+            y: offset,
+            a: 'L',
+        },
+        {
+            x: width + offset,
+            y: (1 - tailProportion) * height + offset,
+            a: 'L',
+        },
+        {
+            x: ((1 - tailCurve) * width) + offset,
+            y: (1 - tailProportion) * height + offset,
+            a: 'C',
+        },
+        {
+            x: ((1 - tailCurve) * width) + offset,
+            y: (1 - tailProportion) * height + offset,
+        },
+        {
+            x: (width / 2) + offset,
+            y: height + offset,
+        },
+        {
+            x: (tailCurve * width) + offset,
+            y: (1 - tailProportion) * height + offset,
+            a: 'C',
+        },
+        {
+            x: (tailCurve * width) + offset,
+            y: (1 - tailProportion) * height + offset,
+        },
+        {
+            x: offset,
+            y: (1 - tailProportion) * height + offset,
+        },
+        {
+            a: 'z',
+        },
+    ];
+    return reduce(points, (acc, point) => (acc + ' ' + get(point, 'a', '') + get(point, 'x', '') + ',' + get(point, 'y', '')), '');
+});
+
+const centreTextPosition = memoize((length) => (length / 2), (length) => (length));
 
 class Marker extends React.Component {
 
@@ -70,17 +126,17 @@ class Marker extends React.Component {
                     width={markerWidth}
                 >
                     <Svg.Path
-                        d="M4,4 L44,4 L44,24 C28,24 28,24 24,32 C20,24 20,24 4,24 z"
+                        d={draw(markerHeight, markerWidth)}
                         fill="white"
                         stroke={colour(this.props.price, this.props.statistics)}
-                        strokeWidth="2"
+                        strokeWidth={markerBorder}
                     />
                     <Svg.Text
                         fill="black"
-                        fontSize="10"
+                        fontSize="15"
                         fontWeight="bold"
-                        x={markerWidth / 2}
-                        y={markerHeight / 2}
+                        x={centreTextPosition(markerWidth)}
+                        y={centreTextPosition(markerHeight)}
                         textAnchor="middle"
                     >
                         {isNil(this.props.price) ? 'N/A' : this.props.price.price}
