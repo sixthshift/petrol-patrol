@@ -1,3 +1,3 @@
 [submodule "credentials"]
 	path = credentials
-	url = https://438c921673d867850075165f4ea442e05d26178d:x-oauth-basic@github.com/sixthshift/petrol-patrol-credentials
+	url = https://github.com/sixthshift/petrol-patrol-credentials
