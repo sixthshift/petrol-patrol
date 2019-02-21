@@ -1,3 +1,3 @@
 [submodule "credentials"]
 	path = credentials
-	url = https://github.com/sixthshift/petrol-patrol-credentials
+	url = https://github.com/sixthshift/petrol-patrol-credentials.git
