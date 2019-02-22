@@ -13,6 +13,7 @@ import Footer from '../footer';
 import Header from '../header';
 import { getFavouriteStations } from '../../selectors';
 import { noLocationPermissions, emptyFavourites } from '../strings';
+import styles from './styles';
 import { encompassingRegion } from '../../utils';
 
 const EmptyState = () => {
@@ -79,18 +80,18 @@ class Favourites extends React.Component {
                     showFueltypes={true}
                     showSearch={true}
                 />
-                <Content>
-                    {isEmpty(this.props.favourites) ? (
-                        <Body>
-                            <EmptyState />
-                        </Body>
-                    ) : (
+                {isEmpty(this.props.favourites) ? (
+                    <Content contentContainerStyle={styles.centre}>
+                        <EmptyState />
+                    </Content >
+                ) : (
+                        <Content>
                             <FlatList
                                 data={this.props.favourites}
                             />
-                        )
-                    }
-                </Content>
+                        </Content>
+                    )
+                }
                 <Footer />
             </Container>
         );
