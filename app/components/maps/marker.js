@@ -77,6 +77,7 @@ class Marker extends React.Component {
                 longitude: props.station.location.longitude,
             },
             onPress: this.onPress.bind(this),
+            tracksViewChanges: false,
         };
     }
 
