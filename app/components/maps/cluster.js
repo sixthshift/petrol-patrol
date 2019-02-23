@@ -1,5 +1,5 @@
 import { MapView, Svg } from 'expo';
-import { map, memoize } from 'lodash';
+import { isEqual, map, memoize, pick } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -14,6 +14,14 @@ class Cluster extends React.Component {
 
     constructor(props) {
         super(props);
+        this.markerProps = {
+            coordinate: {
+                latitude: props.coordinate.latitude,
+                longitude: props.coordinate.longitude,
+            },
+            tracksViewChanges: false,
+        };
+
         this._getChildren = this._getChildren.bind(this);
     }
 
@@ -30,9 +38,15 @@ class Cluster extends React.Component {
         return map(children, (child) => (child.properties.item.id));
     }
 
+    shouldComponentUpdate(nextProps) {
+        const before = pick(this.props, ['clusterId', 'coordinate', 'pointCount']);
+        const after = pick(nextProps, ['clusterId', 'coordinate', 'pointCount']);
+        return !isEqual(before, after);
+    }
+
     render() {
         return (
-            <MapView.Marker {...this.props}>
+            <MapView.Marker {...this.markerProps}>
                 <Svg
                     height={markerSize}
                     width={markerSize}

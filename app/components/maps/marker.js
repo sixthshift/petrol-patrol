@@ -71,13 +71,15 @@ class Marker extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            tracksViewChanges: false,
+        };
         this.markerProps = {
             coordinate: {
                 latitude: props.station.location.latitude,
                 longitude: props.station.location.longitude,
             },
             onPress: this.onPress.bind(this),
-            tracksViewChanges: false,
         };
     }
 
@@ -105,15 +107,21 @@ class Marker extends React.Component {
         if (isUndefined(this.props.price)) {
             // If price is null, it means it is still fetching, don't fetch again
             this.props.fetchPrice(this.props.station, this.props.selectedFueltype);
+            this.setState({ tracksViewChanges: true });
+        }
+        else if (this.state.tracksViewChanges) {
+            this.setState({ tracksViewChanges: false });
         }
     }
 
-    shouldComponentUpdate(nextProps) {
-        const before = omit(this.props, ['selectedBrands', 'selectedFueltype', 'region']);
-        const after = omit(nextProps, ['selectedBrands', 'selectedFueltype', 'region']);
-        if (!isEqual(before, after)) {
+    shouldComponentUpdate(nextProps, nextState) {
+        const beforeProps = omit(this.props, ['selectedBrands', 'selectedFueltype', 'region']);
+        const afterProps = omit(nextProps, ['selectedBrands', 'selectedFueltype', 'region']);
+        const beforeState = this.state;
+        const afterState = nextState;
+        if (!isEqual(beforeProps, afterProps) || beforeState != afterState) {
             // // If price is being updated from undefined to null, don't re-render
-            return !isNull(get(after, 'price'));
+            return !isNull(get(afterProps, 'price'));
         } else {
             return false;
         }
@@ -121,7 +129,10 @@ class Marker extends React.Component {
 
     render() {
         return (
-            <MapView.Marker {...this.markerProps}>
+            <MapView.Marker
+                {...this.markerProps}
+                tracksViewChanges={this.state.tracksViewChanges}
+            >
                 <Svg
                     height={markerHeight}
                     width={markerWidth}
