@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { fetchAnalysis, fetchStatisticsByDay, setRegionAction } from '../../actions';
 import DistributionChart from './chart/distribution';
 import HistoryChart from './chart/history';
-import { statisticsHistoryRange } from '../../constants/app';
+import { enableAnalysisNRMA, statisticsHistoryRange } from '../../constants/app';
 import Colours from '../../constants/colours';
 import Footer from '../footer';
 import Header from '../header';
@@ -145,16 +145,19 @@ class Statistics extends React.Component {
                             </Content>
                         </CardItem>
                     </Card>
-                    <Card style={styles.card}>
-                        <CardItem>
-                            <Text>{get(this.props.analysis, 'data')}</Text>
-                        </CardItem>
-                        <CardItem footer>
-                            <Text note>
-                                {"Sourced from NRMA\nFetched " + moment.unix(get(this.props.analysis, 'timestamp')).fromNow()}
-                            </Text>
-                        </CardItem>
-                    </Card>
+                    {
+                        enableAnalysisNRMA &&
+                        <Card style={styles.card}>
+                            <CardItem>
+                                <Text>{get(this.props.analysis, 'data')}</Text>
+                            </CardItem>
+                            <CardItem footer>
+                                <Text note>
+                                    {"Sourced from NRMA\nFetched " + moment.unix(get(this.props.analysis, 'timestamp')).fromNow()}
+                                </Text>
+                            </CardItem>
+                        </Card>
+                    }
                 </Content>
                 <Footer />
             </Container>
