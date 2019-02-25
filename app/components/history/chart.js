@@ -80,11 +80,11 @@ class Chart extends React.Component {
                             xAccessor={this.xAccessor}
                             yAccessor={this.yAccessor}
                         >
-                            <Tooltip
+                            <Dots
                                 xAccessor={this.xAccessor}
                                 yAccessor={this.yAccessor}
                             />
-                            <Dots
+                            <Tooltip
                                 xAccessor={this.xAccessor}
                                 yAccessor={this.yAccessor}
                             />

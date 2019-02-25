@@ -47,18 +47,18 @@ class Tooltip extends React.Component {
                     return (
                         <G
                             key={this.props.xAccessor({ item: item })}
-                            onPress={() => (this.onPress(item))}
                             x={this.props.x(x) - (tooltipWidth / 2)}
                             y={this.props.y(y) - (tooltipHeight / 2) - tooltipHeightOffset}
                         >
                             <Rect
+                                fill={'white'}
                                 height={tooltipHeight}
-                                width={tooltipWidth}
+                                rx={5}
+                                ry={5}
                                 stroke={Colours.primary}
                                 strokeWidth={2}
-                                fill={'white'}
-                                ry={5}
-                                rx={5}
+                                onPress={() => (this.onPress(item))}
+                                width={tooltipWidth}
                             />
                             <Line
                                 stroke={Colours.primary}
@@ -83,18 +83,18 @@ class Tooltip extends React.Component {
                     return (
                         <G
                             key={this.props.xAccessor({ item: item })}
-                            onPress={() => (this.onPress(item))}
                             x={this.props.x(x) - (tooltipWidth / 2)}
                             y={this.props.y(y) - (tooltipHeight / 2)}
                         >
                             <Circle
-                                key={this.props.xAccessor({ item: item })}
                                 cx={tooltipWidth / 2}
                                 cy={tooltipHeight / 2}
-                                r={10}
+                                fill={'#00000000'}
+                                key={this.props.xAccessor({ item: item })}
+                                onPress={() => (this.onPress(item))}
+                                r={15}
                                 stroke={'#00000000'}
                                 strokeWidth={0}
-                                fill={'#00000000'}
                             />
                         </G>
                     );
