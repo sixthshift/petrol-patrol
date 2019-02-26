@@ -24,7 +24,11 @@
       "**/*"
     ],
     "android": {
-      "package": "com.sixthshift.petrolpatrol"
+      "package": "com.sixthshift.petrolpatrol",
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ]
     },
     "ios": {
       "bundleIdentifier": "com.sixthshift.petrolpatrol",
