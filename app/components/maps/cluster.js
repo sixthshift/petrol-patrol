@@ -1,14 +1,14 @@
 import { MapView, Svg } from 'expo';
-import { isEqual, map, memoize, pick } from 'lodash';
+import { isEqual, map, once, pick } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 
 import { addVisibleMarkerAction, removeVisibleMarkerAction } from '../../actions';
 import { markerBorder, markerWidth as markerSize } from '../../constants/maps';
 
-const centrePosition = memoize(() => (markerSize - markerBorder) / 2);
-const centreTextPosition = memoize(() => (markerSize / 2));
-const radius = memoize(() => ((markerSize * (7 / 20)) - markerBorder));
+const centrePosition = once(() => (markerSize - markerBorder) / 2);
+const centreTextPosition = once(() => (markerSize / 2));
+const radius = once(() => ((markerSize * (7 / 20)) - markerBorder));
 
 class Cluster extends React.Component {
 
@@ -55,7 +55,7 @@ class Cluster extends React.Component {
                         cx={centrePosition()}
                         cy={centrePosition()}
                         fill="white"
-                        r={radius(this.props.pointCount)}
+                        r={radius()}
                         stroke="grey"
                         strokeWidth={markerBorder}
                     />

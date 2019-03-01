@@ -1,5 +1,5 @@
 import { MapView, Svg } from 'expo';
-import { get, isEqual, isNil, isNull, isUndefined, memoize, omit, reduce } from 'lodash';
+import { get, isEqual, isNil, isNull, isUndefined, memoize, omit, once, reduce } from 'lodash';
 import React from 'react';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -9,7 +9,7 @@ import { markerBorder, markerHeight, markerWidth } from '../../constants/maps';
 import { getRegion, getSelectedBrands, getSelectedFueltype, getPrice, getMostRecentStatistics } from '../../selectors';
 import { colour } from '../../utils';
 
-const draw = memoize((markerHeight, markerWidth) => {
+const draw = once((markerHeight, markerWidth) => {
     const offset = markerBorder;
     const tailProportion = 0.25;
     const tailCurve = 0.4;
