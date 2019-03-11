@@ -1,6 +1,8 @@
-import { Font } from "expo";
+import { Font, Linking } from "expo";
 import { isEmpty, isEqual } from 'lodash';
+import moment from 'moment';
 import { Button, Header as NBHeader, Icon, Left, Right, Text } from 'native-base';
+import { stringify } from 'query-string';
 import React from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
@@ -65,6 +67,34 @@ const ListButton = (props) => {
     }
 };
 
+const ReportButton = (props) => {
+    if (props.showReport) {
+        const onReportPress = () => {
+            const baseURL = 'https://www.cas.fairtrading.nsw.gov.au/icmspublicweb/forms/FuelCheck.html';
+            const query = {
+                FuelType: props.navigation.state.params.fueltype,
+                Price: props.navigation.state.params.price.price,
+                Date: moment().format('DD/MM/YYYY'),
+                Time: moment().format('h:mmA'),
+                SS: props.navigation.state.params.station.name
+                    + ' ' + props.navigation.state.params.station.street
+                    + ' ' + props.navigation.state.params.station.suburb
+                    + ' ' + props.navigation.state.params.station.state
+                    + ' ' + props.navigation.state.params.station.postcode,
+            };
+            const queryString = stringify(query);
+            Linking.openURL(baseURL + '?' + queryString);
+        }
+        return (
+            <Button transparent onPress={onReportPress}>
+                <Icon type="MaterialIcons" name="error-outline" />
+            </Button>
+        );
+    } else {
+        return null;
+    }
+};
+
 class Header extends React.Component {
 
     constructor(props) {
@@ -103,6 +133,7 @@ class Header extends React.Component {
                         <BackButton {...this.props} />
                     </Left>
                     <Right>
+                        <ReportButton {...this.props} />
                         <FueltypesButton {...this.props} {...this.state} />
                         <BrandsButton {...this.props} />
                         <ListButton {...this.props} />

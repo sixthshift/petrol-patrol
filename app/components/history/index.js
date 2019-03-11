@@ -23,6 +23,7 @@ class History extends React.Component {
             <Container>
                 <Header
                     showBack={true}
+                    showReport={true}
                 />
                 <Content style={styles.content}>
                     <Card style={styles.card}>

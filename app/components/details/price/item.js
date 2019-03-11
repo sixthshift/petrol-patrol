@@ -26,8 +26,9 @@ class PriceListItem extends React.Component {
 
     onPress() {
         const props = {
-            station: this.props.station,
             fueltype: this.props.price.fueltype,
+            price: this.props.price,
+            station: this.props.station,
         };
         this.props.navigation.navigate('history', props);
     }
