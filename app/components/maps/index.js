@@ -28,6 +28,14 @@ class Map extends React.Component {
     constructor(props) {
         super(props);
         this.renderCluster = this.renderCluster.bind(this);
+        this.state = {
+            styles: {
+                ...styles.map,
+                // Hack to re-render map component so that gps button appears
+                // https://github.com/react-native-community/react-native-maps/issues/1033
+                width: Dimensions.get('window').width - 1,
+            }
+        };
     }
 
     componentDidMount() {
@@ -76,17 +84,17 @@ class Map extends React.Component {
 
     renderMarker(station) {
         return <Marker
-            // https://github.com/react-native-community/react-native-maps/issues/578
-            // key={station.id + Math.random()} // append random number to ensure component is unique and does not get overriden
             key={'marker-' + station.id}
             station={station}
         />;
     }
 
-    shouldComponentUpdate(nextProps) {
-        const before = omit(this.props, 'region');
-        const after = omit(nextProps, 'region');
-        return !isEqual(before, after);
+    shouldComponentUpdate(nextProps, nextState) {
+        const beforeProps = omit(this.props, 'region');
+        const afterProps = omit(nextProps, 'region');
+        const beforeState = this.state;
+        const afterState = nextState;
+        return !isEqual(beforeProps, afterProps) || beforeState != afterState;
     }
 
     render() {
@@ -115,7 +123,7 @@ class Map extends React.Component {
                     showsTraffic={true}
                     showsMyLocationButton={true}
                     showsUserLocation={true}
-                    style={styles.map}
+                    style={this.state.styles}
                 />
                 <Footer />
             </Container>
