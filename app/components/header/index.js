@@ -121,8 +121,12 @@ class Header extends React.Component {
         this.setState({ ready: true });
     }
 
-    shouldComponentUpdate(nextProps) {
-        return !isEqual(this.props, nextProps);
+    shouldComponentUpdate(nextProps, nextState) {
+        const beforeProps = this.props;
+        const afterProps = nextProps;
+        const beforeState = this.state;
+        const afterState = nextState;
+        return !isEqual(beforeProps, afterProps) || beforeState != afterState;
     }
 
     render() {
