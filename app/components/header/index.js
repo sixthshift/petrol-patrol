@@ -35,6 +35,18 @@ const BrandsButton = (props) => {
     }
 }
 
+const DrawerButton = (props) => {
+    if (props.showDrawer) {
+        return (
+            <Button transparent onPress={() => { props.navigation.toggleDrawer() }}>
+                <Icon type='MaterialIcons' name='menu' />
+            </Button>
+        );
+    } else {
+        return null;
+    }
+};
+
 const FueltypesButton = (props) => {
     if (props.showFueltypes) {
         if (props.ready && !isEmpty(props.selectedFueltype)) {
@@ -135,6 +147,7 @@ class Header extends React.Component {
                 <NBHeader>
                     <Left>
                         <BackButton {...this.props} />
+                        <DrawerButton {...this.props} />
                     </Left>
                     <Right>
                         <ReportButton {...this.props} />

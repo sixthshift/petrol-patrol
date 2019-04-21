@@ -7,7 +7,7 @@ import FueltypesScreen from '../components/fueltypes';
 import HistoryScreen from '../components/history';
 import ListScreen from '../components/list';
 import MapsScreen from '../components/maps';
-import StatisticsScreen from '../components/statistics';
+import StatisticsNavigator from './statisticsDrawer';
 
 export default createStackNavigator(
     {
@@ -33,7 +33,7 @@ export default createStackNavigator(
             screen: MapsScreen
         },
         statistics: {
-            screen: StatisticsScreen
+            screen: StatisticsNavigator
         },
     },
     {

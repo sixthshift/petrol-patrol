@@ -1,6 +1,6 @@
 import { get, isEmpty, isNaN, isUndefined, last, round, size } from 'lodash';
 import moment from 'moment';
-import { Card, CardItem, Container, Content, H1, Left, Right, Text } from 'native-base';
+import { Card, CardItem, Container, Content, Drawer, H1, Left, Right, Text } from 'native-base';
 import React from 'react';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -72,95 +72,100 @@ class Statistics extends React.Component {
     render() {
         const mostRecentStatistics = isEmpty(this.props.statistics) ? emptyStatistics : last(this.props.statistics);
         return (
-            <Container>
-                <Header
-                    content={this}
-                    showBack={false}
-                    showBrands={false}
-                    showFueltypes={true}
-                    showSearch={true}
-                />
-                <Content style={styles.content}>
-                    <Card style={styles.card}>
-                        <CardItem header>
-                            <Left>
-                                <Text>Average</Text>
-                            </Left>
-                            <Right>
-                                <Text>Deviation</Text>
-                            </Right>
-                        </CardItem>
-                        <CardItem>
-                            <Left>
-                                <H1>{isNaN(mostRecentStatistics.mean) ? null : round(mostRecentStatistics.mean, 1)}</H1>
-                            </Left>
-                            <Right>
-                                <H1>{isNaN(mostRecentStatistics.stdev) ? null : round(mostRecentStatistics.stdev, 1)}</H1>
-                            </Right>
-                        </CardItem>
-                        <CardItem header>
-                            <Left>
-                                <Text>Min</Text>
-                            </Left>
-                            <Right>
-                                <Text>Max</Text>
-                            </Right>
-                        </CardItem>
-                        <CardItem>
-                            <Left>
-                                <H1>{isNaN(mostRecentStatistics.min) ? null : round(mostRecentStatistics.min, 1)}</H1>
-                            </Left>
-                            <Right>
-                                <H1>{isNaN(mostRecentStatistics.max) ? null : round(mostRecentStatistics.max, 1)}</H1>
-                            </Right>
-                        </CardItem>
-                    </Card>
-                    <Card style={styles.card}>
-                        <CardItem header>
-                            <Content>
-                                <Text>Average Price History</Text>
-                                <Text note>Average price trends over the last {statisticsHistoryRange} days</Text>
-                            </Content>
-                        </CardItem>
-                        <CardItem>
-                            <Content onLayout={this.onLayout}>
-                                <HistoryChart
-                                    data={this.props.statistics}
-                                />
-                            </Content>
-                        </CardItem>
-                    </Card>
-                    <Card style={styles.card}>
-                        <CardItem header>
-                            <Content>
-                                <Text>Price Distribution</Text>
-                                <Text note>Current spread of prices seen at service stations across the state</Text>
-                            </Content>
-                        </CardItem>
-                        <CardItem>
-                            <Content onLayout={this.onLayout}>
-                                <DistributionChart
-                                    data={mostRecentStatistics}
-                                />
-                            </Content>
-                        </CardItem>
-                    </Card>
-                    {
-                        enableAnalysisNRMA &&
+            <Drawer
+                ref={(ref) => { this.drawer = ref; }}
+            >
+                <Container>
+                    <Header
+                        content={this}
+                        showBack={false}
+                        showBrands={false}
+                        showDrawer={true}
+                        showFueltypes={true}
+                        showSearch={true}
+                    />
+                    <Content style={styles.content}>
                         <Card style={styles.card}>
-                            <CardItem>
-                                <Text>{get(this.props.analysis, 'data')}</Text>
+                            <CardItem header>
+                                <Left>
+                                    <Text>Average</Text>
+                                </Left>
+                                <Right>
+                                    <Text>Deviation</Text>
+                                </Right>
                             </CardItem>
-                            <CardItem footer>
-                                <Text note>
-                                    {"Sourced from NRMA\nFetched " + moment.unix(get(this.props.analysis, 'timestamp')).fromNow()}
-                                </Text>
+                            <CardItem>
+                                <Left>
+                                    <H1>{isNaN(mostRecentStatistics.mean) ? null : round(mostRecentStatistics.mean, 1)}</H1>
+                                </Left>
+                                <Right>
+                                    <H1>{isNaN(mostRecentStatistics.stdev) ? null : round(mostRecentStatistics.stdev, 1)}</H1>
+                                </Right>
+                            </CardItem>
+                            <CardItem header>
+                                <Left>
+                                    <Text>Min</Text>
+                                </Left>
+                                <Right>
+                                    <Text>Max</Text>
+                                </Right>
+                            </CardItem>
+                            <CardItem>
+                                <Left>
+                                    <H1>{isNaN(mostRecentStatistics.min) ? null : round(mostRecentStatistics.min, 1)}</H1>
+                                </Left>
+                                <Right>
+                                    <H1>{isNaN(mostRecentStatistics.max) ? null : round(mostRecentStatistics.max, 1)}</H1>
+                                </Right>
                             </CardItem>
                         </Card>
-                    }
-                </Content>
-                <Footer />
-            </Container>
+                        <Card style={styles.card}>
+                            <CardItem header>
+                                <Content>
+                                    <Text>Average Price History</Text>
+                                    <Text note>Average price trends over the last {statisticsHistoryRange} days</Text>
+                                </Content>
+                            </CardItem>
+                            <CardItem>
+                                <Content onLayout={this.onLayout}>
+                                    <HistoryChart
+                                        data={this.props.statistics}
+                                    />
+                                </Content>
+                            </CardItem>
+                        </Card>
+                        <Card style={styles.card}>
+                            <CardItem header>
+                                <Content>
+                                    <Text>Price Distribution</Text>
+                                    <Text note>Current spread of prices seen at service stations across the state</Text>
+                                </Content>
+                            </CardItem>
+                            <CardItem>
+                                <Content onLayout={this.onLayout}>
+                                    <DistributionChart
+                                        data={mostRecentStatistics}
+                                    />
+                                </Content>
+                            </CardItem>
+                        </Card>
+                        {
+                            enableAnalysisNRMA &&
+                            <Card style={styles.card}>
+                                <CardItem>
+                                    <Text>{get(this.props.analysis, 'data')}</Text>
+                                </CardItem>
+                                <CardItem footer>
+                                    <Text note>
+                                        {"Sourced from NRMA\nFetched " + moment.unix(get(this.props.analysis, 'timestamp')).fromNow()}
+                                    </Text>
+                                </CardItem>
+                            </Card>
+                        }
+                    </Content>
+                    <Footer />
+                </Container>
+            </Drawer>
         );
     }
 }
