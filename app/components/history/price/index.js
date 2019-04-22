@@ -1,5 +1,3 @@
-import { isEmpty, isUndefined, last } from 'lodash';
-import moment from 'moment';
 import React from 'react';
 import { FlatList } from 'react-native';
 

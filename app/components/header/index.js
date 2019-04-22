@@ -1,6 +1,5 @@
 import { Font, Linking } from "expo";
 import { isEmpty, isEqual } from 'lodash';
-import moment from 'moment';
 import { Button, Header as NBHeader, Icon, Left, Right, Text } from 'native-base';
 import { stringify } from 'query-string';
 import React from 'react';
@@ -10,6 +9,7 @@ import { withNavigation } from 'react-navigation';
 
 import Search from './search';
 import { getSelectedFueltype } from '../../selectors';
+import { now } from '../../utils';
 
 const BackButton = (props) => {
     if (props.showBack) {
@@ -86,8 +86,8 @@ const ReportButton = (props) => {
             const query = {
                 FuelType: props.navigation.state.params.fueltype,
                 Price: props.navigation.state.params.price.price,
-                Date: moment().format('DD/MM/YYYY'),
-                Time: moment().format('h:mmA'),
+                Date: now().format('DD/MM/YYYY'),
+                Time: now().format('h:mmA'),
                 SS: props.navigation.state.params.station.name
                     + ' ' + props.navigation.state.params.station.street
                     + ' ' + props.navigation.state.params.station.suburb

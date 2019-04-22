@@ -1,5 +1,6 @@
 import { first, last, map, size } from 'lodash';
-import moment from 'moment';
+
+import { now } from '../../utils';
 
 const ratio = (arr) => {
     const range = last(arr) - first(arr);
@@ -13,8 +14,7 @@ const ratio = (arr) => {
 };
 
 export const accumulatedRatio = (arr) => {
-    const now = moment().unix();
-    const ratios = ratio([...arr, now]);
+    const ratios = ratio([...arr, now().unix()]);
     let cumulativeSum = 0;
     const accumulatedRatio = map(ratios, (ratio) => {
         cumulativeSum += ratio;

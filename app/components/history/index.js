@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { Card, CardItem, Container, Content } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -10,11 +9,12 @@ import Header from '../header';
 import PriceList from './price';
 import { getPriceHistory } from '../../selectors';
 import styles from './styles';
+import { now } from '../../utils';
 
 class History extends React.Component {
 
     componentDidMount() {
-        const timestamp = moment().subtract(priceHistoryRange, 'days').unix();
+        const timestamp = now().subtract(priceHistoryRange, 'days').unix();
         this.props.fetchPriceHistory(this.props.station, this.props.fueltype, timestamp);
     }
 
