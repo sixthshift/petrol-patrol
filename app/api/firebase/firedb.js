@@ -137,12 +137,13 @@ export default class FireDB {
     }
 
     /**
-     * Fetches statistics at a given timestamp
+     * Fetches statistics at a given time
      * 
-     * @param {number} timestamp The unix timestamp to fetch from in seconds
+     * @param {moment} time The unix time to fetch from in seconds
+     * @returns {object} The statistics object for the give timestamp
      */
-    async fetchStatistic(timestamp) {
-        const path = table.statistics + '/' + timestamp;
+    async fetchStatistic(time) {
+        const path = table.statistics + '/' + time.unix();
         const snapshot = await this.database.ref(path).once('value');
         const statistic = snapshot.val();
         return statistic;

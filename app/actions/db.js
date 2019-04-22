@@ -1,11 +1,10 @@
 import { first, get, isNull, map, times } from 'lodash';
-import moment from 'moment';
 import { createAction } from 'redux-actions';
 
 import { syncFrequency } from '../constants/app';
 import firedb from '../api/firebase';
 import { selectBrandsAction, selectFueltypeAction } from './ui';
-import { floorTo, hash, now } from '../utils';
+import { hash, now, previousInterval } from '../utils';
 
 export const ANALYSIS_FETCH = 'ANALYSIS_FETCH';
 export const fetchAnalysisAction = createAction(ANALYSIS_FETCH);
@@ -151,25 +150,28 @@ export function fetchStations() {
     }
 }
 
-export function fetchMostRecentStatistic() {
+export function fetchMostRecentStatistic(interval, retry = 3) {
     return (dispatch) => {
-        const interval = floorTo(now(), syncFrequency).unix();
         firedb.fetchStatistic(interval)
             .then((response) => {
                 dispatch(fetchStatisticsAction(response, { success: true }));
             })
-            .catch((error) => {
-                dispatch(fetchStatisticsAction(error, { success: false }));
+            .catch(() => {
+                // Current interval does not yet exist, fetch the next previous interval
+                const previous = previousInterval(interval, syncFrequency);
+                if (retry != 0) {
+                    dispatch(fetchMostRecentStatistic(previous, retry - 1));
+                }
             });
     };
 }
 
 export function fetchStatisticsByDay(n = 1) {
     return (dispatch) => {
-        const now = moment().startOf('day');
+        const today = now().startOf('day');
 
-        const intervals = times(n, () => {
-            return now.subtract(1, 'days').unix();
+        const intervals = times(n, (i) => {
+            return today.clone().subtract(i + 1, 'day');
         });
 
         map(intervals, (interval) => {

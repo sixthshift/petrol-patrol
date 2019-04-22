@@ -3,10 +3,10 @@ import { persistStore } from 'redux-persist';
 
 import { fetchAnalysis, fetchBrands, fetchFueltypes, fetchStations, fetchMostRecentStatistic } from '../actions';
 import { fetchingAnalysis, fetchingBrands, fetchingFueltype, fetchingStation } from '../components/strings';
-import { enableAnalysisNRMA } from '../constants/app';
+import { enableAnalysisNRMA, syncFrequency } from '../constants/app';
 import firedb from '../api/firebase';
 import store from './store';
-import { hash } from '../utils';
+import { floorTo, hash, now, previousInterval } from '../utils';
 
 const sync = () => {
     const analysis = store.getState().db.analysis;
@@ -42,7 +42,9 @@ const sync = () => {
                 ToastAndroid.show(fetchingStation, ToastAndroid.LONG);
             }
         });
-    store.dispatch(fetchMostRecentStatistic());
+    const interval = floorTo(now(), syncFrequency);
+    const previous = previousInterval(interval, syncFrequency);
+    store.dispatch(fetchMostRecentStatistic(previous));
 };
 
 const persistor = persistStore(store, null, sync);
