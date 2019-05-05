@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _, { isEqual } from 'lodash';
 import createCachedSelector from 're-reselect'
 
 import { getStation } from './db';
@@ -57,7 +57,7 @@ export const isBrandSelected = createCachedSelector(
 export const isFueltypeSelected = createCachedSelector(
     [getSelectedFueltype, (_, props) => (props)],
     (fueltype, props) => {
-        return _(fueltype).includes(props.item.code);
+        return fueltype === props.item.code;
     }
 )(
     (_, props) => (props.item.code),
