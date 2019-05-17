@@ -1,7 +1,8 @@
-import _, { isEqual } from 'lodash';
+import _, { map } from 'lodash';
+import { createSelector } from 'reselect';
 import createCachedSelector from 're-reselect'
 
-import { getStation } from './db';
+import { getStation, getStations } from './db';
 import { createDeepEqualsSelector } from '../utils';
 
 export const getFavourites = (state) => {
@@ -35,12 +36,17 @@ export const getVisible = (state) => {
     return state.ui.visible;
 };
 
-export const getVisibleStations = (state) => {
-    return _(getVisible(state)).map((stationID) => {
-        const props = { id: stationID };
-        return getStation(state, props);
-    }).value();
-};
+export const getVisibleStations = createSelector(
+    getVisible,
+    getStations,
+    (visible, stations) => {
+        const state = { db: { stations: stations } };
+        return map(visible, (stationID) => {
+            const props = { id: stationID };
+            return getStation(state, props);
+        });
+    }
+);
 
 export const isBrandSelected = createCachedSelector(
     [getSelectedBrands, (_, props) => (props)],

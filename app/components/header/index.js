@@ -9,6 +9,7 @@ import { withNavigation } from 'react-navigation';
 
 import Search from './search';
 import { getSelectedFueltype } from '../../selectors';
+import { Distance, Price } from '../../assets/icons';
 import { now } from '../../utils';
 
 const BackButton = (props) => {
@@ -107,6 +108,30 @@ const ReportButton = (props) => {
     }
 };
 
+const SortDistanceButton = (props) => {
+    if (props.showSortByDistance) {
+        return (
+            <Button transparent onPress={props.content.sortDistance}>
+                <Distance />
+            </Button>
+        );
+    } else {
+        return null;
+    }
+};
+
+const SortPriceButton = (props) => {
+    if (props.showSortByPrice) {
+        return (
+            <Button transparent onPress={props.content.sortPrice}>
+                <Price />
+            </Button>
+        );
+    } else {
+        return null;
+    }
+};
+
 class Header extends React.Component {
 
     constructor(props) {
@@ -121,6 +146,8 @@ class Header extends React.Component {
             showFueltypes: false,
             showList: false,
             showSearch: false,
+            showSortByDistance: false,
+            showSortByPrice: false,
         };
     }
 
@@ -154,6 +181,8 @@ class Header extends React.Component {
                         <FueltypesButton {...this.props} {...this.state} />
                         <BrandsButton {...this.props} />
                         <ListButton {...this.props} />
+                        <SortDistanceButton {...this.props} />
+                        <SortPriceButton {...this.props} />
                     </Right>
                 </NBHeader>
                 <Search {...this.props} />
