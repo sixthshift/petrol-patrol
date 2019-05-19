@@ -9,3 +9,8 @@ export const remoteDevEnabled = "Remote debugging enabled";
 export const searchPlaceholder = "Search by Postcode or Suburb";
 
 export const emptyFavourites = "Your favourites list is empty";
+
+export const minimumLabel = "Today's Minimum";
+export const maximumLabel = "Today's Maximum";
+export const averageLabel = "Today's Average";
+export const deviationLabel = "Today's Deviation";

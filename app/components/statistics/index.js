@@ -14,6 +14,7 @@ import Footer from '../footer';
 import Header from '../header';
 import { encompassingRegion } from '../../utils';
 import { getSelectedFueltype, getStatisticsForFueltype, getAnalysis } from '../../selectors';
+import { averageLabel, deviationLabel, maximumLabel, minimumLabel } from '../strings';
 import styles from './styles';
 
 const emptyStatistics = {
@@ -88,10 +89,10 @@ class Statistics extends React.Component {
                         <Card style={styles.card}>
                             <CardItem header>
                                 <Left>
-                                    <Text>Average</Text>
+                                    <Text>{averageLabel}</Text>
                                 </Left>
                                 <Right>
-                                    <Text>Deviation</Text>
+                                    <Text>{deviationLabel}</Text>
                                 </Right>
                             </CardItem>
                             <CardItem>
@@ -104,10 +105,10 @@ class Statistics extends React.Component {
                             </CardItem>
                             <CardItem header>
                                 <Left>
-                                    <Text>Min</Text>
+                                    <Text>{minimumLabel}</Text>
                                 </Left>
                                 <Right>
-                                    <Text>Max</Text>
+                                    <Text>{maximumLabel}</Text>
                                 </Right>
                             </CardItem>
                             <CardItem>
