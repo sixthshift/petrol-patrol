@@ -76,19 +76,11 @@ export function fetchPrice(station, fueltype) {
         dispatch(fetchPriceAction(payload));
         firedb.fetchPrice(hashID)
             .then((response) => {
-                if (!isNull(response)) {
-                    const payload = {
-                        payload: response,
-                        meta: { hash: hashID, success: true }
-                    };
-                    dispatch(fetchPriceAction(payload));
-                } else {
-                    const payload = {
-                        payload: response,
-                        meta: { hash: hashID, success: false }
-                    }
-                    dispatch(fetchPriceAction(payload));
-                }
+                const payload = {
+                    payload: response,
+                    meta: { hash: hashID, success: true }
+                };
+                dispatch(fetchPriceAction(payload));
             })
             .catch((error) => {
                 const payload = {

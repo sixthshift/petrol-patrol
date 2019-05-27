@@ -1,4 +1,4 @@
-import _, { get, isArray, isEmpty, isNil, isUndefined, last } from 'lodash';
+import _, { get, isArray, isEmpty, isNil, isNull, isUndefined, last } from 'lodash';
 
 import createCachedSelector from 're-reselect';
 
@@ -39,13 +39,20 @@ export const getPriceHistory = createCachedSelector(
             fueltype: props.fueltype,
         };
         const hashID = hash(key);
-        const price = get(prices, hashID, null);
-        if (isArray(price) && isEmpty(price)) {
+        const price = get(prices, hashID);
+        if (isArray(price) && !isEmpty(price)) {
+            // fetched, and prices exist
+            return price;
+        }
+        else if (isArray(price) && isEmpty(price)) {
+            // still fetching
             return null;
         }
-        else if (isArray(price) && !isEmpty(price)) {
-            return price;
+        else if (isNull(price)) {
+            // fetched, but prices do not exist
+            return null;
         } else {
+            // not fetched before
             return undefined;
         }
     }
