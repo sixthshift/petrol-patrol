@@ -1,5 +1,5 @@
 import { Location, Permissions } from 'expo';
-import { filter, includes, isEqual, memoize, omit } from 'lodash';
+import { isEqual, memoize, omit } from 'lodash';
 import { Container } from 'native-base';
 import React from 'react';
 import { Dimensions, ToastAndroid } from 'react-native';
@@ -12,7 +12,7 @@ import { extent } from '../../constants/maps';
 import Footer from '../footer';
 import Header from '../header';
 import Marker from './marker';
-import { getStations, getRegion, getSelectedBrands } from '../../selectors';
+import { getRegion, getStationsFilteredyBrands } from '../../selectors';
 import { noLocationPermissions } from '../strings';
 import styles from './styles';
 import { encompassingRegion } from '../../utils';
@@ -132,11 +132,9 @@ class Map extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    const selectedBrands = getSelectedBrands(state);
-    const stations = filter(getStations(state), (station) => (includes(selectedBrands, station.brand)));
     return {
         region: getRegion(state),
-        stations: stations,
+        stations: getStationsFilteredyBrands(state),
     };
 };
 

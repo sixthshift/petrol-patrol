@@ -1,8 +1,8 @@
-import _, { map } from 'lodash';
+import _, { map, reduce } from 'lodash';
 import { createSelector } from 'reselect';
 import createCachedSelector from 're-reselect'
 
-import { getStation, getStations } from './db';
+import { getStation, getStations, getStationsPartitionedByBrands } from './db';
 import { createDeepEqualsSelector } from '../utils';
 
 export const getFavourites = (state) => {
@@ -35,6 +35,17 @@ export const getSelectedFueltype = (state) => {
 export const getVisible = (state) => {
     return state.ui.visible;
 };
+
+export const getStationsFilteredyBrands = createSelector(
+    getSelectedBrands,
+    getStationsPartitionedByBrands,
+    (brands, partition) => {
+        const stationsSelectedByBrands = reduce(brands, (accumulator, brand) => {
+            return [...accumulator, ...partition[brand]];
+        }, []);
+        return stationsSelectedByBrands;
+    }
+);
 
 export const getVisibleStations = createSelector(
     getVisible,

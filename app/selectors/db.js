@@ -1,9 +1,8 @@
-import _, { get, isArray, isEmpty, isNil, isNull, isUndefined, last } from 'lodash';
-
+import _, { get, has, isArray, isEmpty, isNil, isNull, isUndefined, last, reduce } from 'lodash';
+import { createSelector } from 'reselect';
 import createCachedSelector from 're-reselect';
 
 import { createDeepEqualsSelector, hash } from '../utils';
-
 
 export const getAnalysis = (state) => {
     return state.db.analysis;
@@ -98,6 +97,21 @@ export const getStation = createCachedSelector(
     (_, props) => (props.id),
     {
         selectorCreator: createDeepEqualsSelector
+    }
+);
+
+export const getStationsPartitionedByBrands = createSelector(
+    getStations,
+    (stations) => {
+        const partition = reduce(stations, (accumulator, station) => {
+            if (has(accumulator, station.brand)) {
+                accumulator[station.brand] = [...accumulator[station.brand], station];
+            } else {
+                accumulator[station.brand] = [station];
+            }
+            return accumulator;
+        }, {});
+        return partition;
     }
 );
 
