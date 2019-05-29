@@ -1,8 +1,8 @@
-import _, { map, reduce } from 'lodash';
+import _, { has, map, reduce } from 'lodash';
 import { createSelector } from 'reselect';
 import createCachedSelector from 're-reselect'
 
-import { getStation, getStations, getStationsPartitionedByBrands } from './db';
+import { getStation, getStations } from './db';
 import { createDeepEqualsSelector } from '../utils';
 
 export const getFavourites = (state) => {
@@ -36,6 +36,21 @@ export const getVisible = (state) => {
     return state.ui.visible;
 };
 
+export const getStationsPartitionedByBrands = createSelector(
+    getStations,
+    (stations) => {
+        const partition = reduce(stations, (accumulator, station) => {
+            if (has(accumulator, station.brand)) {
+                accumulator[station.brand] = [...accumulator[station.brand], station];
+            } else {
+                accumulator[station.brand] = [station];
+            }
+            return accumulator;
+        }, {});
+        return partition;
+    }
+);
+
 export const getStationsFilteredyBrands = createSelector(
     getSelectedBrands,
     getStationsPartitionedByBrands,
@@ -56,6 +71,36 @@ export const getVisibleStations = createSelector(
             const props = { id: stationID };
             return getStation(state, props);
         });
+    }
+);
+
+export const getVisibleStationsPartitionedByBrands = createSelector(
+    getVisibleStations,
+    (stations) => {
+        const partition = reduce(stations, (accumulator, station) => {
+            if (has(accumulator, station.brand)) {
+                accumulator[station.brand] = [...accumulator[station.brand], station];
+            } else {
+                accumulator[station.brand] = [station];
+            }
+            return accumulator;
+        }, {});
+        return partition;
+    }
+);
+
+export const getVisibleStationsFilteredByBrands = createSelector(
+    getSelectedBrands,
+    getVisibleStationsPartitionedByBrands,
+    (brands, partition) => {
+        const stationsSelectedByBrands = reduce(brands, (accumulator, brand) => {
+            if (has(partition, brand)) {
+                return [...accumulator, ...partition[brand]];
+            } else {
+                return accumulator;
+            }
+        }, []);
+        return stationsSelectedByBrands;
     }
 );
 
