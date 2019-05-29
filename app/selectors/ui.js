@@ -39,15 +39,14 @@ export const getVisible = (state) => {
 export const getStationsPartitionedByBrands = createSelector(
     getStations,
     (stations) => {
-        const partition = reduce(stations, (accumulator, station) => {
+        return reduce(stations, (accumulator, station) => {
             if (has(accumulator, station.brand)) {
-                accumulator[station.brand] = [...accumulator[station.brand], station];
+                accumulator[station.brand].push(station);
             } else {
                 accumulator[station.brand] = [station];
             }
             return accumulator;
         }, {});
-        return partition;
     }
 );
 
@@ -56,7 +55,8 @@ export const getStationsFilteredyBrands = createSelector(
     getStationsPartitionedByBrands,
     (brands, partition) => {
         const stationsSelectedByBrands = reduce(brands, (accumulator, brand) => {
-            return [...accumulator, ...partition[brand]];
+            accumulator.push(...partition[brand]);
+            return accumulator;
         }, []);
         return stationsSelectedByBrands;
     }
@@ -77,15 +77,14 @@ export const getVisibleStations = createSelector(
 export const getVisibleStationsPartitionedByBrands = createSelector(
     getVisibleStations,
     (stations) => {
-        const partition = reduce(stations, (accumulator, station) => {
+        return reduce(stations, (accumulator, station) => {
             if (has(accumulator, station.brand)) {
-                accumulator[station.brand] = [...accumulator[station.brand], station];
+                accumulator[station.brand].push(station);
             } else {
                 accumulator[station.brand] = [station];
             }
             return accumulator;
         }, {});
-        return partition;
     }
 );
 
@@ -95,10 +94,9 @@ export const getVisibleStationsFilteredByBrands = createSelector(
     (brands, partition) => {
         const stationsSelectedByBrands = reduce(brands, (accumulator, brand) => {
             if (has(partition, brand)) {
-                return [...accumulator, ...partition[brand]];
-            } else {
-                return accumulator;
+                accumulator.push(...partition[brand]);
             }
+            return accumulator;
         }, []);
         return stationsSelectedByBrands;
     }
