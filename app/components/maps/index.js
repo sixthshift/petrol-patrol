@@ -19,7 +19,7 @@ import { encompassingRegion } from '../../utils';
 
 const radius = memoize(() => {
     const screenWidth = Dimensions.get('window').width;
-    const portion = 0.075; // portion of the screen
+    const portion = 0.05; // portion of the screen
     return screenWidth * portion;
 });
 
