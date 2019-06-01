@@ -42,22 +42,18 @@ class Search extends React.Component {
     }
 
     render() {
-        if (this.props.showSearch) {
-            return (
-                <NBHeader rounded searchBar>
-                    <Item>
-                        <Icon name='search' />
-                        <Input
-                            onChangeText={this.onChangeText}
-                            onSubmitEditing={this.search}
-                            placeholder={searchPlaceholder}
-                        />
-                    </Item>
-                </NBHeader>
-            );
-        } else {
-            return (null);
-        }
+        return (
+            <NBHeader rounded searchBar>
+                <Item>
+                    <Icon name='search' />
+                    <Input
+                        onChangeText={this.onChangeText}
+                        onSubmitEditing={this.search}
+                        placeholder={searchPlaceholder}
+                    />
+                </Item>
+            </NBHeader>
+        );
     }
 }
 

@@ -3,7 +3,7 @@ import { Container, Content, List as NBList } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Header from '../header';
+import Header from './header';
 import Item from './item';
 import { getFueltypes } from '../../selectors';
 import styles from '../../styles/styles';
@@ -25,10 +25,7 @@ class List extends React.Component {
         const activeList = filter(this.props.list, isActive);
         return (
             <Container>
-                <Header
-                    showBack={true}
-                    showSearch={false}
-                />
+                <Header />
                 <Content style={styles.container}>
                     <NBList>
                         {map(activeList, this.renderItem)}

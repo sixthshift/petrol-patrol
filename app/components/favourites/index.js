@@ -1,16 +1,16 @@
 import { Location, Permissions } from 'expo';
 import { isEmpty, isEqual, omit } from 'lodash';
-import { Body, Container, Content, Icon, Text } from 'native-base';
+import { Container, Content, Icon, Text } from 'native-base';
 import React from 'react';
 import { ToastAndroid, View } from 'react-native';
-import { StackActions, NavigationActions } from 'react-navigation';
+import { NavigationActions, StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { reorderFavouritesAction, setLocationAction, setRegionAction } from '../../actions';
 import Colour from '../../constants/colours';
 import FlatList from '../flatlist';
 import Footer from '../footer';
-import Header from '../header';
+import Header from './header';
 import { getFavouriteStations } from '../../selectors';
 import { noLocationPermissions, emptyFavourites } from '../strings';
 import styles from './styles';
@@ -75,10 +75,6 @@ class Favourites extends React.Component {
             <Container>
                 <Header
                     content={this}
-                    showBack={false}
-                    showBrands={false}
-                    showFueltypes={true}
-                    showSearch={true}
                 />
                 {isEmpty(this.props.favourites) ? (
                     <Content contentContainerStyle={styles.centre}>

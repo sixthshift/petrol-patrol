@@ -3,6 +3,7 @@ import React from 'react';
 import { G, Path } from 'react-native-svg'
 
 class Distance extends React.Component {
+
     render() {
         return (
             <Svg

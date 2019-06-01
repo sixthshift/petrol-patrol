@@ -10,7 +10,7 @@ import { setRegionAction, setLocationAction } from '../../actions';
 import Cluster from './cluster';
 import { extent } from '../../constants/maps';
 import Footer from '../footer';
-import Header from '../header';
+import Header from './header';
 import Marker from './marker';
 import { getRegion, getStationsFilteredyBrands } from '../../selectors';
 import { noLocationPermissions } from '../strings';
@@ -102,11 +102,6 @@ class Map extends React.Component {
             <Container>
                 <Header
                     content={this}
-                    showBack={false}
-                    showBrands={true}
-                    showFueltypes={true}
-                    showList={true}
-                    showSearch={true}
                 />
                 <ClusteredMapView
                     data={this.props.stations}

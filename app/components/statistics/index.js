@@ -11,7 +11,7 @@ import HistoryChart from './chart/history';
 import { enableAnalysisNRMA, statisticsHistoryRange } from '../../constants/app';
 import Colours from '../../constants/colours';
 import Footer from '../footer';
-import Header from '../header';
+import Header from './header';
 import { encompassingRegion } from '../../utils';
 import { getSelectedFueltype, getStatisticsForFueltype, getAnalysis } from '../../selectors';
 import { averageLabel, deviationLabel, maximumLabel, minimumLabel } from '../strings';
@@ -79,11 +79,6 @@ class Statistics extends React.Component {
                 <Container>
                     <Header
                         content={this}
-                        showBack={false}
-                        showBrands={false}
-                        showDrawer={true}
-                        showFueltypes={true}
-                        showSearch={true}
                     />
                     <Content style={styles.content}>
                         <Card style={styles.card}>

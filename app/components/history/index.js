@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { fetchPriceHistory } from '../../actions';
 import { priceHistoryRange } from '../../constants/app';
 import Chart from './chart';
-import Header from '../header';
+import Header from './header';
 import PriceList from './price';
 import { getPriceHistory } from '../../selectors';
 import styles from './styles';
@@ -22,8 +22,7 @@ class History extends React.Component {
         return (
             <Container>
                 <Header
-                    showBack={true}
-                    showReport={true}
+                    content={this}
                 />
                 <Content style={styles.content}>
                     <Card style={styles.card}>

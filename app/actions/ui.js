@@ -1,5 +1,11 @@
 import { createAction } from 'redux-actions';
 
+export const BRANDS_ALL = 'BRANDS_ALL';
+export const selectAllBrandsAction = createAction(BRANDS_ALL);
+
+export const BRANDS_NONE = 'BRANDS_NONE';
+export const selectNoneBrandsAction = createAction(BRANDS_NONE);
+
 export const BRANDS_SELECT = 'BRANDS_SELECT';
 export const selectBrandsAction = createAction(BRANDS_SELECT);
 

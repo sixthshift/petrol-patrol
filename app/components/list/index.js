@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { reorderVisibleMarkerAction } from '../../actions';
 import FlatList from '../flatlist';
-import Header from '../header';
+import Header from './header';
 import { getPrice, getPrices, getRegion, getSelectedFueltype, getVisibleStationsFilteredByBrands } from '../../selectors';
 import { haversine } from '../../utils';
 
@@ -54,12 +54,6 @@ class List extends React.Component {
             <Container>
                 <Header
                     content={this}
-                    showBack={true}
-                    showBrands={true}
-                    showFueltypes={true}
-                    showSearch={false}
-                    showSortByDistance={true}
-                    showSortByPrice={true}
                 />
                 <Content>
                     {isEmpty(this.props.stations) ? (
