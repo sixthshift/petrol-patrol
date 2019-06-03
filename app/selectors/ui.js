@@ -1,4 +1,4 @@
-import _, { has, map, reduce } from 'lodash';
+import _, { filter, has, includes, map, reduce } from 'lodash';
 import { createSelector } from 'reselect';
 import createCachedSelector from 're-reselect'
 
@@ -74,31 +74,11 @@ export const getVisibleStations = createSelector(
     }
 );
 
-export const getVisibleStationsPartitionedByBrands = createSelector(
-    getVisibleStations,
-    (stations) => {
-        return reduce(stations, (accumulator, station) => {
-            if (has(accumulator, station.brand)) {
-                accumulator[station.brand].push(station);
-            } else {
-                accumulator[station.brand] = [station];
-            }
-            return accumulator;
-        }, {});
-    }
-);
-
 export const getVisibleStationsFilteredByBrands = createSelector(
     getSelectedBrands,
-    getVisibleStationsPartitionedByBrands,
-    (brands, partition) => {
-        const stationsSelectedByBrands = reduce(brands, (accumulator, brand) => {
-            if (has(partition, brand)) {
-                accumulator.push(...partition[brand]);
-            }
-            return accumulator;
-        }, []);
-        return stationsSelectedByBrands;
+    getVisibleStations,
+    (brands, stations) => {
+        return filter(stations, (station) => (includes(brands, station.brand)));
     }
 );
 

@@ -17,7 +17,7 @@ class List extends React.Component {
 
     constructor(props) {
         super(props);
-
+        
         this.sortDistance = this.sortDistance.bind(this);
         this.sortPrice = this.sortPrice.bind(this);
     }
@@ -29,7 +29,7 @@ class List extends React.Component {
     }
 
     sortDistance() {
-        const from = this.props.region;
+        const from = this.props.location;
         const sorted = sortBy(this.props.stations, (station) => {
             const to = station.location;
             return haversine(from, to);
