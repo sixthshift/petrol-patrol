@@ -1,5 +1,5 @@
 import { MapView, Svg } from 'expo';
-import { get, isEqual, isNil, isNull, isUndefined, memoize, omit, once, reduce } from 'lodash';
+import { get, isEqual, isNil, isUndefined, memoize, omit, once, reduce } from 'lodash';
 import React from 'react';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -71,9 +71,6 @@ class Marker extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            tracksViewChanges: false,
-        };
         this.markerProps = {
             coordinate: {
                 latitude: props.station.location.latitude,
@@ -81,6 +78,7 @@ class Marker extends React.Component {
             },
             onPress: this.onPress.bind(this),
         };
+        this.tracksViewChanges = false;
     }
 
     componentDidMount() {
@@ -105,23 +103,27 @@ class Marker extends React.Component {
 
     _update() {
         if (isUndefined(this.props.price)) {
-            // If price is null, it means it is still fetching, don't fetch again
+            // If price is null,
+            // It means it is still fetching or the price doesn't exist for this station
+            // Don't fetch again
             this.props.fetchPrice(this.props.station, this.props.selectedFueltype);
-            this.setState({ tracksViewChanges: true });
         }
-        else if (this.state.tracksViewChanges) {
-            this.setState({ tracksViewChanges: false });
+        else if (this.tracksViewChanges) {
+            this.tracksViewChanges = false;
+            // Simulate a setState here
+            this.forceUpdate();
         }
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        const beforeProps = omit(this.props, ['selectedBrands', 'selectedFueltype', 'region']);
-        const afterProps = omit(nextProps, ['selectedBrands', 'selectedFueltype', 'region']);
+        const beforeProps = omit(this.props, ['region', 'selectedFueltype', 'selectedBrands']);
+        const afterProps = omit(nextProps, ['region', 'selectedFueltype', 'selectedBrands']);
         const beforeState = this.state;
         const afterState = nextState;
-        if (!isEqual(beforeProps, afterProps) || beforeState != afterState) {
-            // // If price is being updated from undefined to null, don't re-render
-            return !isNull(get(afterProps, 'price'));
+        if (!isEqual(beforeProps, afterProps) || !beforeState !== afterState) {
+            // Use an object property instead of state to manage this as we don't want a component re-update here
+            this.tracksViewChanges = true;
+            return true;
         } else {
             return false;
         }
@@ -131,7 +133,7 @@ class Marker extends React.Component {
         return (
             <MapView.Marker
                 {...this.markerProps}
-                tracksViewChanges={this.state.tracksViewChanges}
+                tracksViewChanges={this.tracksViewChanges}
             >
                 <Svg
                     height={markerHeight}
