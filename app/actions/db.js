@@ -113,11 +113,8 @@ export function fetchPriceHistory(station, fueltype, timestamp) {
                     };
                     dispatch(fetchPriceAction(payload));
                 } else {
-                    const payload = {
-                        payload: response,
-                        meta: { hash: hashID, success: false }
-                    };
-                    dispatch(fetchPriceAction(payload));
+                    // Refetch the most recent price
+                    dispatch(fetchPrice(station, fueltype))
                 }
             })
             .catch((error) => {
