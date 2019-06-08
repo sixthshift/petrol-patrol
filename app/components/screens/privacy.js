@@ -9,10 +9,7 @@ class Privacy extends React.Component {
     render() {
         return (
             <Container>
-                <Header
-                    showBack={true}
-                    showSearch={false}
-                />
+                <Header />
 
                 <WebView
                     source={{
