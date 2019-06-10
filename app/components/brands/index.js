@@ -1,6 +1,7 @@
 import { filter, isEqual, map } from 'lodash';
-import { Container, Content, List as NBList } from 'native-base';
+import { Container, Content } from 'native-base';
 import React from 'react';
+import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 
 import Header from './header';
@@ -11,9 +12,18 @@ import { isActive } from '../../utils';
 
 class List extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.keyExtractor = this.keyExtractor.bind(this);
+    }
+
+    keyExtractor(item) {
+        return item.name.toString();
+    }
+
     renderItem(item) {
         return (
-            <Item key={item.name} item={item} />
+            <Item item={item.item} />
         );
     }
 
@@ -27,9 +37,13 @@ class List extends React.Component {
             <Container>
                 <Header />
                 <Content style={styles.container}>
-                    <NBList>
-                        {map(activeList, this.renderItem)}
-                    </NBList>
+                    <FlatList
+                        data={activeList}
+                        initialNumToRender={activeList.length}
+                        keyExtractor={this.keyExtractor}
+                        renderItem={this.renderItem}
+                    >
+                    </FlatList>
                 </Content>
             </Container>
         );

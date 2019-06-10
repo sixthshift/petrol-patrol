@@ -1,4 +1,4 @@
-import {isEqual} from 'lodash';
+import { isEqual } from 'lodash';
 import { Body, ListItem, Text } from 'native-base';
 import React from 'react';
 import { connect } from 'react-redux';

@@ -1,6 +1,7 @@
-import { MapView, Svg } from 'expo';
 import { isEqual, map, once, pick } from 'lodash';
 import React from 'react';
+import MapView from 'react-native-maps';
+import { Circle, Svg, Path, Text } from 'react-native-svg';
 import { connect } from 'react-redux';
 
 import { addVisibleMarkerAction, removeVisibleMarkerAction } from '../../actions';
@@ -51,7 +52,7 @@ class Cluster extends React.Component {
                     height={markerSize}
                     width={markerSize}
                 >
-                    <Svg.Circle
+                    <Circle
                         cx={centrePosition()}
                         cy={centrePosition()}
                         fill="white"
@@ -59,7 +60,7 @@ class Cluster extends React.Component {
                         stroke="grey"
                         strokeWidth={markerBorder}
                     />
-                    <Svg.Text
+                    <Text
                         fill="black"
                         fontSize="15"
                         fontWeight="bold"
@@ -68,7 +69,9 @@ class Cluster extends React.Component {
                         dx="-0.1em"
                         dy="0.25em"
                         textAnchor="middle"
-                    >{this.props.pointCount}</Svg.Text>
+                    >
+                        {this.props.pointCount}
+                    </Text>
                 </Svg>
             </MapView.Marker >
         );

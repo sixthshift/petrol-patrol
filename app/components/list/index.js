@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { reorderVisibleMarkerAction } from '../../actions';
 import FlatList from '../flatlist';
 import Header from './header';
-import { getPrice, getPrices, getRegion, getSelectedFueltype, getVisibleStationsFilteredByBrands } from '../../selectors';
+import { getPrice, getPrices, getLocation, getSelectedFueltype, getVisibleStationsFilteredByBrands } from '../../selectors';
 import { haversine } from '../../utils';
 
 const EmptyState = () => {
@@ -17,7 +17,7 @@ class List extends React.Component {
 
     constructor(props) {
         super(props);
-        
+
         this.sortDistance = this.sortDistance.bind(this);
         this.sortPrice = this.sortPrice.bind(this);
     }
@@ -75,7 +75,7 @@ class List extends React.Component {
 const mapStateToProps = (state) => {
     return {
         fueltype: getSelectedFueltype(state),
-        region: getRegion(state),
+        location: getLocation(state),
         prices: getPrices(state),
         stations: getVisibleStationsFilteredByBrands(state),
     };
