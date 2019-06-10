@@ -1,6 +1,5 @@
-import { Svg } from 'expo';
 import React from 'react';
-import { G, Path } from 'react-native-svg'
+import { G, Path, Svg } from 'react-native-svg'
 
 class Distance extends React.Component {
 

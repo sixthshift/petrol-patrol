@@ -1,6 +1,7 @@
-import { MapView, Svg } from 'expo';
 import { get, isEqual, isNil, isUndefined, memoize, omit, once, reduce } from 'lodash';
 import React from 'react';
+import MapView from 'react-native-maps';
+import { Path, Svg, Text } from 'react-native-svg';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 
@@ -139,13 +140,13 @@ class Marker extends React.Component {
                     height={markerHeight}
                     width={markerWidth}
                 >
-                    <Svg.Path
+                    <Path
                         d={draw(markerHeight, markerWidth)}
                         fill="white"
                         stroke={colour(this.props.price, this.props.statistics)}
                         strokeWidth={markerBorder}
                     />
-                    <Svg.Text
+                    <Text
                         fill="black"
                         fontSize="15"
                         fontWeight="bold"
@@ -154,7 +155,7 @@ class Marker extends React.Component {
                         textAnchor="middle"
                     >
                         {isNil(this.props.price) ? 'N/A' : this.props.price.price}
-                    </Svg.Text>
+                    </Text>
                 </Svg>
             </MapView.Marker>
         );

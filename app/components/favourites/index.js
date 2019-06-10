@@ -1,4 +1,5 @@
-import { Location, Permissions } from 'expo';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
 import { isEmpty, isEqual, omit } from 'lodash';
 import { Container, Content, Icon, Text } from 'native-base';
 import React from 'react';
