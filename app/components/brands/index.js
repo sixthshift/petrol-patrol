@@ -12,11 +12,6 @@ import { isActive } from '../../utils';
 
 class List extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.keyExtractor = this.keyExtractor.bind(this);
-    }
-
     keyExtractor(item) {
         return item.name.toString();
     }

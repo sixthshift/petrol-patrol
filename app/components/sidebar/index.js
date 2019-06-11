@@ -1,9 +1,10 @@
-import { Container, Content, List } from 'native-base';
+import { Container, Content } from 'native-base';
 import React from 'react';
+import { FlatList } from 'react-native';
 
 import Item from './item';
 
-const data = [
+const sidebarList = [
     {
         name: 'Privacy Policy',
         route: 'privacy'
@@ -12,19 +13,25 @@ const data = [
 
 class Sidebar extends React.Component {
 
+    keyExtractor(item) {
+        return item.route;
+    }
+
     renderItem(item) {
-        return (<Item
-            item={item}
-        />);
+        return (
+            <Item item={item.item} />
+        );
     }
 
     render() {
         return (
             <Container>
                 <Content>
-                    <List
-                        dataArray={data}
-                        renderRow={this.renderItem}
+                    <FlatList
+                        data={sidebarList}
+                        initialNumToRender={sidebarList.length}
+                        keyExtractor={this.keyExtractor}
+                        renderItem={this.renderItem}
                     />
                 </Content>
             </Container>

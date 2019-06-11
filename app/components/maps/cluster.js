@@ -22,7 +22,6 @@ class Cluster extends React.Component {
             },
             tracksViewChanges: false,
         };
-
         this._getChildren = this._getChildren.bind(this);
     }
 

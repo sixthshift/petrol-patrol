@@ -1,6 +1,7 @@
 import { filter, isEqual } from 'lodash';
-import { Container, Content, List } from 'native-base';
+import { Container, Content } from 'native-base';
 import React from 'react';
+import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 
 import Item from './item';
@@ -10,8 +11,25 @@ import styles from './styles';
 
 class PriceList extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.renderItem = this.renderItem.bind(this);
+    }
+
     shouldComponentUpdate(nextProps) {
         return !isEqual(this.props, nextProps);
+    }
+
+    keyExtractor(item) {
+        return item.code;
+    }
+
+    renderItem(item) {
+        return (
+            <Item
+                item={item.item}
+                station={this.props.station} />
+        );
     }
 
     render() {
@@ -19,9 +37,13 @@ class PriceList extends React.Component {
         return (
             <Container>
                 <Content>
-                    <List style={styles.list}>
-                        {activeList.map((item) => (<Item item={item} key={item.code} station={this.props.station} />))}
-                    </List>
+                    <FlatList
+                        data={activeList}
+                        initialNumToRender={activeList.length}
+                        keyExtractor={this.keyExtractor}
+                        renderItem={this.renderItem}
+                        style={styles.list}
+                    />
                 </Content>
             </Container>
         );
