@@ -7,7 +7,7 @@ import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { fetchPrice } from '../../actions';
-import { getLocation, getPrice, getMostRecentStatistics, getRegion, getSelectedFueltype } from '../../selectors';
+import { getLocation, getPrice, getMostRecentStatistics, getSelectedFueltype } from '../../selectors';
 import styles from './styles';
 import { colour, distance } from '../../utils';
 
@@ -73,7 +73,6 @@ const mapStateToProps = (state, ownProps) => {
     return {
         location: getLocation(state),
         price: getPrice(state, props),
-        region: getRegion(state),
         selectedFueltype: getSelectedFueltype(state),
         statistics: getMostRecentStatistics(state, props),
     };

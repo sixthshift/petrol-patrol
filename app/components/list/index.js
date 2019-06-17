@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { reorderVisibleMarkerAction } from '../../actions';
 import FlatList from '../flatlist';
 import Header from './header';
-import { getPrice, getPrices, getLocation, getSelectedFueltype, getVisibleStationsFilteredByBrands } from '../../selectors';
+import { getLocation, getPrice, getPrices, getSelectedFueltype, getVisibleStationsFilteredByBrands } from '../../selectors';
 import { haversine } from '../../utils';
 
 const EmptyState = () => {
