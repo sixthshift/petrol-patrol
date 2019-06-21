@@ -1,5 +1,5 @@
 import { curveNatural } from 'd3-shape';
-import { get, maxBy, minBy, round } from 'lodash';
+import { get, pick, maxBy, minBy, round } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { View } from 'react-native';
@@ -15,7 +15,40 @@ const nYAxis = 5;
 const yAxisWidth = 30;
 const xAxisHeight = 30;
 
+const contentInset = {
+    bottom: 25,
+    left: 25,
+    right: 25,
+    top: 35,
+}
+
 class HistoryChart extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = this.prepare(props.data);
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props !== prevProps) {
+            this.setState(this.prepare(this.props.data));
+        }
+    }
+
+    prepare(statistics) {
+        return {
+            xAxis: intervalise(
+                get(minBy(statistics, 'timestamp'), 'timestamp', undefined),
+                get(maxBy(statistics, 'timestamp'), 'timestamp', undefined),
+                nXAxis
+            ),
+            yAxis: intervalise(
+                get(minBy(statistics, 'mean'), 'mean', undefined),
+                get(maxBy(statistics, 'mean'), 'mean', undefined),
+                nYAxis
+            )
+        };
+    }
 
     xAccessor({ item }) {
         return item.timestamp;
@@ -26,40 +59,24 @@ class HistoryChart extends React.Component {
     }
 
     render() {
-        const xAxis = intervalise(
-            get(minBy(this.props.data, 'timestamp'), 'timestamp', undefined),
-            get(maxBy(this.props.data, 'timestamp'), 'timestamp', undefined),
-            nXAxis
-        );
-        const yAxis = intervalise(
-            get(minBy(this.props.data, 'mean'), 'mean', undefined),
-            get(maxBy(this.props.data, 'mean'), 'mean', undefined),
-            nYAxis
-        );
         return (
             <View>
-                <View style={{ height: 250, flexDirection: 'row' }}>
+                <View style={{ height: 300, flexDirection: 'row' }}>
                     <YAxis
-                        contentInset={{
-                            top: 20,
-                            bottom: 20,
-                        }}
-                        data={yAxis}
+                        contentInset={pick(contentInset, ['bottom', 'top'])}
+                        data={this.state.yAxis}
                         style={{ width: yAxisWidth }}
                         yAccessor={({ item }) => (item)}
                     />
                     <LineChart
-                        contentInset={{
-                            top: 20,
-                            bottom: 20,
-                        }}
+                        contentInset={contentInset}
                         curve={curveNatural}
                         data={this.props.data}
                         style={{
                             flex: 1,
                         }}
                         svg={{
-                            stroke: Colours.primary,
+                            stroke: Colours.primaryDark,
                             strokeWidth: 3,
                         }}
                         xAccessor={this.xAccessor}
@@ -73,11 +90,8 @@ class HistoryChart extends React.Component {
                     </LineChart>
                 </View>
                 <XAxis
-                    contentInset={{
-                        left: 20,
-                        right: 20,
-                    }}
-                    data={xAxis}
+                    contentInset={pick(contentInset, ['left', 'right'])}
+                    data={this.state.xAxis}
                     formatLabel={(value) => (moment.unix(value).format("D/M"))}
                     style={{ height: xAxisHeight, marginLeft: yAxisWidth }}
                     xAccessor={({ item }) => (item)}

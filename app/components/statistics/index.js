@@ -1,4 +1,4 @@
-import { get, isEmpty, isNaN, isUndefined, last, round, size } from 'lodash';
+import { get, isEmpty, isNaN, isNil, isUndefined, last, round, size } from 'lodash';
 import moment from 'moment';
 import { Card, CardItem, Container, Content, Drawer, H1, Left, Right, Text } from 'native-base';
 import React from 'react';
@@ -115,36 +115,42 @@ class Statistics extends React.Component {
                                 </Right>
                             </CardItem>
                         </Card>
-                        <Card style={styles.card}>
-                            <CardItem header>
-                                <Content>
-                                    <Text>Average Price History</Text>
-                                    <Text note>Average price trends over the last {statisticsHistoryRange} days</Text>
-                                </Content>
-                            </CardItem>
-                            <CardItem>
-                                <Content onLayout={this.onLayout}>
-                                    <HistoryChart
-                                        data={this.props.statistics}
-                                    />
-                                </Content>
-                            </CardItem>
-                        </Card>
-                        <Card style={styles.card}>
-                            <CardItem header>
-                                <Content>
-                                    <Text>Price Distribution</Text>
-                                    <Text note>Current spread of prices seen at service stations across the state</Text>
-                                </Content>
-                            </CardItem>
-                            <CardItem>
-                                <Content onLayout={this.onLayout}>
-                                    <DistributionChart
-                                        data={mostRecentStatistics}
-                                    />
-                                </Content>
-                            </CardItem>
-                        </Card>
+                        {
+                            !isEmpty(this.props.statistics) && !isNil(this.props.statistics) &&
+                            <Card style={styles.card}>
+                                <CardItem header>
+                                    <Content>
+                                        <Text>Average Price History</Text>
+                                        <Text note>Average price trends over the last {statisticsHistoryRange} days</Text>
+                                    </Content>
+                                </CardItem>
+                                <CardItem>
+                                    <Content onLayout={this.onLayout}>
+                                        <HistoryChart
+                                            data={this.props.statistics}
+                                        />
+                                    </Content>
+                                </CardItem>
+                            </Card>
+                        }
+                        {
+                            !isEmpty(this.props.statistics) && !isNil(this.props.statistics) &&
+                            <Card style={styles.card}>
+                                <CardItem header>
+                                    <Content>
+                                        <Text>Price Distribution</Text>
+                                        <Text note>Current spread of prices seen at service stations across the state</Text>
+                                    </Content>
+                                </CardItem>
+                                <CardItem>
+                                    <Content onLayout={this.onLayout}>
+                                        <DistributionChart
+                                            data={mostRecentStatistics}
+                                        />
+                                    </Content>
+                                </CardItem>
+                            </Card>
+                        }
                         {
                             enableAnalysisNRMA &&
                             <Card style={styles.card}>

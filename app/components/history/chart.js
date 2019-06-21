@@ -1,5 +1,5 @@
 import { curveStepAfter } from 'd3-shape';
-import { get, isEmpty, last, maxBy, minBy } from 'lodash';
+import { get, isEmpty, last, maxBy, minBy, pick } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { View } from 'react-native';
@@ -14,6 +14,13 @@ const nYAxis = 5;
 
 const yAxisWidth = 30;
 const xAxisHeight = 30;
+
+const contentInset = {
+    bottom: 25,
+    left: 25,
+    right: 25,
+    top: 35,
+}
 
 class Chart extends React.Component {
 
@@ -54,20 +61,12 @@ class Chart extends React.Component {
                 <View>
                     <View style={{ height: 250, flexDirection: 'row' }}>
                         <YAxis
-                            contentInset={{
-                                bottom: 20,
-                                top: 20,
-                            }}
+                            contentInset={pick(contentInset, ['bottom', 'top'])}
                             data={yAxis}
                             style={{ width: yAxisWidth }}
                         />
                         <LineChart
-                            contentInset={{
-                                bottom: 20,
-                                left: 20,
-                                right: 20,
-                                top: 20,
-                            }}
+                            contentInset={contentInset}
                             curve={curveStepAfter}
                             data={[...this.props.data, this.now()]}
                             style={{
@@ -92,10 +91,7 @@ class Chart extends React.Component {
                         </LineChart>
                     </View>
                     <XAxis
-                        contentInset={{
-                            left: 20,
-                            right: 20,
-                        }}
+                        contentInset={pick(contentInset, ['left', 'right'])}
                         data={xAxis}
                         formatLabel={(value) => (moment.unix(value).format("D/M"))}
                         style={{ height: xAxisHeight, marginLeft: yAxisWidth }}

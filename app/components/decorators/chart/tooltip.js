@@ -19,6 +19,8 @@ class Tooltip extends React.Component {
 
         this.onPress = this.onPress.bind(this);
         this.selected = this.selected.bind(this);
+        this.x = this.x.bind(this);
+        this.y = this.y.bind(this);
     }
 
     onPress(key) {
@@ -38,17 +40,35 @@ class Tooltip extends React.Component {
         return (isEqual(this.state.selected, key));
     }
 
+    x(index) {
+        // Scale index to canvas
+        index = this.props.x(index);
+        // Adjust for tooltip width
+        index -= tooltipWidth / 2;
+        // If bandwidth exists, it is a bar chart, adjust for band width
+        index += this.props.bandwidth ? (this.props.bandwidth / 2) : 0;
+        return index;
+    }
+
+    y(value, heightOffset = false) {
+        // Scale value to canvas
+        value = this.props.y(value);
+        // Adjust for tooltip height
+        value -= (tooltipHeight / 2)
+        // If heightOffset enabled, adjust for tootip height offset
+        value -= heightOffset ? tooltipHeightOffset : 0;
+        return value;
+    }
+
     render() {
         return (
             map(this.props.data, (item) => {
-                const x = this.props.xAccessor({ item: item });
-                const y = this.props.yAccessor({ item: item });
                 if (this.selected(item)) {
                     return (
                         <G
                             key={this.props.xAccessor({ item: item })}
-                            x={this.props.x(x) - (tooltipWidth / 2)}
-                            y={this.props.y(y) - (tooltipHeight / 2) - tooltipHeightOffset}
+                            x={this.x(this.props.xAccessor({ item: item }))}
+                            y={this.y(this.props.yAccessor({ item: item }), true)}
                         >
                             <Rect
                                 fill={'white'}
@@ -82,9 +102,9 @@ class Tooltip extends React.Component {
                 } else {
                     return (
                         <G
-                            key={this.props.xAccessor({ item: item })}
-                            x={this.props.x(x) - (tooltipWidth / 2)}
-                            y={this.props.y(y) - (tooltipHeight / 2)}
+                            key={this.x(this.props.xAccessor({ item: item }))}
+                            x={this.x(this.props.xAccessor({ item: item }))}
+                            y={this.y(this.props.yAccessor({ item: item }), false)}
                         >
                             <Circle
                                 cx={tooltipWidth / 2}
@@ -93,7 +113,7 @@ class Tooltip extends React.Component {
                                 key={this.props.xAccessor({ item: item })}
                                 onPress={() => (this.onPress(item))}
                                 r={15}
-                                stroke={'#00000000'}
+                                stroke={'#FFFFFF'}
                                 strokeWidth={0}
                             />
                         </G>
