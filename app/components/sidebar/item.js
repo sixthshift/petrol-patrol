@@ -1,4 +1,4 @@
-import { Left, ListItem, Right, Text } from 'native-base';
+import { Left, ListItem, Text } from 'native-base';
 import React from 'react';
 import { withNavigation } from 'react-navigation';
 
