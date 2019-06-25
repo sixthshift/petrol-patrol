@@ -14,7 +14,7 @@ import Footer from '../footer';
 import Header from './header';
 import Marker from './marker';
 import { getRegion, getStationsFilteredyBrands } from '../../selectors';
-import { noLocationPermissions } from '../strings';
+import { locationNotFound, noLocationPermissions } from '../strings';
 import styles from './styles';
 import { encompassingRegion } from '../../utils';
 
@@ -50,18 +50,26 @@ class Map extends React.Component {
         this.map.getMapRef().animateToRegion(region);
     }
 
-    _getLocationAsync = async () => {
+    _getLocationAsync = async (retries = 3) => {
         const { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status === 'granted') {
-            const location = await Location.getCurrentPositionAsync({});
-            const region = {
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-                latitudeDelta: this.props.region.latitudeDelta,
-                longitudeDelta: this.props.region.longitudeDelta,
-            };
-            this.props.setLocation(location.coords);
-            this._moveToRegion(region);
+            try {
+                const location = await Location.getCurrentPositionAsync({});
+                const region = {
+                    latitude: location.coords.latitude,
+                    longitude: location.coords.longitude,
+                    latitudeDelta: this.props.region.latitudeDelta,
+                    longitudeDelta: this.props.region.longitudeDelta,
+                };
+                this.props.setLocation(location.coords);
+                this._moveToRegion(region);
+            } catch (error) {
+                if (retries > 0) {
+                    this._getLocationAsync(retries - 1);
+                } else {
+                    ToastAndroid.show(locationNotFound, ToastAndroid.LONG);
+                }
+            }
         } else {
             ToastAndroid.show(noLocationPermissions, ToastAndroid.LONG);
         }

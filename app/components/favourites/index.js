@@ -13,7 +13,7 @@ import FlatList from '../flatlist';
 import Footer from '../footer';
 import Header from './header';
 import { getFavouriteStations } from '../../selectors';
-import { noLocationPermissions, emptyFavourites } from '../strings';
+import { locationNotFound, noLocationPermissions, emptyFavourites } from '../strings';
 import styles from './styles';
 import { encompassingRegion } from '../../utils';
 
@@ -45,11 +45,19 @@ class Favourites extends React.Component {
         this._getLocationAsync();
     }
 
-    _getLocationAsync = async () => {
+    _getLocationAsync = async (retries = 3) => {
         const { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status === 'granted') {
-            const location = await Location.getCurrentPositionAsync({});
-            this.props.setLocation(location.coords);
+            try {
+                const location = await Location.getCurrentPositionAsync({});
+                this.props.setLocation(location.coords);
+            } catch (error) {
+                if (retries > 0) {
+                    this._getLocationAsync(retries - 1)
+                } else {
+                    ToastAndroid.show(locationNotFound, ToastAndroid.LONG);
+                }
+            }
         } else {
             ToastAndroid.show(noLocationPermissions, ToastAndroid.LONG);
         }
