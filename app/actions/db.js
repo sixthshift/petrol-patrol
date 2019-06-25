@@ -3,7 +3,7 @@ import { createAction } from 'redux-actions';
 
 import { syncFrequency } from '../constants/app';
 import firedb from '../api/firebase';
-import { selectBrandsAction, selectFueltypeAction } from './ui';
+import { selectAllBrandsAction, selectFueltypeAction } from './ui';
 import { hash, now, previousInterval } from '../utils';
 
 export const ANALYSIS_FETCH = 'ANALYSIS_FETCH';
@@ -41,7 +41,7 @@ export function fetchBrands() {
         firedb.fetchBrands()
             .then((response) => {
                 dispatch(fetchBrandsAction(response, { success: true }));
-                dispatch(selectBrandsAction(map(response, 'name')));
+                dispatch(selectAllBrandsAction(map(response, 'name')));
             })
             .catch((error) => {
                 dispatch(fetchBrandsAction(error, { success: false }));
