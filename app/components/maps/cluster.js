@@ -1,7 +1,7 @@
 import { isEqual, map, once, pick } from 'lodash';
 import React from 'react';
 import MapView from 'react-native-maps';
-import { Circle, Svg, Path, Text } from 'react-native-svg';
+import { Circle, Svg, Text } from 'react-native-svg';
 import { connect } from 'react-redux';
 
 import { addVisibleMarkerAction, removeVisibleMarkerAction } from '../../actions';
@@ -46,7 +46,10 @@ class Cluster extends React.Component {
 
     render() {
         return (
-            <MapView.Marker {...this.markerProps}>
+            <MapView.Marker
+                {...this.markerProps}
+                onPress={this.props.onPress}
+            >
                 <Svg
                     height={markerSize}
                     width={markerSize}

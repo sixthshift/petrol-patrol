@@ -1,6 +1,6 @@
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
-import { isEqual, memoize, omit } from 'lodash';
+import { isEqual, omit } from 'lodash';
 import { Container } from 'native-base';
 import React from 'react';
 import { Dimensions, ToastAndroid } from 'react-native';
@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 
 import { setRegionAction, setLocationAction } from '../../actions';
 import Cluster from './cluster';
-import { extent } from '../../constants/maps';
+import { extent, mapEdgePadding, radius } from '../../constants/maps';
 import Footer from '../footer';
 import Header from './header';
 import Marker from './marker';
@@ -17,12 +17,6 @@ import { getRegion, getStationsFilteredyBrands } from '../../selectors';
 import { locationNotFound, noLocationPermissions } from '../strings';
 import styles from './styles';
 import { encompassingRegion } from '../../utils';
-
-const radius = memoize(() => {
-    const screenWidth = Dimensions.get('window').width;
-    const portion = 0.05; // portion of the screen
-    return screenWidth * portion;
-});
 
 class Map extends React.Component {
 
@@ -114,6 +108,7 @@ class Map extends React.Component {
                 />
                 <ClusteredMapView
                     data={this.props.stations}
+                    edgePadding={mapEdgePadding}
                     extent={extent}
                     initialRegion={this.props.region}
                     loadingEnabled={true}
