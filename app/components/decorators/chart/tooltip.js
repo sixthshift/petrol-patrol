@@ -113,7 +113,7 @@ class Tooltip extends React.Component {
                                 key={this.props.xAccessor({ item: item })}
                                 onPress={() => (this.onPress(item))}
                                 r={15}
-                                stroke={'#FFFFFF'}
+                                stroke={'#00000000'}
                                 strokeWidth={0}
                             />
                         </G>

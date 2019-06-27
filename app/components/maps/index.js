@@ -1,6 +1,5 @@
-import * as Location from 'expo-location';
-import * as Permissions from 'expo-permissions';
-import { isEqual, omit } from 'lodash';
+import { Location, Permissions } from 'expo';
+import { isEqual, memoize, omit } from 'lodash';
 import { Container } from 'native-base';
 import React from 'react';
 import { Dimensions, ToastAndroid } from 'react-native';
@@ -131,6 +130,7 @@ class Map extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+
     return {
         region: getRegion(state),
         stations: getStationsFilteredyBrands(state),

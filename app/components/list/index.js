@@ -17,6 +17,7 @@ class List extends React.Component {
 
     constructor(props) {
         super(props);
+
         this.sortDistance = this.sortDistance.bind(this);
         this.sortPrice = this.sortPrice.bind(this);
     }

@@ -1,4 +1,4 @@
-import Constants from 'expo-constants';
+import { Constants } from 'expo'
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({

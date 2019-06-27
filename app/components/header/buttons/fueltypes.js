@@ -1,12 +1,10 @@
-import { loadAsync } from 'expo-font';
+import { Font } from "expo";
 import { isEmpty } from 'lodash';
 import { Button, Icon, Text } from 'native-base';
 import React from 'react';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import Roboto from '../../../../node_modules/native-base/Fonts/Roboto.ttf';
-import Roboto_medium from '../../../../node_modules/native-base/Fonts/Roboto_medium.ttf';
 import { getSelectedFueltype } from '../../../selectors';
 
 class FueltypesButton extends React.Component {
@@ -18,9 +16,9 @@ class FueltypesButton extends React.Component {
 
     async componentDidMount() {
         // This is needed for text in the header as an error will occur
-        await loadAsync({
-            Roboto: Roboto,
-            Roboto_medium: Roboto_medium,
+        await Font.loadAsync({
+            Roboto: require("native-base/Fonts/Roboto.ttf"),
+            Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
         });
         this.setState({ ready: true });
     }

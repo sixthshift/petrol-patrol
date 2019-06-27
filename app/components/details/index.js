@@ -1,9 +1,8 @@
-import { Linking } from 'expo';
+import { Linking, MapView } from 'expo';
 import { isEqual } from 'lodash';
 import { Body, Card, Container, Content, CardItem, Fab, Left, Text, Icon } from 'native-base';
 import React from 'react';
 import { Platform } from 'react-native';
-import MapView from 'react-native-maps';
 import { connect } from 'react-redux';
 
 import Header from './header';

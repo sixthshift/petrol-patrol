@@ -8,9 +8,6 @@ import { remoteDevEnabled } from './components/strings';
 import StackNavigator from './navigation/stack';
 import store, { persistor } from './store';
 import Styles from './styles/styles';
-import { createAppContainer } from 'react-navigation';
-
-const RootNavigator = createAppContainer(StackNavigator);
 
 class App extends React.Component {
 
@@ -26,7 +23,7 @@ class App extends React.Component {
             <StoreProvider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
                     <View style={Styles.root}>
-                        <RootNavigator />
+                        <StackNavigator />
                     </View>
                 </PersistGate>
             </StoreProvider>
