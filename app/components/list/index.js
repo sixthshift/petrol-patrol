@@ -34,7 +34,13 @@ class List extends React.Component {
             const to = station.location;
             return haversine(from, to);
         });
+        const stationIDs = map(this.props.stations, 'id');
         const sortedIDs = map(sorted, 'id');
+
+        // If the list is already sorted, reverse the order of the sorted list
+        if (isEqual(stationIDs, sortedIDs)) {
+            sortedIDs.reverse();
+        }
         this.props.reorder(sortedIDs);
     }
 
@@ -45,7 +51,13 @@ class List extends React.Component {
             const price = getPrice(state, props);
             return isNil(price) ? Number.MAX_SAFE_INTEGER : price.price;
         });
+        const stationIDs = map(this.props.stations, 'id');
         const sortedIDs = map(sorted, 'id');
+
+        // If the list is already sorted, reverse the order of the sorted list
+        if (isEqual(stationIDs, sortedIDs)) {
+            sortedIDs.reverse();
+        }
         this.props.reorder(sortedIDs);
     }
 
