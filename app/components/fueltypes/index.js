@@ -1,4 +1,4 @@
-import { filter, isEqual, map } from 'lodash';
+import { filter, isEqual } from 'lodash';
 import { Container, Content } from 'native-base';
 import React from 'react';
 import { FlatList } from 'react-native';

@@ -7,24 +7,30 @@ import { isBrandSelected } from '../../selectors';
 
 class Item extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.onPress = this.onPress.bind(this);
+    }
+
+    onPress() {
+        this.props.select(this.props.item.name);
+    }
+
     shouldComponentUpdate(nextProps) {
         return !isEqual(this.props, nextProps);
     }
 
     render() {
-        const onPress = () => {
-            this.props.select(this.props.item.name);
-        };
         return (
             <ListItem
-                onPress={onPress}
+                onPress={this.onPress}
             >
                 <Body>
                     <Text>{this.props.item.name}</Text>
                 </Body>
                 <CheckBox
                     checked={this.props.checked}
-                    onPress={onPress}
+                    onPress={this.onPress}
                 />
             </ListItem>
         );

@@ -1,6 +1,7 @@
 import { isEqual } from 'lodash';
 import { Body, ListItem, Text } from 'native-base';
 import React from 'react';
+import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { selectFueltypeAction } from '../../actions';
@@ -8,17 +9,24 @@ import { isFueltypeSelected } from '../../selectors';
 
 class Item extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.onPress = this.onPress.bind(this);
+    }
+
+    onPress() {
+        this.props.select(this.props.item.code);
+        this.props.navigation.goBack();
+    }
+
     shouldComponentUpdate(nextProps) {
         return !isEqual(this.props, nextProps);
     }
 
     render() {
-        const onPress = () => {
-            this.props.select(this.props.item.code);
-        };
         return (
             <ListItem
-                onPress={onPress}
+                onPress={this.onPress}
                 selected={this.props.selected}
             >
                 <Body>
@@ -44,4 +52,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Item);
+export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(Item));
