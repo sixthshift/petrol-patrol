@@ -9,7 +9,7 @@
       "ios",
       "android"
     ],
-    "version": "1.4.0",
+    "version": "1.5.0",
     "orientation": "portrait",
     "icon": "./app/assets/bowser/app_icon.png",
     "splash": {
@@ -29,7 +29,7 @@
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION"
       ],
-      "versionCode": 7
+      "versionCode": 8
     },
     "ios": {
       "bundleIdentifier": "com.sixthshift.petrolpatrol",
